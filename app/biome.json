@@ -1,0 +1,59 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.13/schema.json",
+  "files": {
+    "includes": [
+      "src/Prototype.tsx",
+      "src/prototype.css",
+      "src/features/**",
+      "src/lib/**",
+      "tests/setup.ts",
+      "tests/fixtures/**",
+      "tests/unit/**",
+      "tests/component/**",
+      "tests/e2e/**",
+      "vitest.config.ts",
+      "biome.json",
+      "package.json"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "lineWidth": 100
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended"
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "always",
+      "trailingCommas": "all"
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["src/Prototype.tsx", "src/features/**", "src/lib/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": ["**/tests/**"],
+                    "message": "Production code must not import test fixtures or test modules."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

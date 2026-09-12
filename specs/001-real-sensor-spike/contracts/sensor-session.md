@@ -42,15 +42,18 @@ permission request and starts no capture.
 | `interrupted` | Live input ended unexpectedly | No | Retry |
 | `failed` | Capture or processing failed | No | Retry when safe |
 
-An `active` session with insufficient input displays measured capture context plus an
-`insufficient` quality state, but it MUST NOT display a dominant frequency as reliable.
+An `active` session with degraded or insufficient input displays measured capture
+context plus the specific quality state, but it MUST NOT display a dominant frequency
+as reliable. `degraded` means a usable frame was observed while the browser reported
+acoustic processing remained active; it does not imply a calibrated quality threshold.
 
 ## Live frame contract
 
 A render frame may include time-domain samples, spectrum magnitudes, RMS, peak,
 dominant-bin center frequency, bin resolution, observed sample rate, and transform
-size. The surface MUST label digital amplitude as uncalibrated and dominant frequency
-as an observed spectrum peak.
+size. Dominant-bin selection MUST receive its eligible range as explicit configuration;
+the spike excludes DC with `firstEligibleBin: 1`. The surface MUST label digital
+amplitude as uncalibrated and dominant frequency as an observed spectrum peak.
 
 No frame may include a baseline similarity, anomaly, condition status, diagnosis, or
 machine-health percentage in this feature.

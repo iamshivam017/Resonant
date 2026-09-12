@@ -107,6 +107,14 @@ No independent sub-agent review was performed because the current session does n
 user authorization for delegated agents; a second human/security review remains TODO
 before final submission.
 
+## Deployment verification status
+
+No production or externally reachable HTTPS deployment has been performed or verified.
+The local build prepares static hosting output, but CSP, Permissions Policy, frame
+protections, referrer policy, content-type protection, HTTPS reachability, and provider
+health remain `UNKNOWN / NEEDS VERIFICATION` until a deployment target is authorized and
+the exact committed build is inspected there.
+
 ## TODO
 
 - Add deployment-specific header configuration and verify it against the live host.

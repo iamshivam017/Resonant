@@ -6,7 +6,8 @@
 
 ## Summary
 
-Build the smallest trustworthy microphone-first vertical slice: explicit permission,
+Build the smallest trustworthy microphone-first vertical slice inside the selected
+Product Design Scientific Strip Chart mobile runtime: explicit permission,
 live real-audio lifecycle, waveform, spectrum, dominant-bin evidence, actual capture
 settings, and honest degraded/failure states. Implement it as a single responsive web
 application with browser-only sensing and processing. Keep raw audio ephemeral and
@@ -15,17 +16,17 @@ physical-device run is the only evidence that real sensor acceptance criteria pa
 
 ## Technical Context
 
-**Language/Version**: TypeScript 5.1+ on Node.js 20.9+
+**Language/Version**: TypeScript 7.0.2 on a Vite-compatible Node.js runtime
 
-**Primary Dependencies**: Next.js 16.2.9, React, browser Media Capture and Web Audio APIs; no charting or DSP runtime dependency for the spike
+**Primary Dependencies**: Product Design mobile React/Vite runtime, React 19.2.7, browser Media Capture and Web Audio APIs; no charting or DSP runtime dependency for the spike
 
 **Storage**: None for runtime sensor data; physical verification evidence is recorded manually in project documentation
 
-**Testing**: Vitest for pure/state tests, Testing Library for interaction states, Playwright for browser lifecycle and error-path smoke tests, and a manual physical-device protocol for real microphone evidence
+**Testing**: Vitest for pure/state tests, Testing Library for interaction states, the template's Playwright runtime checks plus browser lifecycle/error-path smoke tests, Biome for lint/format, and a manual physical-device protocol for real microphone evidence
 
 **Target Platform**: Responsive modern web browser over a secure context; first physical Android Chrome and iOS Safari results remain evidence to collect, not assumed support claims
 
-**Project Type**: Single Next.js web application
+**Project Type**: Self-contained React/Vite mobile web application under `app/`, using the protected Product Design runtime
 
 **Performance Goals**: Smooth live visualization with a target of at least 30 visual updates per second on the declared demo device; feature summaries update without blocking permission, stop, or error controls
 
@@ -70,39 +71,38 @@ specs/001-real-sensor-spike/
 ### Source Code (repository root)
 
 ```text
-src/
-├── app/
-│   ├── layout.tsx
-│   ├── page.tsx
-│   └── globals.css
-├── features/
-│   └── sensor/
-│       ├── components/
-│       │   └── sensor-instrument.tsx
-│       ├── capture-session.ts
-│       ├── capability.ts
-│       ├── errors.ts
-│       └── types.ts
-└── lib/
-    └── dsp/
-        ├── dominant-bin.ts
-        └── frame-quality.ts
-
-tests/
-├── unit/
-│   ├── capture-session.test.ts
-│   ├── dominant-bin.test.ts
-│   └── frame-quality.test.ts
-├── component/
-│   └── sensor-instrument.test.tsx
-└── e2e/
-    └── sensor-lifecycle.spec.ts
+app/
+├── AGENTS.md
+├── src/
+│   ├── App.tsx                    # protected Product Design runtime
+│   ├── mobile/                    # protected Product Design runtime
+│   ├── Prototype.tsx              # app-owned instrument composition
+│   ├── prototype.css              # app-owned instrument visual system
+│   ├── features/
+│   │   └── sensor/
+│   │       ├── components/
+│   │       │   ├── sensor-instrument.tsx
+│   │       │   ├── waveform-canvas.tsx
+│   │       │   └── spectrum-canvas.tsx
+│   │       ├── capture-session.ts
+│   │       ├── capability.ts
+│   │       ├── errors.ts
+│   │       └── types.ts
+│   └── lib/
+│       └── dsp/
+│           ├── dominant-bin.ts
+│           └── frame-quality.ts
+└── tests/
+    ├── unit/
+    ├── component/
+    └── e2e/
 ```
 
-**Structure Decision**: Use one application and keep the hot sensing lifecycle separate
-from the rendering component. Pure DSP helpers accept typed arrays plus explicit sample
-rate and analysis settings. Canvas owns high-rate drawing; React receives only state and
-low-rate summaries. Defer workers until measured main-thread evidence justifies them.
+**Structure Decision**: Bootstrap the protected Product Design `mobile-app` template into
+`app/`, preserve its runtime lock, and keep the hot sensing lifecycle separate from the
+app-owned `Prototype` and renderers. Pure DSP helpers accept typed arrays plus explicit
+sample rate and analysis settings. Canvas owns high-rate drawing; React receives only
+state and low-rate summaries. Defer workers until measured evidence justifies them.
 
 ## Complexity Tracking
 
@@ -110,7 +110,7 @@ No constitution violations require justification.
 
 ## Delivery Sequence
 
-1. Scaffold only the selected application, quality tooling, and tests.
+1. Bootstrap and verify only the selected Product Design mobile runtime, quality tooling, and tests.
 2. Write failing state-machine and DSP tests before production behavior.
 3. Implement capability detection, permission mapping, session teardown, and pure feature helpers.
 4. Complete the selected Product Design direction, then implement the sensing surface and Canvas views.

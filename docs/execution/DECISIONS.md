@@ -37,7 +37,7 @@ or validation belong here. Proposals remain proposals in their owning document u
 ## ADR-0004: Use one Next.js TypeScript application and npm
 
 - **Date:** 2026-09-13
-- **Status:** Accepted for the integrated MVP
+- **Status:** Superseded for the first spike by ADR-0008
 - **Context:** No package manager/framework existed. The product needs client-only sensors now and may need a server-only provider proxy later.
 - **Decision:** Use Next.js App Router 16.2.9, React, TypeScript, and npm; isolate browser APIs behind Client Components and secrets behind server-only routes.
 - **Rationale:** One deployment unit serves the sensing client and optional secure integration without a separate backend.
@@ -73,7 +73,16 @@ or validation belong here. Proposals remain proposals in their owning document u
 - **Rationale:** Keeps the core offline-safe and prevents integrations from defining or fabricating results.
 - **Consequences:** `.env.example` contains no service variables until the owning feature is implemented and verified.
 
+## ADR-0008: Use the selected Product Design mobile runtime for the sensor spike
+
+- **Date:** 2026-09-13
+- **Status:** Accepted for the spike
+- **Context:** The user selected Product Design Option 3, a mobile Scientific Strip Chart. The Product Design image-to-code contract requires its protected mobile React/Vite runtime for a fresh mobile visual target, while ADR-0004 named Next.js before a target existed.
+- **Decision:** Implement `001-real-sensor-spike` as a self-contained application under `app/` using the protected Product Design mobile React/Vite runtime, npm, and TypeScript. Keep app-specific UI in `app/src/Prototype.tsx` and `app/src/prototype.css`; keep sensor and pure DSP modules in new `app/src/features/` and `app/src/lib/` paths. Preserve the runtime files and nested `app/AGENTS.md` exactly.
+- **Rationale:** This honors the user-selected visual source and plugin runtime contract while retaining a clean browser sensor architecture. The spike requires no server route, so Next.js adds no immediate proof value.
+- **Alternatives:** Overwriting the protected runtime would violate its verification lock; building a separate Next.js UI would duplicate the selected implementation and make design QA inapplicable.
+- **Consequences:** The spike uses Vite rather than Next.js and commands run from `app/`. The included worker is hosting infrastructure only and receives no sensor data. The integrated MVP framework will be reconsidered after the spike based on deployment/provider needs rather than assumed now.
+
 ## Open decisions
 
-- **TODO:** Choose the user-selected Product Design direction and record its tokens/interaction implications.
 - **UNKNOWN / NEEDS VERIFICATION:** Deployment provider, target device/browser matrix, calibrated quality thresholds, baseline sample adequacy, and final benchmark subset.

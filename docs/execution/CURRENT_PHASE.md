@@ -2,53 +2,58 @@
 
 ## Current active phase
 
-**Phase 1 → Phase 2 gate — Foundation convergence and real microphone spike readiness**
+**Phase 1 — Real microphone spike awaiting physical HTTPS evidence**
 
 ## Objective
 
-Validate and commit the research/product foundation, complete the Spec Kit artifact chain
-for `001-real-sensor-spike`, select one instrument design direction, and begin only the
-test-first real microphone vertical slice.
+Prove the smallest trustworthy microphone-first sensing loop: explicit permission,
+real live capture, waveform and spectrum evidence, dominant-bin/RMS/peak observations,
+observed capture settings, honest quality states, and complete resource teardown.
 
-## Completed evidence
+## Completed implementation evidence
 
-- Repository bootstrap committed and remotely verified on `bootstrap/repository-foundation`.
-- Spec Kit 1.0.6 with Codex integration installed and integration status passed.
-- RESONANT constitution 1.0.0 and first spike specification/checklist committed.
-- Feature plan, research, data model, sensor-session contract, and quickstart drafted.
-- PRD, architecture, DSP, baseline, condition, benchmark, UX, competition, security,
-  test strategy, roadmap, and major decisions drafted.
+- The selected Scientific Strip Chart Product Design direction is implemented in the
+  protected mobile React/Vite runtime under `app/`.
+- Production capture uses `getUserMedia` and Web Audio only after an explicit action.
+- Raw frames remain ephemeral and local; no persistence, upload, cached telemetry, or
+  generated fallback exists in the production sensing path.
+- Lifecycle, permission, interruption, insufficient, degraded, stale, unsupported, and
+  processing-failure behavior fail closed and clear interpreted evidence.
+- Stop, unmount, late permission resolution, stream end, and `pagehide` release owned
+  microphone and audio-processing resources.
+- Spec Kit convergence added and closed T039–T042 for degraded quality, explicit
+  dominant-bin eligibility, lifecycle summaries, and RMS/peak display.
+- Product Design comparison evidence is recorded in `docs/design/` and `design-qa.md`.
+- The final immutable working-tree security review is sealed at
+  `docs/security/review-2026-09-13-final/report.md` with complete source-diff coverage
+  and zero reportable findings.
 
-## Active tasks
+## Local validation evidence
 
-- Validate Phase 1 documents for boundaries, sources, contradictions, placeholders, and Markdown.
-- Generate exactly three Product Design concepts for the mobile live sensing instrument.
-- Obtain the user's concept selection and record the chosen visual target.
-- Run `speckit-tasks` and `speckit-analyze`; resolve critical findings before code.
-- Scaffold only the approved spike stack and implement via red-green-refactor.
-- Deploy over HTTPS and execute the physical-device evidence protocol.
+| Check | Result | Evidence |
+|---|---|---|
+| Protected mobile runtime | PASS | 28 protected files verified |
+| Biome format/lint | PASS | 26 files checked, no fixes required |
+| TypeScript typecheck | PASS | `tsc --noEmit` exited successfully |
+| Unit/component tests | PASS | 44 tests across 8 files |
+| Browser E2E | PASS | 6 lifecycle, fail-closed, cleanup, and responsive checks |
+| Production build | PASS | Vite client plus static hosting worker output generated |
+| Hosting worker tests | PASS | 4 route/fallback/packaging checks |
+| Production dependency audit | PASS | npm reported 0 vulnerabilities |
+| Real microphone on a physical phone | UNKNOWN / NEEDS VERIFICATION | No authorized physical-device run is available in this environment |
+| Physical update rate, long tasks, stop responsiveness | UNKNOWN / NEEDS VERIFICATION | Requires the declared demo phone and live capture |
+| External HTTPS deployment and headers | UNKNOWN / NEEDS VERIFICATION | No deployment target/provider authorization has been supplied |
 
-## Spike acceptance criteria
+## Remaining Phase 1 gates
 
-- Explicit permission flow reaches active or a specific failure state.
-- Live waveform responds to real physical sound.
-- Live spectrum and strongest observed bin change with physically different sounds.
-- Actual sampling/analysis context is displayed and recorded.
-- Stop/navigation/interruption releases the microphone and invalidates stale output.
-- No production/demo fake telemetry, raw-audio persistence/upload, or condition claim exists.
-- Format, lint, typecheck, automated tests, browser checks, and production build pass.
-- Physical HTTPS evidence is recorded as pass, fail, or `UNKNOWN / NEEDS VERIFICATION`.
-
-## Current gates and blockers
-
-- **Design gate:** One of the three generated concepts must be selected before UI scaffolding/build.
-- **Physical evidence:** Target phone/browser, machine or physical sound source, and mounting/test
-  context are `UNKNOWN / NEEDS VERIFICATION` until supplied and exercised.
-- **Deployment:** Host and account access are `UNKNOWN / NEEDS VERIFICATION`; local code/tests can
-  proceed, but HTTPS phone acceptance cannot complete without a reachable deployment.
-- **Competition:** Official eligibility wording conflicts and requires organizer verification.
+- T034: measure live performance and cleanup on the declared demo phone.
+- T036: deploy the exact tested commit over HTTPS and verify reachability and headers.
+- T037: execute every physical trial in the feature quickstart and record observed values.
+- T038: complete the final diff/security/secret/junk audit, commit, push, and verify the
+  exact local/remote SHA.
 
 ## Explicitly deferred
 
 Baseline/scoring, persistence/history, IMU, benchmark execution, Featherless, Sentry,
-decorative landing work, authentication, and P1/P2 features remain outside the first spike.
+authentication, machine inventory, remote explanation, and broader product features
+remain outside this feasibility spike.

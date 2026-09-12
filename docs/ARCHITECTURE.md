@@ -2,9 +2,17 @@
 
 ## Decision summary
 
-Use a microphone-first, local-processing web architecture. Build the product shell with Next.js App Router and TypeScript, isolate browser sensors in Client Components, run high-rate DSP outside React render state, persist baseline summaries and scan features in IndexedDB, and keep optional provider calls behind server-only route handlers. IMU is a progressive enhancement. Benchmark evaluation is a separate Python/offline pipeline and must never inject synthetic results into the product path.
+Use a microphone-first, local-processing web architecture. The first real-sensor slice
+uses the user-selected Product Design Scientific Strip Chart inside its protected mobile
+React/Vite runtime under `app/`. Browser sensors and high-rate Canvas/DSP work stay
+outside broad React render state. IMU remains progressive enhancement; optional provider
+calls remain deferred behind a future server-only boundary. Benchmark evaluation stays
+an isolated Python/offline pipeline and never injects synthetic results into the product path.
 
-This architecture is selected because Next.js supports the client/server split needed for browser sensing plus a secret-bearing optional explanation route, while deployment over HTTPS satisfies microphone and motion secure-context requirements. Next.js 16.2.9 is the current documented Context7 version selected for implementation; its official requirements include Node.js 20.9 or newer and TypeScript 5.1 or newer.^1
+The runtime choice changed after visual selection because Product Design's mobile
+image-to-code workflow requires its locked Vite runtime for fidelity and QA. The spike
+has no server requirement, so this reduces immediate complexity. A server-capable
+integrated MVP shell will be re-evaluated only when a verified provider/backend need exists.
 
 ## System context
 
@@ -44,14 +52,13 @@ flowchart LR
 
 ### Web application
 
-- `app/`: routes, server-rendered shell, methodology pages, and server-only API routes.
-- `features/sensor/`: capability detection, microphone session lifecycle, permission/error mapping, and real frame access.
-- `features/instrument/`: live waveform/spectrum rendering and measurement state machine.
-- `lib/dsp/`: deterministic pure feature calculations and types; no React dependency.
-- `workers/`: CPU-bound frame aggregation and feature extraction once the spike proves worker need.
-- `lib/storage/`: versioned IndexedDB repository interfaces and migrations.
-- `features/machines/`, `features/baselines/`, `features/scans/`, `features/history/`: product workflows over stable domain interfaces.
-- `app/api/explain/`: optional Featherless proxy; accepts structured evidence only.
+- `app/src/Prototype.tsx` and `app/src/prototype.css`: app-owned instrument composition and visual system.
+- `app/src/mobile/`, `app/src/App.tsx`, and associated assets/scripts: protected Product Design preview/runtime contract.
+- `app/src/features/sensor/`: capability detection, microphone lifecycle, permission/error mapping, live frame access, and instrument components.
+- `app/src/lib/dsp/`: deterministic pure feature calculations and types; no React dependency.
+- Future `app/src/workers/`: CPU-bound aggregation only if the spike proves worker need.
+- Future storage and machine/baseline/scan/history modules follow stable domain interfaces after the spike.
+- A future explanation boundary must be server-only and accept structured evidence only; it is not part of the Vite sensor client.
 
 ### Benchmark pipeline
 
@@ -112,7 +119,7 @@ Invalid outcomes are `insufficient-evidence`, `inconsistent`, `abandoned`, and `
 
 | Concern | Selection | Rationale |
 |---|---|---|
-| App/runtime | Next.js App Router 16.2.9 + React + TypeScript | Client-only sensor surfaces plus server-only optional integration in one deployable unit |
+| Spike app/runtime | Product Design mobile React/Vite runtime + TypeScript | Required selected-design shell; client-only sensing proof with protected runtime QA |
 | Package manager | npm | No existing manager; universally available with Node and produces a lockfile |
 | Styling | CSS variables/modules initially | Precise instrument styling with minimal dependency surface |
 | Live graphics | Canvas 2D | Efficient waveform/spectrum rendering without a chart dependency in the hot path |
@@ -120,7 +127,7 @@ Invalid outcomes are `insufficient-evidence`, `inconsistent`, `abandoned`, and `
 | Motion | Device Motion and Generic Sensor adapters | Progressive enhancement behind runtime probes; never required for microphone P0^3 |
 | Persistence | IndexedDB | Structured, asynchronous local storage with offline capability; best-effort persistence must be surfaced^4 |
 | Benchmark | Isolated Python scientific pipeline | Reproducible dataset evaluation without shipping heavy ML libraries to the phone |
-| Explanation | Next.js server Route Handler → Featherless | Prevents API-key exposure; optional, timeout-bounded, deterministic core remains local^5 |
+| Explanation | Future server-only boundary → Featherless | Prevents API-key exposure; optional, timeout-bounded, deterministic core remains local^5 |
 | Error monitoring | Sentry, deferred | Add only after scrub rules and runtime exist; not a sensing dependency |
 
 ## Deployment
@@ -132,9 +139,12 @@ Invalid outcomes are `insufficient-evidence`, `inconsistent`, `abandoned`, and `
 
 ## Architecture alternatives considered
 
-### React + Vite static app
+### Next.js integrated application
 
-Strong for a sensor-only spike and the Build Web Apps default, but an optional secret-bearing Featherless proxy would require a second deployment unit. Rejected for the integrated MVP because the additional deployment boundary outweighs the smaller frontend framework.
+Originally selected to combine client sensing with a later secret-bearing provider route.
+Superseded for the spike after the mobile Product Design selection because the protected
+Vite runtime is required for faithful implementation and the spike has no server behavior.
+Reconsider after the sensor proof rather than maintaining two UI shells.
 
 ### Native mobile application
 
@@ -175,7 +185,7 @@ None blocks creating the browser spike; they block claiming that the spike is re
 
 ## Sources
 
-1. Next.js. [Installation and system requirements](https://nextjs.org/docs/app/getting-started/installation). Updated 2026-03-16; accessed 2026-09-13. Context7 documentation for `/vercel/next.js/v16.2.9` was also checked for Client Components and Route Handlers.
+1. Product Design bundled `mobile-app` runtime and local prototype contract, inspected 2026-09-13. Context7 documentation for `/vercel/next.js/v16.2.9` was checked earlier for a possible future integrated server boundary; it does not select the spike runtime.
 2. MDN Web Docs. [`MediaDevices.getUserMedia()`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia) and [`AnalyserNode`](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode). Accessed 2026-09-13.
 3. W3C. [Device Orientation and Motion](https://www.w3.org/TR/orientation-event/) and [Generic Sensor API](https://www.w3.org/TR/generic-sensor/). Accessed 2026-09-13.
 4. MDN Web Docs. [IndexedDB API](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) and [Storage quotas and eviction criteria](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria). Accessed 2026-09-13.

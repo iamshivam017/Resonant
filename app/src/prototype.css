@@ -1,0 +1,363 @@
+:root {
+  --resonant-ink: #f4f6f7;
+  --resonant-muted: #9da8b5;
+  --resonant-dim: #53606e;
+  --resonant-rule: #657586;
+  --resonant-grid: rgba(133, 151, 171, 0.2);
+  --resonant-surface: #080d12;
+  --resonant-surface-raised: #0d141b;
+  --resonant-trace: #3188ff;
+  --resonant-signal: #fff126;
+  --resonant-danger: #ff6b4a;
+  --resonant-font-display: "Arial Narrow", "Roboto Condensed", "Roboto", sans-serif;
+  --resonant-font-body: "Roboto", "Segoe UI", sans-serif;
+  --resonant-space-1: 4px;
+  --resonant-space-2: 8px;
+  --resonant-space-3: 12px;
+  --resonant-space-4: 16px;
+  --resonant-space-5: 20px;
+  --resonant-space-6: 24px;
+  --resonant-space-8: 32px;
+}
+
+.app-screen {
+  background: var(--resonant-surface);
+  color: var(--resonant-ink);
+  font-family: var(--resonant-font-body);
+}
+
+.instrument {
+  min-height: 100%;
+  padding: 58px 16px calc(var(--mobile-safe-area-height) + 28px);
+  letter-spacing: 0.08em;
+}
+
+.instrument-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--resonant-space-3);
+  padding: 0 2px 16px;
+  border-bottom: 1px solid var(--resonant-rule);
+}
+
+.wordmark,
+.instrument h1,
+.instrument h2,
+.instrument p,
+.instrument dl,
+.instrument figure {
+  margin: 0;
+}
+
+.wordmark {
+  color: var(--resonant-ink);
+  font-family: var(--resonant-font-display);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.34em;
+}
+
+.instrument h1 {
+  margin-top: 12px;
+  color: #c5d0dc;
+  font-family: var(--resonant-font-display);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.capture-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  max-width: 138px;
+  color: var(--resonant-muted);
+  text-transform: uppercase;
+}
+
+.capture-status svg {
+  flex: 0 0 auto;
+  width: 13px;
+  height: 13px;
+  margin-top: -2px;
+  color: var(--resonant-dim);
+}
+
+.capture-status div {
+  display: grid;
+  gap: 3px;
+}
+
+.capture-status strong,
+.capture-status span {
+  font-size: 7px;
+  line-height: 1.25;
+  letter-spacing: 0.16em;
+}
+
+.privacy-note {
+  padding: 10px 2px 0;
+  color: var(--resonant-muted);
+  font-size: 7px;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.capture-error {
+  display: grid;
+  gap: 5px;
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-left: 3px solid var(--resonant-danger);
+  background: var(--resonant-surface-raised);
+  color: var(--resonant-muted);
+  font-size: 8px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+}
+
+.capture-error strong {
+  color: var(--resonant-ink);
+  font-size: 9px;
+}
+
+.plot-section {
+  margin-top: 24px;
+}
+
+.waveform-row {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 8px;
+}
+
+.quality-rail {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 7px;
+}
+
+.quality-rail > span {
+  position: relative;
+  width: 6px;
+  justify-self: center;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #33404d;
+}
+
+.quality-rail > span::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 0;
+  background: var(--resonant-signal);
+  content: "";
+}
+
+.quality-rail.is-valid > span::after {
+  height: 62%;
+}
+
+.quality-rail.is-degraded > span::after {
+  height: 38%;
+  background: var(--resonant-danger);
+}
+
+.quality-rail small {
+  color: var(--resonant-muted);
+  font-size: 5px;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.quality-caption,
+.quality-label {
+  display: block;
+}
+
+.quality-label {
+  margin-top: 3px;
+  color: var(--resonant-ink);
+  font-weight: 500;
+}
+
+.section-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.section-heading h2 {
+  font-family: var(--resonant-font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.section-heading span {
+  padding-left: 10px;
+  border-left: 1px solid var(--resonant-rule);
+  color: var(--resonant-muted);
+  font-size: 7px;
+  letter-spacing: 0.12em;
+}
+
+.plot,
+.plot-empty {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #354351;
+  background-color: #091017;
+}
+
+.plot canvas {
+  display: block;
+  width: 100%;
+  height: 142px;
+}
+
+.spectrum-preview .plot canvas {
+  height: 124px;
+}
+
+.plot figcaption {
+  padding: 5px 8px;
+  border-top: 1px solid #263441;
+  color: var(--resonant-muted);
+  font-size: 6px;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.plot-empty {
+  display: grid;
+  min-height: 142px;
+  place-items: center;
+  padding: 22px;
+  color: var(--resonant-dim);
+  font-size: 8px;
+  line-height: 1.6;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.spectrum-preview .plot-empty {
+  min-height: 124px;
+}
+
+.measurement-band {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  margin-top: 24px;
+  padding: 18px 2px;
+  border-top: 1px solid var(--resonant-rule);
+  border-bottom: 1px solid var(--resonant-rule);
+}
+
+.primary-measurement {
+  display: grid;
+  align-content: space-between;
+  padding-right: 14px;
+  border-right: 1px solid var(--resonant-rule);
+  text-transform: uppercase;
+}
+
+.primary-measurement span,
+.measurement-band dt {
+  color: var(--resonant-muted);
+  font-size: 7px;
+  letter-spacing: 0.12em;
+}
+
+.primary-measurement strong {
+  margin-top: 14px;
+  font-family: var(--resonant-font-display);
+  font-size: 40px;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+
+.measurement-band dl {
+  display: grid;
+  gap: 11px;
+  padding-left: 14px;
+}
+
+.measurement-band dl div {
+  display: grid;
+  gap: 3px;
+}
+
+.measurement-band dd {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.03em;
+}
+
+.capture-control {
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 22px;
+  border: 1px solid var(--resonant-signal);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--resonant-signal);
+  font: 800 13px / 1 var(--resonant-font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.capture-control.is-stop {
+  background: var(--resonant-signal);
+  color: #080d12;
+}
+
+.capture-control:focus-visible {
+  outline: 3px solid var(--resonant-trace);
+  outline-offset: 3px;
+}
+
+.capture-control:disabled {
+  cursor: progress;
+  opacity: 0.65;
+}
+
+.capture-status.is-active > div > strong,
+.capture-status.is-active > svg {
+  color: var(--resonant-signal);
+}
+
+@media (min-width: 700px) {
+  .instrument {
+    max-width: 620px;
+    margin: 0 auto;
+    padding-right: 28px;
+    padding-left: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-screen *,
+  .app-screen *::before,
+  .app-screen *::after {
+    scroll-behavior: auto;
+    transition-duration: 0.01ms;
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+  }
+}

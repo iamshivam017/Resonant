@@ -68,23 +68,25 @@ cleanup testable and prevents frozen values from masquerading as current measure
 **Alternatives considered**: Independent booleans allow contradictory states such as
 `isActive` plus `permissionDenied` and make teardown races harder to prove.
 
-## Decision 6: Use a single Next.js application with minimal dependencies
+## Decision 6: Use the selected Product Design mobile runtime with minimal additions
 
-**Decision**: Use Next.js App Router 16.2.9 with React and TypeScript, npm, CSS variables,
-Canvas 2D, Vitest/Testing Library, and Playwright. Sensor code lives in a Client
-Component boundary. No backend route is part of this feature.
+**Decision**: Use the protected Product Design mobile React/Vite runtime under `app/`
+with npm and TypeScript, app-owned CSS variables, Canvas 2D, Vitest/Testing Library,
+and Playwright. No backend route is part of this feature.
 
-**Rationale**: The broader product needs browser sensor surfaces and may later need a
-server-only provider route; one deployment unit avoids a separate API service. Official
-Next.js guidance requires Node.js 20.9+ and places browser-interactive code behind a
-client boundary. Context7 documentation for `/vercel/next.js/v16.2.9` was checked for
-Client Components, browser API access, Route Handlers, and server-only environment use.
+**Rationale**: The user selected the Scientific Strip Chart mobile concept. Product
+Design's image-to-code contract requires its locked mobile runtime for fresh mobile
+targets. The spike is entirely client-side, so React/Vite can prove real sensing without
+a server framework while retaining the tested device-frame preview and design-QA path.
 
-**Alternatives considered**: React with Vite is smaller for this spike but creates a
-second deployment boundary when the optional server-only explanation integration is
-added. FastAPI is appropriate for later offline benchmark tooling, not live capture.
+**Alternatives considered**: Next.js was selected before the visual target existed, but
+would duplicate or replace the protected mobile runtime for no spike requirement. A
+future integrated MVP may still choose a server-capable shell after sensing evidence.
+FastAPI remains appropriate only for isolated offline benchmark tooling.
 
-**Source**: Next.js, [Installation](https://nextjs.org/docs/app/getting-started/installation), accessed 2026-09-13.
+**Source**: Product Design bundled `mobile-app` runtime and its local prototype contract,
+version inspected 2026-09-13. The earlier Context7 Next.js research remains relevant to
+future server-only integration evaluation but no longer selects the spike runtime.
 
 ## Decision 7: Separate automated confidence from physical proof
 
@@ -102,7 +104,7 @@ adds unnecessary risk.
 
 ## Resolved planning unknowns
 
-- **Runtime and project shape**: single Next.js web application.
+- **Runtime and project shape**: one protected Product Design React/Vite mobile web application under `app/`.
 - **Package manager**: npm; no existing package manager or lockfile is being replaced.
 - **Live graphics**: Canvas 2D, driven outside high-frequency React state.
 - **First analysis path**: Web Audio analyser; worklet/worker only after evidence.

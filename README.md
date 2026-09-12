@@ -9,9 +9,11 @@ deviation, evidence, and uncertainty—not percentage machine health or universa
 
 ## Current status
 
-The repository is in the Phase 1 → Phase 2 gate. Product/research/architecture artifacts
-and the first Spec Kit feature are defined. Application code has not yet been scaffolded.
-The first implementation milestone is deliberately narrow:
+The repository is in the Phase 1 physical-evidence gate. The first Spec Kit feature and
+its browser implementation are present on `bootstrap/repository-foundation`. Local
+automated checks and the production build pass; physical-device and deployed HTTPS
+acceptance remain `UNKNOWN / NEEDS VERIFICATION`. The implemented slice is deliberately
+narrow:
 
 ```text
 real phone microphone
@@ -31,7 +33,8 @@ been measured and recorded.
 |---|---|
 | `AGENTS.md` | Permanent engineering and evidence rules |
 | `.specify/memory/constitution.md` | Versioned Spec Kit governance |
-| `specs/001-real-sensor-spike/` | Requirements, plan, contracts, and validation guide for the first slice |
+| `specs/001-real-sensor-spike/` | Requirements, plan, contracts, tasks, and validation guide for the first slice |
+| `app/` | Selected Product Design mobile React/Vite runtime and real microphone spike |
 | `docs/PRD.md` | Product scope, users, priorities, and safety boundaries |
 | `docs/ARCHITECTURE.md` | Components, trust boundaries, data model, deployment, and risks |
 | `docs/DSP_PIPELINE.md` | Capture, signal processing, features, quality, and parity |
@@ -56,10 +59,9 @@ The active local feature pointer is machine-local and intentionally ignored by G
 
 ## Development prerequisites
 
-The selected implementation plan requires Node.js 20.9+ and npm. No application
-dependencies exist yet, so install/run/test commands become available only after the
-first scaffold task is implemented. The authoritative validation guide is
-`specs/001-real-sensor-spike/quickstart.md`.
+The selected Product Design mobile runtime requires Node.js 24 or newer and npm 10.
+Application commands run from `app/`; use `npm install`, `npm run dev`, and the validation
+commands in `specs/001-real-sensor-spike/quickstart.md`.
 
 Phone sensor verification requires an HTTPS deployment. `localhost` is useful for
 desktop development but is not evidence that the deployed smartphone path works.
@@ -94,6 +96,6 @@ validation or external action passed without direct evidence.
 
 - Target device/browser microphone compatibility is `UNKNOWN / NEEDS VERIFICATION`.
 - No physical sensor acceptance run, calibrated baseline, condition score, benchmark
-  result, deployment, Featherless integration, or Sentry runtime exists yet.
+  result, verified HTTPS deployment, Featherless integration, or Sentry runtime exists yet.
 - Browser IMU support is fragmented and remains a progressive enhancement.
 - VoltHacks eligibility wording conflicts across official pages and requires organizer confirmation.

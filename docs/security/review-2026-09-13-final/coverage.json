@@ -1,0 +1,73 @@
+{
+  "completeness": "complete",
+  "deferred": [],
+  "documentType": "codex-security.coverage",
+  "excludePaths": [],
+  "explicitExclusions": [],
+  "includePaths": [
+    "."
+  ],
+  "inventoryStrategy": "diff",
+  "mode": "working_tree",
+  "openQuestions": [],
+  "scanId": "scan_resonant_diff_20260913_final",
+  "schemaVersion": "1.0",
+  "surfaces": [
+    {
+      "disposition": "no_issue_found",
+      "id": "surface_permission_lifecycle",
+      "label": "Microphone permission and lifecycle",
+      "notes": "Permission remains gesture-gated; late permission results are stopped; active resources are released on stop, failure, interruption, unmount, and pagehide.",
+      "receiptRefs": [],
+      "riskArea": "Unexpected capture and resource leakage"
+    },
+    {
+      "disposition": "no_issue_found",
+      "id": "surface_signal_data",
+      "label": "Raw signal data handling",
+      "notes": "Frames remain in memory and production sensor source contains no storage or network sink.",
+      "receiptRefs": [],
+      "riskArea": "Persistence or transmission of raw microphone frames"
+    },
+    {
+      "disposition": "no_issue_found",
+      "id": "surface_evidence_integrity",
+      "label": "Signal evidence integrity",
+      "notes": "Session identity plus valid/degraded/insufficient/stale frame quality gates interpreted evidence; errors, interruption, and stop clear observations.",
+      "receiptRefs": [],
+      "riskArea": "Stale, degraded, or fabricated live evidence"
+    },
+    {
+      "disposition": "no_issue_found",
+      "id": "surface_error_handling",
+      "label": "Browser error handling",
+      "notes": "Browser exception names map to stable public codes and recovery copy without rendering browser-supplied messages.",
+      "receiptRefs": [],
+      "riskArea": "Sensitive detail disclosure and fail-open UI"
+    },
+    {
+      "disposition": "no_issue_found",
+      "id": "surface_runtime_hosting",
+      "label": "Protected runtime and static hosting worker",
+      "notes": "The 28-file runtime lock passes; the worker limits app-shell fallback to HTML GET/HEAD routes and leaves missing API/write requests as failures.",
+      "receiptRefs": [],
+      "riskArea": "Runtime tampering and unsafe route fallback"
+    },
+    {
+      "disposition": "no_issue_found",
+      "id": "surface_test_boundary",
+      "label": "Test fixture and secret boundary",
+      "notes": "Biome and production-boundary tests prevent fixture imports; source and working-tree inspection found no credential values.",
+      "receiptRefs": [],
+      "riskArea": "Production test data or credential inclusion"
+    },
+    {
+      "disposition": "no_issue_found",
+      "id": "surface_dependencies",
+      "label": "Production dependencies and build configuration",
+      "notes": "The lockfile is pinned, the production dependency audit reported zero vulnerabilities, and the build contains no secret-bearing environment configuration.",
+      "receiptRefs": [],
+      "riskArea": "Known vulnerable packages or unsafe build behavior"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "documentType": "codex-security.scan-manifest",
+  "scan": {
+    "artifacts": [
+      {
+        "mediaType": "application/json",
+        "path": "findings.json",
+        "sha256": "6f1277ac3268e9bd1a9fdc406234cc7acb40a0863c7271bc99e7d5c6c2cddc02"
+      },
+      {
+        "mediaType": "application/json",
+        "path": "coverage.json",
+        "sha256": "c90bf4e8a1c5b715a61c3382fc4f2aa17b462cbfd77613cdda755f41913e20b4"
+      }
+    ],
+    "completedAt": "2026-09-12T22:00:55.682460Z",
+    "coverageRef": "coverage.json",
+    "findingsRef": "findings.json",
+    "id": "scan_resonant_diff_20260913_final",
+    "producer": {
+      "name": "codex-security-plugin",
+      "version": "0.1.24"
+    },
+    "scope": {
+      "excludePaths": [],
+      "includePaths": [
+        "."
+      ],
+      "limitations": [
+        "No deployed HTTPS origin or physical phone was available; deployment headers and physical browser suspension behavior remain outside this source-diff conclusion."
+      ],
+      "summary": "Final working-tree review of the Phase 1 browser microphone spike against the last remote-verified commit. Reviewed all 42 changed production/configuration files plus tests and documentation supporting permission initiation, lifecycle cleanup, degraded and stale-output invalidation, test-fixture isolation, static hosting behavior, configuration, and dependency boundaries.",
+      "validationMode": "Parent-only source review plus unit, component, E2E, runtime-integrity, type, lint, production-boundary, build, hosting-worker, and production dependency-audit evidence."
+    },
+    "sealedAt": "2026-09-12T22:00:55.682460Z",
+    "startedAt": "2026-09-12T21:50:00Z",
+    "status": "completed",
+    "target": {
+      "baseRevision": "d17fa25b4aee3c38488e5cb052d3a0f947858331",
+      "displayName": "iamshivam017/Resonant",
+      "headRevision": "d17fa25b4aee3c38488e5cb052d3a0f947858331",
+      "kind": "git_diff",
+      "remote": "https://github.com/iamshivam017/Resonant",
+      "snapshotDigest": "codex-security-snapshot/v1:sha256:e82529dc28646e8b28ca32b7f67f6d40002560048d5b1fe186844c6aaacdadc5",
+      "targetId": "target_sha256_8741a481fa7c000f3d8f672540b2b6bbae52771bef6c824aa7e351f9eab9f68c"
+    },
+    "threatModel": {
+      "summary": "The browser receives raw microphone frames only after an explicit user action, processes them in memory, and must stop every owned resource on stop, interruption, failure, or teardown. Security-critical assets are microphone permission, raw audio frames, observed signal evidence, and capture lifecycle integrity. The principal risks are hidden capture, late permission races, stale evidence, raw-frame persistence or transmission, unsafe browser error disclosure, production test-fixture inclusion, and insecure hosting. Trust boundaries are the operator to browser permission UI, MediaDevices to the in-memory Web Audio graph, and the static application to its future deployment host. A local source review cannot validate a provider's HTTPS headers or physical-browser suspension behavior."
+    }
+  },
+  "schemaVersion": "1.0"
+}

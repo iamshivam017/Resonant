@@ -125,13 +125,37 @@ repeatability experiments justify them.
 
 ## Design gate for the first spike
 
-Product Design will generate exactly three independent mobile live-instrument concepts.
-One user-selected concept becomes the visual target. Application scaffolding and UI code
-must wait for that selection; behavioral planning and tests may proceed.
+Product Design generated three independent mobile live-instrument concepts. The user
+selected **Option 3 — Scientific Strip Chart** on 2026-09-13. The immutable visual
+reference is `docs/design/scientific-strip-chart-reference.png`.
+
+The selected direction uses an edge-to-edge graphite instrument surface, near-white
+high-tracking headings, restrained electric-blue live traces, and one signal-yellow
+capture/action color. Waveform and spectrum dominate the vertical rhythm; the strongest
+observed bin is the primary numeric readout; sample rate and bin resolution form a compact
+secondary column. Fine rules and a subtle grid replace cards, shadows, and decorative chrome.
+
+Implementation may adapt only where product truth requires it: initial/denied/stopped
+states use real lifecycle copy, no waveform is drawn before live input exists, and the
+concept-preview disclaimer is removed from the running product. The mobile Product Design
+runtime owns its device frame/status chrome; app-owned content must match the reference.
+
+## Design QA evidence
+
+The active, idle, and permission-denied surfaces were captured at an unscaled 393 × 852
+CSS viewport and compared with the selected source. The final combined comparison is
+`docs/design/qa-comparison.png`; the detailed audit is `design-qa.md` and records
+`final result: passed`. The active screenshot uses a deterministic test-only browser
+adapter strictly for layout QA and is not presented as physical sensor evidence.
+
+The implementation intentionally derives displayed sampling context from the active
+browser graph, suppresses spectrum/strongest-bin output for insufficient frames, and
+omits the source image's concept-preview disclaimer. The plot hierarchy, quality rail,
+yellow capture state, blue trace, measurement band, and error treatment match the
+selected direction without adding calibrated quality thresholds.
 
 ## TODO
 
-- Record the selected concept and translate it into explicit tokens and component states.
 - Test the first implementation at 390 × 844, landscape phone, and desktop widths.
 - Run accessibility and physical-use checks while the microphone is active.
 

@@ -12,11 +12,11 @@
 
 **Purpose**: Select the visual target and establish only the tooling needed for this spike.
 
-- [ ] T001 Record the user-selected Product Design concept, tokens, plot hierarchy, and interaction implications in docs/UX_SPEC.md and docs/execution/DECISIONS.md
-- [ ] T002 Scaffold Next.js 16.2.9 with TypeScript and npm in package.json, package-lock.json, next.config.ts, tsconfig.json, src/app/layout.tsx, src/app/page.tsx, and src/app/globals.css without adding application features
-- [ ] T003 [P] Configure formatting, lint, typecheck, unit/component test, E2E, and production-build scripts in package.json, eslint.config.mjs, and playwright.config.ts
-- [ ] T004 [P] Configure Vitest browser-like test environment and shared cleanup in vitest.config.ts and tests/setup.ts
-- [ ] T005 [P] Add deployment-neutral secure header and microphone Permissions Policy defaults in next.config.ts with deployment verification notes in docs/SECURITY_PRIVACY.md
+- [x] T001 Record the user-selected Product Design concept, tokens, plot hierarchy, and interaction implications in docs/UX_SPEC.md and docs/execution/DECISIONS.md
+- [x] T002 Bootstrap the protected Product Design mobile-app React/Vite runtime with npm in app/AGENTS.md, app/package.json, app/package-lock.json, app/src/App.tsx, app/src/mobile/, app/src/Prototype.tsx, and app/src/prototype.css without adding sensor behavior
+- [x] T003 [P] Configure Biome formatting/lint, typecheck, unit/component test, E2E, and production-build scripts in app/package.json, app/biome.json, app/vitest.config.ts, and app/playwright.config.ts
+- [x] T004 [P] Configure Vitest browser-like test environment and shared cleanup in app/vitest.config.ts and app/tests/setup.ts
+- [x] T005 [P] Verify root .gitignore and app tool ignores cover dependencies, build/test output, environments, recordings, and datasets; document deployment header verification in docs/SECURITY_PRIVACY.md
 
 **Checkpoint**: Clean install, empty app shell, and every quality command exists; no sensor implementation or fake telemetry exists.
 
@@ -26,10 +26,10 @@
 
 **Purpose**: Create shared contracts and visual foundations used by every story.
 
-- [ ] T006 [P] Define CaptureCapability, CaptureSession, SignalFrame, FeatureObservation, CaptureError, state unions, and validation invariants from data-model.md in src/features/sensor/types.ts
-- [ ] T007 [P] Define accessible instrument tokens and reduced-motion behavior from the selected concept in src/app/globals.css
-- [ ] T008 [P] Add test-only browser sensor adapters and explicitly label them non-production in tests/fixtures/media.ts
-- [ ] T009 Add a production import-boundary test proving tests/fixtures/media.ts cannot be imported by src/ in tests/unit/production-boundary.test.ts
+- [x] T006 [P] Define CaptureCapability, CaptureSession, SignalFrame, FeatureObservation, CaptureError, state unions, and validation invariants from data-model.md in app/src/features/sensor/types.ts
+- [x] T007 [P] Define accessible instrument tokens and reduced-motion behavior from the selected concept in app/src/prototype.css
+- [x] T008 [P] Add test-only browser sensor adapters and explicitly label them non-production in app/tests/fixtures/media.ts
+- [x] T009 Configure and red-check Biome's production import boundary so app/src/ cannot import app/tests/ fixtures in app/biome.json
 
 **Checkpoint**: Types compile, design tokens match the selected target, and test fixtures are unreachable from production code.
 
@@ -43,17 +43,17 @@
 
 ### Tests for User Story 1
 
-- [ ] T010 [P] [US1] Write failing capability tests proving check-only behavior observes secureContext/mediaDevices without requesting permission in tests/unit/capability.test.ts
-- [ ] T011 [P] [US1] Write failing session tests for ready → requesting-permission → initializing → active → stopping → stopped, single-session start, observed track settings, and idempotent cleanup in tests/unit/capture-session.test.ts
-- [ ] T012 [P] [US1] Write failing component tests for explicit start, permission progress, active indicator, stop action, observed settings, and cleared/stale values after stop in tests/component/sensor-instrument.test.tsx
+- [x] T010 [P] [US1] Write failing capability tests proving check-only behavior observes secureContext/mediaDevices without requesting permission in app/tests/unit/capability.test.ts
+- [x] T011 [P] [US1] Write failing session tests for ready → requesting-permission → initializing → active → stopping → stopped, single-session start, observed track settings, and idempotent cleanup in app/tests/unit/capture-session.test.ts
+- [x] T012 [P] [US1] Write failing component tests for explicit start, permission progress, active indicator, stop action, observed settings, and cleared/stale values after stop in app/tests/component/sensor-instrument.test.tsx
 
 ### Implementation for User Story 1
 
-- [ ] T013 [US1] Implement capability observation without permission side effects in src/features/sensor/capability.ts to satisfy T010
-- [ ] T014 [US1] Implement the session lifecycle, effective settings capture, frame freshness, and complete resource teardown in src/features/sensor/capture-session.ts to satisfy T011
-- [ ] T015 [US1] Implement the selected mobile-first instrument surface with explicit lifecycle controls and accessible state summaries in src/features/sensor/components/sensor-instrument.tsx to satisfy T012
-- [ ] T016 [US1] Implement the live time-domain Canvas renderer outside high-frequency React state in src/features/sensor/components/waveform-canvas.tsx
-- [ ] T017 [US1] Integrate the sensing surface as the focused root experience in src/app/page.tsx and verify no permission request occurs on initial render
+- [x] T013 [US1] Implement capability observation without permission side effects in app/src/features/sensor/capability.ts to satisfy T010
+- [x] T014 [US1] Implement the session lifecycle, effective settings capture, frame freshness, and complete resource teardown in app/src/features/sensor/capture-session.ts to satisfy T011
+- [x] T015 [US1] Implement the selected mobile-first instrument surface with explicit lifecycle controls and accessible state summaries in app/src/features/sensor/components/sensor-instrument.tsx to satisfy T012
+- [x] T016 [US1] Implement the live time-domain Canvas renderer outside high-frequency React state in app/src/features/sensor/components/waveform-canvas.tsx
+- [x] T017 [US1] Integrate the sensing surface inside the protected runtime via app/src/Prototype.tsx and verify no permission request occurs on initial render
 
 **Checkpoint**: User Story 1 works independently with real input and cleanup; it does not yet claim frequency evidence.
 
@@ -67,16 +67,16 @@
 
 ### Tests for User Story 2
 
-- [ ] T018 [P] [US2] Write failing mathematical tests for RMS, peak, bin resolution, eligible-bin selection, empty/non-finite input, and dominant-bin frequency in tests/unit/dominant-bin.test.ts
-- [ ] T019 [P] [US2] Write failing quality tests proving stale or insufficient frames suppress interpreted frequency output in tests/unit/frame-quality.test.ts
-- [ ] T020 [P] [US2] Extend failing component tests for spectrum, units, sample rate, transform size, resolution, uncalibrated amplitude copy, and insufficient-state suppression in tests/component/sensor-instrument.test.tsx
+- [x] T018 [P] [US2] Write failing mathematical tests for RMS, peak, bin resolution, eligible-bin selection, empty/non-finite input, and dominant-bin frequency in app/tests/unit/dominant-bin.test.ts
+- [x] T019 [P] [US2] Write failing quality tests proving stale or insufficient frames suppress interpreted frequency output in app/tests/unit/frame-quality.test.ts
+- [x] T020 [P] [US2] Extend failing component tests for spectrum, units, sample rate, transform size, resolution, uncalibrated amplitude copy, and insufficient-state suppression in app/tests/component/sensor-instrument.test.tsx
 
 ### Implementation for User Story 2
 
-- [ ] T021 [US2] Implement pure finite RMS, peak, bin-resolution, and strongest-eligible-bin functions with explicit configuration in src/lib/dsp/dominant-bin.ts to satisfy T018
-- [ ] T022 [US2] Implement valid/insufficient/stale frame classification without invented calibrated thresholds in src/lib/dsp/frame-quality.ts to satisfy T019
-- [ ] T023 [US2] Implement the live frequency-domain Canvas renderer and accessible spectrum summary in src/features/sensor/components/spectrum-canvas.tsx
-- [ ] T024 [US2] Integrate low-rate feature summaries and measured-context labels into src/features/sensor/components/sensor-instrument.tsx to satisfy T020
+- [x] T021 [US2] Implement pure finite RMS, peak, bin-resolution, and strongest-eligible-bin functions with explicit configuration in app/src/lib/dsp/dominant-bin.ts to satisfy T018
+- [x] T022 [US2] Implement valid/insufficient/stale frame classification without invented calibrated thresholds in app/src/lib/dsp/frame-quality.ts to satisfy T019
+- [x] T023 [US2] Implement the live frequency-domain Canvas renderer and accessible spectrum summary in app/src/features/sensor/components/spectrum-canvas.tsx
+- [x] T024 [US2] Integrate low-rate feature summaries and measured-context labels into app/src/features/sensor/components/sensor-instrument.tsx to satisfy T020
 
 **Checkpoint**: User Story 2 independently exposes real, correctly labeled spectral evidence without baseline, fault-frequency, or health claims.
 
@@ -90,15 +90,15 @@
 
 ### Tests for User Story 3
 
-- [ ] T025 [P] [US3] Write failing error-mapping tests for permission-denied, unsupported, device-unavailable, constraint-failed, interrupted, and processing-failed outcomes in tests/unit/errors.test.ts
-- [ ] T026 [P] [US3] Extend failing session tests for permission dismissal/denial, initialization failure, track-ended interruption, unmount cleanup, double transitions, and old-session frame rejection in tests/unit/capture-session.test.ts
-- [ ] T027 [P] [US3] Extend failing component tests for specific recovery copy, unavailable evidence, retry behavior, and accessible error announcements in tests/component/sensor-instrument.test.tsx
+- [x] T025 [P] [US3] Write failing error-mapping tests for permission-denied, unsupported, device-unavailable, constraint-failed, interrupted, and processing-failed outcomes in app/tests/unit/errors.test.ts
+- [x] T026 [P] [US3] Extend failing session tests for permission dismissal/denial, initialization failure, track-ended interruption, unmount cleanup, double transitions, and old-session frame rejection in app/tests/unit/capture-session.test.ts
+- [x] T027 [P] [US3] Extend failing component tests for specific recovery copy, unavailable evidence, retry behavior, and accessible error announcements in app/tests/component/sensor-instrument.test.tsx
 
 ### Implementation for User Story 3
 
-- [ ] T028 [US3] Implement stable safe error codes, summaries, and recovery actions without leaking browser internals in src/features/sensor/errors.ts to satisfy T025
-- [ ] T029 [US3] Complete failure transitions, old-session invalidation, and cleanup guarantees in src/features/sensor/capture-session.ts to satisfy T026
-- [ ] T030 [US3] Complete degraded/error/retry states and lifecycle announcements in src/features/sensor/components/sensor-instrument.tsx to satisfy T027
+- [x] T028 [US3] Implement stable safe error codes, summaries, and recovery actions without leaking browser internals in app/src/features/sensor/errors.ts to satisfy T025
+- [x] T029 [US3] Complete failure transitions, old-session invalidation, and cleanup guarantees in app/src/features/sensor/capture-session.ts to satisfy T026
+- [x] T030 [US3] Complete degraded/error/retry states and lifecycle announcements in app/src/features/sensor/components/sensor-instrument.tsx to satisfy T027
 
 **Checkpoint**: Every planned failure family is independently testable and fails closed.
 
@@ -108,11 +108,11 @@
 
 **Purpose**: Verify the integrated slice against the selected design, security boundaries, and physical acceptance criteria.
 
-- [ ] T031 [P] Add browser E2E checks for initial no-request state, denial/unsupported paths, stop/retry, navigation cleanup, responsive layout, and accessible summaries in tests/e2e/sensor-lifecycle.spec.ts
-- [ ] T032 [P] Add a browser-build scan for forbidden fixture imports, raw-audio persistence/transmission, and exposed secret patterns in tests/unit/production-boundary.test.ts
-- [ ] T033 Compare the rendered 390 × 844 active/error surfaces against the selected Product Design source, fix visible hierarchy/spacing/type/state drift in src/app/globals.css and src/features/sensor/components/, and record the comparison in docs/UX_SPEC.md
+- [x] T031 [P] Add browser E2E checks for initial no-request state, denial/unsupported paths, stop/retry, navigation cleanup, responsive layout, and accessible summaries in app/tests/e2e/sensor-lifecycle.spec.ts
+- [x] T032 [P] Add a browser-build scan for forbidden fixture imports, raw-audio persistence/transmission, and exposed secret patterns in app/tests/unit/production-boundary.test.ts
+- [x] T033 Compare the rendered 390 × 844 active/error surfaces against the selected Product Design source, fix visible hierarchy/spacing/type/state drift in app/src/prototype.css and app/src/features/sensor/components/, and record the comparison in docs/UX_SPEC.md
 - [ ] T034 Measure live update rate, long tasks, stop responsiveness, and resource cleanup on the declared demo phone and record evidence in docs/execution/CURRENT_PHASE.md
-- [ ] T035 Run the full quickstart command set and record concise PASS/FAIL/UNVERIFIED evidence in docs/execution/CURRENT_PHASE.md
+- [x] T035 Run the full quickstart command set and record concise PASS/FAIL/UNVERIFIED evidence in docs/execution/CURRENT_PHASE.md
 - [ ] T036 Deploy the exact tested commit over HTTPS, verify headers and reachable health, and record provider/deployment evidence in README.md and docs/SECURITY_PRIVACY.md
 - [ ] T037 Execute every physical HTTPS trial from specs/001-real-sensor-spike/quickstart.md and record device/browser/settings/observations without invented values in docs/execution/CURRENT_PHASE.md
 - [ ] T038 Run Spec Kit convergence, complete the feature diff/security/secret/junk audit, commit logically, push the dedicated branch, and verify the exact local/remote SHA
@@ -174,3 +174,13 @@ T025 error mapping tests || T026 lifecycle failure tests || T027 UI error tests
 - **US3:** 6 tasks.
 - **Cross-cutting/evidence:** 8 tasks.
 - **Suggested MVP checkpoint:** User Story 1 through T017, followed by the available physical capture/cleanup check.
+
+## Phase 7: Convergence
+
+- [x] T039 Add and test a distinct fail-closed degraded measurement state without inventing a calibrated threshold per FR-008 (partial)
+- [x] T040 Make the dominant-bin eligible range explicit configuration and test the configured boundary per T021 and plan: DSP helper configuration (partial)
+
+## Phase 8: Convergence
+
+- [x] T041 Expose and test distinct user-visible lifecycle summaries for ready, requesting permission, initializing, active, stopping, stopped, denied, unsupported, interrupted, and failed states per FR-002 (partial)
+- [x] T042 Display and test uncalibrated RMS and peak observations for valid frames while suppressing them for non-valid frames per US2/AC3 and quickstart (partial)

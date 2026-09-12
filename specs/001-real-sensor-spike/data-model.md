@@ -32,8 +32,10 @@ Capability never claims permission is granted before a request resolves.
 `idle → ready → requesting-permission → initializing → active → stopping → stopped`
 
 From a non-terminal state, the session may enter `denied`, `unsupported`,
-`interrupted`, or `failed`. An active session may report frame quality as
-`valid`, `insufficient`, or `stale` without inventing a terminal success.
+`interrupted`, or `failed`. An active session may report frame quality as `valid`,
+`degraded`, `insufficient`, or `stale` without inventing a terminal success. A usable
+frame is `degraded` when the browser reports that acoustic processing remains enabled;
+this is an observed capture condition, not a calibrated signal threshold.
 
 Only one start or stop transition may be in flight. Stop and terminal failure clear
 feature observations and release every owned resource.
@@ -45,7 +47,7 @@ feature observations and release every owned resource.
 | `capturedAt` | Monotonic observation time | Must advance for a frame to be fresh |
 | `timeDomain` | Current normalized digital samples | Finite values from the active stream |
 | `frequencyDomain` | Current spectrum-bin magnitudes | Finite values from the same analysis interval |
-| `quality` | `valid`, `insufficient`, or `stale` | Invalid quality suppresses interpreted output |
+| `quality` | `valid`, `degraded`, `insufficient`, or `stale` | Non-valid quality suppresses interpreted output |
 
 Frames are bounded, ephemeral, and never persisted or transmitted by this feature.
 
@@ -55,7 +57,7 @@ Frames are bounded, ephemeral, and never persisted or transmitted by this featur
 |---|---|---|
 | `rms` | Digital root-mean-square amplitude | Finite, non-negative; not calibrated sound pressure |
 | `peak` | Greatest absolute digital sample magnitude | Finite, non-negative |
-| `dominantBin` | Strongest eligible spectrum-bin index | Within the available bin array |
+| `dominantBin` | Strongest eligible spectrum-bin index | Within the explicitly configured eligible range |
 | `dominantFrequencyHz` | Center frequency of the strongest eligible bin | Derived from observed sample rate and transform size |
 | `binResolutionHz` | Frequency width represented by one bin | Observed sample rate divided by transform size |
 | `freshness` | Whether values belong to the current active stream | Must be current before display as live evidence |

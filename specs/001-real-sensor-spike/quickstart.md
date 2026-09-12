@@ -5,7 +5,7 @@ that a device/browser passed before the run is performed.
 
 ## Prerequisites
 
-- Node.js 20.9 or newer and npm.
+- Node.js 24 or newer and npm 10.
 - A desktop browser for automated/browser checks.
 - A physical smartphone and a browser chosen for the evidence run.
 - An HTTPS deployment reachable by that phone. `localhost` validates local development
@@ -18,11 +18,13 @@ that a device/browser passed before the run is performed.
 Run these commands after the application scaffold exists:
 
 ```powershell
+Set-Location app
 npm install
 npm run format:check
 npm run lint
 npm run typecheck
 npm run test
+npm run check:runtime
 npm run test:e2e
 npm run build
 ```
@@ -34,6 +36,7 @@ microphone compatibility.
 ## Local browser smoke test
 
 ```powershell
+Set-Location app
 npm run dev
 ```
 
