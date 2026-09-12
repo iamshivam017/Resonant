@@ -167,7 +167,7 @@ T025 error mapping tests || T026 lifecycle failure tests || T027 UI error tests
 
 ## Task Summary
 
-- **Total:** 38 tasks.
+- **Total:** 42 tasks.
 - **Setup/foundation:** 9 tasks.
 - **US1:** 8 tasks.
 - **US2:** 7 tasks.

@@ -1,0 +1,25 @@
+{
+  "completeness": "complete",
+  "deferred": [],
+  "documentType": "codex-security.coverage",
+  "excludePaths": [],
+  "explicitExclusions": [],
+  "includePaths": [
+    "app/.openai/hosting.json"
+  ],
+  "inventoryStrategy": "scoped_path",
+  "mode": "scoped_path",
+  "openQuestions": [],
+  "scanId": "scan_resonant_deployment_config_20260913",
+  "schemaVersion": "1.0",
+  "surfaces": [
+    {
+      "disposition": "no_issue_found",
+      "id": "surface_sites_registration",
+      "label": "Sites project registration manifest",
+      "notes": "The manifest contains one non-secret project identifier and no credentials. D1 and R2 bindings are null, so no unreviewed persistence capability is enabled.",
+      "receiptRefs": [],
+      "riskArea": "Secret exposure and unintended infrastructure capability"
+    }
+  ]
+}

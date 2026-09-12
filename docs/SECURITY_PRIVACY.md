@@ -109,15 +109,23 @@ before final submission.
 
 ## Deployment verification status
 
-No production or externally reachable HTTPS deployment has been performed or verified.
-The local build prepares static hosting output, but CSP, Permissions Policy, frame
-protections, referrer policy, content-type protection, HTTPS reachability, and provider
-health remain `UNKNOWN / NEEDS VERIFICATION` until a deployment target is authorized and
-the exact committed build is inspected there.
+A private Sites version 1 deployment succeeded at
+<https://resonant.shivam-sot010060.chatgpt.site>. It was built from GitHub revision
+`85dc747ad793cbf03c97d53099f666efef3cbcd4` and Sites source revision
+`99841c4f332b8e50f756c89f57a4e811ff00edd5`. The project remains owner-only with a
+custom audience; no bypass token was generated and access was not broadened.
+
+An unauthenticated request reached the HTTPS edge and returned the expected `401` sign-in
+gate with `Referrer-Policy: no-referrer`. That gate response did not expose CSP,
+Permissions Policy, HSTS, `X-Content-Type-Options`, or `X-Frame-Options`. Because the
+application response is behind ChatGPT authentication, application reachability and its
+complete deployed header set remain `UNKNOWN / NEEDS VERIFICATION`; the gate response is
+not evidence that the application omits those controls.
 
 ## TODO
 
-- Add deployment-specific header configuration and verify it against the live host.
+- Verify deployment-specific application headers from an authorized session and add
+  host configuration if the authenticated response lacks required controls.
 - Define local export/deletion controls before persistent history ships.
 - Define and test the exact explanation-request schema before Featherless integration.
 - Add Sentry only after runtime data scrubbing is testable.
@@ -125,6 +133,7 @@ the exact committed build is inspected there.
 
 ## UNKNOWN / NEEDS VERIFICATION
 
-- Final host capabilities, header syntax, rate-limit mechanism, and secret storage.
+- Authenticated application response headers, final host header syntax, rate-limit
+  mechanism, and secret storage.
 - Browser-specific background/suspension cleanup behavior on the physical target devices.
 - Whether machine metadata is sensitive in the intended demo/field environment.

@@ -29,6 +29,22 @@ observed capture settings, honest quality states, and complete resource teardown
   and zero reportable findings. The later E2E harness fix is covered by the sealed
   `docs/security/review-2026-09-13-harness-supplement/report.md`, also with complete
   scoped coverage and zero reportable findings.
+- The Sites registration manifest is covered by
+  `docs/security/review-2026-09-13-deployment-config/report.md`, with complete scoped
+  coverage and zero reportable findings.
+
+## Deployment evidence
+
+| Field | Verified value |
+|---|---|
+| GitHub source revision | `85dc747ad793cbf03c97d53099f666efef3cbcd4` |
+| Sites source revision | `99841c4f332b8e50f756c89f57a4e811ff00edd5` |
+| URL | <https://resonant.shivam-sot010060.chatgpt.site> |
+| Sites version | 1 |
+| Deployment | PASS — provider reports `succeeded` |
+| Audience | Owner-only custom access |
+| Unauthenticated edge | PASS — reachable HTTPS sign-in gate returned `401` |
+| Authenticated application and headers | UNKNOWN / NEEDS VERIFICATION — authorized ChatGPT session unavailable |
 
 ## Local validation evidence
 
@@ -44,12 +60,14 @@ observed capture settings, honest quality states, and complete resource teardown
 | Production dependency audit | PASS | npm reported 0 vulnerabilities |
 | Real microphone on a physical phone | UNKNOWN / NEEDS VERIFICATION | No authorized physical-device run is available in this environment |
 | Physical update rate, long tasks, stop responsiveness | UNKNOWN / NEEDS VERIFICATION | Requires the declared demo phone and live capture |
-| External HTTPS deployment and headers | UNKNOWN / NEEDS VERIFICATION | No deployment target/provider authorization has been supplied |
+| External HTTPS deployment | PASS | Sites version 1 reports `succeeded` at the recorded private URL |
+| Unauthenticated HTTPS edge | PASS | Reachable; expected private-access sign-in gate returned `401` |
+| Authenticated application health and headers | UNKNOWN / NEEDS VERIFICATION | Requires an authorized ChatGPT browser session |
 
 ## Remaining Phase 1 gates
 
 - T034: measure live performance and cleanup on the declared demo phone.
-- T036: deploy the exact tested commit over HTTPS and verify reachability and headers.
+- T036: deployment is complete; verify the authenticated application response and headers.
 - T037: execute every physical trial in the feature quickstart and record observed values.
 
 ## Explicitly deferred

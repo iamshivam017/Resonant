@@ -11,9 +11,10 @@ deviation, evidence, and uncertainty—not percentage machine health or universa
 
 The repository is in the Phase 1 physical-evidence gate. The first Spec Kit feature and
 its browser implementation are present on `bootstrap/repository-foundation`. Local
-automated checks and the production build pass; physical-device and deployed HTTPS
-acceptance remain `UNKNOWN / NEEDS VERIFICATION`. The implemented slice is deliberately
-narrow:
+automated checks and the production build pass. The exact tested application has a
+successful private HTTPS deployment; authenticated application-response and physical-
+device acceptance remain `UNKNOWN / NEEDS VERIFICATION`. The implemented slice is
+deliberately narrow:
 
 ```text
 real phone microphone
@@ -66,6 +67,20 @@ commands in `specs/001-real-sensor-spike/quickstart.md`.
 Phone sensor verification requires an HTTPS deployment. `localhost` is useful for
 desktop development but is not evidence that the deployed smartphone path works.
 
+## Deployment
+
+- Private Sites URL: <https://resonant.shivam-sot010060.chatgpt.site>
+- GitHub source revision: `85dc747ad793cbf03c97d53099f666efef3cbcd4`
+- Sites source revision: `99841c4f332b8e50f756c89f57a4e811ff00edd5`
+- Sites version: 1
+- Deployment status: `succeeded`
+- Access: owner-only custom audience; no bypass token was generated and access was not
+  broadened.
+
+The unauthenticated edge is reachable and returns the expected sign-in gate. Verifying
+the application response and its complete security-header set requires an authorized
+ChatGPT session and remains `UNKNOWN / NEEDS VERIFICATION`.
+
 ## Environment configuration
 
 The microphone spike needs no environment variables. Copying `.env.example` is not
@@ -96,6 +111,8 @@ validation or external action passed without direct evidence.
 
 - Target device/browser microphone compatibility is `UNKNOWN / NEEDS VERIFICATION`.
 - No physical sensor acceptance run, calibrated baseline, condition score, benchmark
-  result, verified HTTPS deployment, Featherless integration, or Sentry runtime exists yet.
+  result, Featherless integration, or Sentry runtime exists yet.
+- The HTTPS deployment is private; authenticated application reachability and response
+  headers have not been observed from an authorized browser session.
 - Browser IMU support is fragmented and remains a progressive enhancement.
 - VoltHacks eligibility wording conflicts across official pages and requires organizer confirmation.

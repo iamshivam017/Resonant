@@ -55,8 +55,8 @@ Leave any unobserved item as `UNKNOWN / NEEDS VERIFICATION`.
 
 | Evidence | Recorded value |
 |---|---|
-| Git commit SHA | TODO after run |
-| HTTPS URL | TODO after deployment |
+| Git commit SHA | `85dc747ad793cbf03c97d53099f666efef3cbcd4` |
+| HTTPS URL | <https://resonant.shivam-sot010060.chatgpt.site> (private; deployment succeeded) |
 | Device and OS | UNKNOWN / NEEDS VERIFICATION |
 | Browser and version | UNKNOWN / NEEDS VERIFICATION |
 | Permission outcome | UNKNOWN / NEEDS VERIFICATION |

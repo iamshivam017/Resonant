@@ -1,0 +1,48 @@
+{
+  "documentType": "codex-security.scan-manifest",
+  "scan": {
+    "artifacts": [
+      {
+        "mediaType": "application/json",
+        "path": "findings.json",
+        "sha256": "eca4b162267ea9da654f183d8b40b72823b2dba2388be862ff2f96d114ed7ebd"
+      },
+      {
+        "mediaType": "application/json",
+        "path": "coverage.json",
+        "sha256": "986f0b2fdbbbb64ee8fe47402404d3dfcca826e4c8377cab7a15bb934b7a985c"
+      }
+    ],
+    "completedAt": "2026-09-12T22:45:32.280237Z",
+    "coverageRef": "coverage.json",
+    "findingsRef": "findings.json",
+    "id": "scan_resonant_deployment_config_20260913",
+    "producer": {
+      "name": "codex-security-plugin",
+      "version": "0.1.24"
+    },
+    "scope": {
+      "excludePaths": [],
+      "includePaths": [
+        "app/.openai/hosting.json"
+      ],
+      "limitations": [],
+      "summary": "Scoped source review of the Sites project registration manifest added after the prior sealed Phase 1 reviews.",
+      "validationMode": "Parent-only source review plus manifest integrity, hosting worker, and production build validation."
+    },
+    "sealedAt": "2026-09-12T22:45:32.280237Z",
+    "startedAt": "2026-09-12T22:40:00Z",
+    "status": "completed",
+    "target": {
+      "displayName": "iamshivam017/Resonant",
+      "kind": "git_revision",
+      "remote": "https://github.com/iamshivam017/Resonant",
+      "revision": "85dc747ad793cbf03c97d53099f666efef3cbcd4",
+      "targetId": "target_sha256_8741a481fa7c000f3d8f672540b2b6bbae52771bef6c824aa7e351f9eab9f68c"
+    },
+    "threatModel": {
+      "summary": "Relevant risks are credential inclusion, unintended infrastructure bindings, and association with the wrong hosting project. The reviewed manifest contains only a non-secret Sites project identifier and null D1/R2 bindings."
+    }
+  },
+  "schemaVersion": "1.0"
+}
