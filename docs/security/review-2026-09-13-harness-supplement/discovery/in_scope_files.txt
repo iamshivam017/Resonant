@@ -1,0 +1,3 @@
+app/package.json
+app/playwright.config.ts
+app/scripts/run-e2e.mjs

@@ -115,7 +115,7 @@
 - [x] T035 Run the full quickstart command set and record concise PASS/FAIL/UNVERIFIED evidence in docs/execution/CURRENT_PHASE.md
 - [ ] T036 Deploy the exact tested commit over HTTPS, verify headers and reachable health, and record provider/deployment evidence in README.md and docs/SECURITY_PRIVACY.md
 - [ ] T037 Execute every physical HTTPS trial from specs/001-real-sensor-spike/quickstart.md and record device/browser/settings/observations without invented values in docs/execution/CURRENT_PHASE.md
-- [ ] T038 Run Spec Kit convergence, complete the feature diff/security/secret/junk audit, commit logically, push the dedicated branch, and verify the exact local/remote SHA
+- [x] T038 Run Spec Kit convergence, complete the feature diff/security/secret/junk audit, commit logically, push the dedicated branch, and verify the exact local/remote SHA
 
 ---
 

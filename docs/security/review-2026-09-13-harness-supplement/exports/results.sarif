@@ -1,0 +1,29 @@
+{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/os/schemas/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "automationDetails": {
+        "id": "scan_resonant_harness_supplement_20260913"
+      },
+      "properties": {
+        "codexSecuritySchemaVersion": "1.0",
+        "codexSecurityTargetKind": "git_revision"
+      },
+      "results": [],
+      "tool": {
+        "driver": {
+          "name": "Codex Security",
+          "rules": [],
+          "version": "0.1.24"
+        }
+      },
+      "versionControlProvenance": [
+        {
+          "repositoryUri": "https://github.com/iamshivam017/Resonant",
+          "revisionId": "2bda3f2da1d233d0298ae6d23df6e3e09918109b"
+        }
+      ]
+    }
+  ],
+  "version": "2.1.0"
+}

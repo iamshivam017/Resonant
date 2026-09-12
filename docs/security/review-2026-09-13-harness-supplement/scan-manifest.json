@@ -1,0 +1,52 @@
+{
+  "documentType": "codex-security.scan-manifest",
+  "scan": {
+    "artifacts": [
+      {
+        "mediaType": "application/json",
+        "path": "findings.json",
+        "sha256": "f350b04d5b10496a4218fd96781c6a69040a142b7ae3033ef450eb540e2f9413"
+      },
+      {
+        "mediaType": "application/json",
+        "path": "coverage.json",
+        "sha256": "d824b74767604fd510158a83fb4a6d1c3ee404293197f273a54c7aee7d7c2b84"
+      }
+    ],
+    "completedAt": "2026-09-12T22:21:55.042897Z",
+    "coverageRef": "coverage.json",
+    "findingsRef": "findings.json",
+    "id": "scan_resonant_harness_supplement_20260913",
+    "producer": {
+      "name": "codex-security-plugin",
+      "version": "0.1.24"
+    },
+    "scope": {
+      "excludePaths": [],
+      "includePaths": [
+        "app/package.json",
+        "app/playwright.config.ts",
+        "app/scripts/run-e2e.mjs"
+      ],
+      "limitations": [
+        "This supplemental review covers only the post-snapshot E2E harness/configuration change; the preceding sealed review covers the Phase 1 application and broader working-tree diff."
+      ],
+      "summary": "Supplemental source review of the Windows-safe E2E server lifecycle added after the full Phase 1 security snapshot. Reviewed the package script, Playwright configuration, and local Vite/Playwright orchestration script at the exact committed revision.",
+      "validationMode": "Parent-only source review plus format, lint, typecheck, and a clean six-test Playwright run that exited without manual process cleanup."
+    },
+    "sealedAt": "2026-09-12T22:21:55.042897Z",
+    "startedAt": "2026-09-12T22:21:00Z",
+    "status": "completed",
+    "target": {
+      "displayName": "iamshivam017/Resonant",
+      "kind": "git_revision",
+      "remote": "https://github.com/iamshivam017/Resonant",
+      "revision": "2bda3f2da1d233d0298ae6d23df6e3e09918109b",
+      "targetId": "target_sha256_8741a481fa7c000f3d8f672540b2b6bbae52771bef6c824aa7e351f9eab9f68c"
+    },
+    "threatModel": {
+      "summary": "The supplemental change runs only in the local test harness. Relevant risks are shell injection, exposing the development server beyond loopback, allowing test-only configuration into production behavior, leaving child processes alive, and masking a failing browser suite. The orchestrator invokes the pinned local Playwright CLI with spawn argument arrays, binds Vite to 127.0.0.1, propagates the child exit code, closes the Vite server in a finally block, and is referenced only by the development test script."
+    }
+  },
+  "schemaVersion": "1.0"
+}

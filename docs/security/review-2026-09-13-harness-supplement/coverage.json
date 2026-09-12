@@ -1,0 +1,27 @@
+{
+  "completeness": "complete",
+  "deferred": [],
+  "documentType": "codex-security.coverage",
+  "excludePaths": [],
+  "explicitExclusions": [],
+  "includePaths": [
+    "app/package.json",
+    "app/playwright.config.ts",
+    "app/scripts/run-e2e.mjs"
+  ],
+  "inventoryStrategy": "scoped_path",
+  "mode": "scoped_path",
+  "openQuestions": [],
+  "scanId": "scan_resonant_harness_supplement_20260913",
+  "schemaVersion": "1.0",
+  "surfaces": [
+    {
+      "disposition": "no_issue_found",
+      "id": "surface_e2e_orchestration",
+      "label": "Local E2E server and child-process orchestration",
+      "notes": "The test-only server binds to loopback, Playwright is launched without a shell through a pinned local path, its exit code is preserved, and the Vite server closes in a finally block. No production import or runtime path references this harness.",
+      "receiptRefs": [],
+      "riskArea": "Command injection, unintended network exposure, process leaks, and false-success test results"
+    }
+  ]
+}

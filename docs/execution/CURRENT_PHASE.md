@@ -26,7 +26,9 @@ observed capture settings, honest quality states, and complete resource teardown
 - Product Design comparison evidence is recorded in `docs/design/` and `design-qa.md`.
 - The final immutable working-tree security review is sealed at
   `docs/security/review-2026-09-13-final/report.md` with complete source-diff coverage
-  and zero reportable findings.
+  and zero reportable findings. The later E2E harness fix is covered by the sealed
+  `docs/security/review-2026-09-13-harness-supplement/report.md`, also with complete
+  scoped coverage and zero reportable findings.
 
 ## Local validation evidence
 
@@ -49,8 +51,6 @@ observed capture settings, honest quality states, and complete resource teardown
 - T034: measure live performance and cleanup on the declared demo phone.
 - T036: deploy the exact tested commit over HTTPS and verify reachability and headers.
 - T037: execute every physical trial in the feature quickstart and record observed values.
-- T038: complete the final diff/security/secret/junk audit, commit, push, and verify the
-  exact local/remote SHA.
 
 ## Explicitly deferred
 
