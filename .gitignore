@@ -1,0 +1,56 @@
+# Secrets and local environment files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+secrets.*
+
+# Dependency and package-manager caches
+node_modules/
+vendor/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Generated build, coverage, and cache output
+build/
+dist/
+out/
+coverage/
+.coverage
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.tsbuildinfo
+
+# Logs and runtime artifacts
+*.log
+logs/
+*.pid
+*.seed
+*.tmp
+tmp/
+temp/
+
+# Editor and operating-system metadata
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local databases and captured sensor data
+*.db
+*.sqlite
+*.sqlite3
+data/local/
+data/captures/
