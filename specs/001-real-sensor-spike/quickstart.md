@@ -55,8 +55,8 @@ Leave any unobserved item as `UNKNOWN / NEEDS VERIFICATION`.
 
 | Evidence | Recorded value |
 |---|---|
-| Git commit SHA | `85dc747ad793cbf03c97d53099f666efef3cbcd4` |
-| HTTPS URL | <https://resonant.shivam-sot010060.chatgpt.site> (private; deployment succeeded) |
+| Git application commit SHA | `06c51e56595abac5919623aba44b60189785a010` |
+| HTTPS URL | <https://resonant.shivam-sot010060.chatgpt.site> (private Sites version 2; deployment succeeded) |
 | Device and OS | UNKNOWN / NEEDS VERIFICATION |
 | Browser and version | UNKNOWN / NEEDS VERIFICATION |
 | Permission outcome | UNKNOWN / NEEDS VERIFICATION |
@@ -77,7 +77,7 @@ Record only an observed run. Automated fixtures do not establish microphone comp
 | Device / browser | Microphone | Waveform | Spectrum | Quality/timing | Overall result |
 |---|---|---|---|---|---|
 | Desktop Chromium (automated fixtures only) | MANUAL DEVICE VERIFICATION REQUIRED | Automated rendering PASS; real input unverified | Automated rendering PASS; real input unverified | Deterministic tests only | MANUAL DEVICE VERIFICATION REQUIRED |
-| Desktop browser with real microphone | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED |
+| Desktop in-app Chromium, version unavailable, localhost | PASS — explicit permission/start produced a live track | PASS — real frame rendered | PASS — real spectrum rendered | PASS — observed settings, duration, and cadence rendered without acceptance rating | LOCAL RUNTIME PASS — not physical-phone or deployed-HTTPS evidence |
 | Android Chrome | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED |
 | iOS Safari | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED |
 
