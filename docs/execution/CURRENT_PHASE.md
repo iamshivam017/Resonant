@@ -46,10 +46,10 @@ the `AnalyserNode` plus Canvas architecture until physical evidence identifies a
 
 | Field | Verified value |
 |---|---|
-| GitHub source revision | `85dc747ad793cbf03c97d53099f666efef3cbcd4` |
-| Sites source revision | `99841c4f332b8e50f756c89f57a4e811ff00edd5` |
+| GitHub application source revision | `06c51e56595abac5919623aba44b60189785a010` |
+| Sites source revision | `16a4f12e70b119122a16798e477dcc73ae1cf0b4` |
 | URL | <https://resonant.shivam-sot010060.chatgpt.site> |
-| Sites version | 1 |
+| Sites version | 2 |
 | Deployment | PASS — provider reports `succeeded` |
 | Audience | Owner-only custom access |
 | Unauthenticated edge | PASS — reachable HTTPS sign-in gate returned `401` |
@@ -72,7 +72,7 @@ the `AnalyserNode` plus Canvas architecture until physical evidence identifies a
 | Interactive desktop microphone runtime | PASS | Explicit start reached active/local-only capture; real readouts populated; stop cleared evidence |
 | Real microphone on a physical phone | UNKNOWN / NEEDS VERIFICATION | No authorized physical-device run is available in this environment |
 | Physical update rate, long tasks, stop responsiveness | UNKNOWN / NEEDS VERIFICATION | Requires the declared demo phone and live capture |
-| External HTTPS deployment | PASS | Sites version 1 reports `succeeded` at the recorded private URL |
+| External HTTPS deployment | PASS | Sites version 2 reports `succeeded` at the recorded private URL |
 | Unauthenticated HTTPS edge | PASS | Reachable; expected private-access sign-in gate returned `401` |
 | Authenticated application health and headers | UNKNOWN / NEEDS VERIFICATION | Requires an authorized ChatGPT browser session |
 

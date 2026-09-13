@@ -70,9 +70,9 @@ desktop development but is not evidence that the deployed smartphone path works.
 ## Deployment
 
 - Private Sites URL: <https://resonant.shivam-sot010060.chatgpt.site>
-- GitHub source revision: `85dc747ad793cbf03c97d53099f666efef3cbcd4`
-- Sites source revision: `99841c4f332b8e50f756c89f57a4e811ff00edd5`
-- Sites version: 1
+- GitHub application source revision: `06c51e56595abac5919623aba44b60189785a010`
+- Sites source revision: `16a4f12e70b119122a16798e477dcc73ae1cf0b4`
+- Sites version: 2
 - Deployment status: `succeeded`
 - Access: owner-only custom audience; no bypass token was generated and access was not
   broadened.

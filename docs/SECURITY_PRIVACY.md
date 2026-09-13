@@ -109,10 +109,10 @@ before final submission.
 
 ## Deployment verification status
 
-A private Sites version 1 deployment succeeded at
+A private Sites version 2 deployment succeeded at
 <https://resonant.shivam-sot010060.chatgpt.site>. It was built from GitHub revision
-`85dc747ad793cbf03c97d53099f666efef3cbcd4` and Sites source revision
-`99841c4f332b8e50f756c89f57a4e811ff00edd5`. The project remains owner-only with a
+`06c51e56595abac5919623aba44b60189785a010` and Sites source revision
+`16a4f12e70b119122a16798e477dcc73ae1cf0b4`. The project remains owner-only with a
 custom audience; no bypass token was generated and access was not broadened.
 
 An unauthenticated request reached the HTTPS edge and returned the expected `401` sign-in

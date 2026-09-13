@@ -196,4 +196,4 @@ T025 error mapping tests || T026 lifecycle failure tests || T027 UI error tests
 - [x] T049 [P] Record the selected Phase 2 DSP/quality choices and deferrals in docs/DSP_PIPELINE.md, docs/TEST_STRATEGY.md, docs/execution/CURRENT_PHASE.md, and docs/execution/DECISIONS.md
 - [x] T050 [P] Add the evidence-only compatibility matrix and ambient/fan experiment worksheet to specs/001-real-sensor-spike/quickstart.md
 - [x] T051 Run the local browser/runtime verification against the production sensor path and record observed versus manual-required results in docs/execution/CURRENT_PHASE.md
-- [ ] T052 Run final formatting, lint, types, tests, build, security/documentation audits, deployment update where supported, commit, push, and exact remote-SHA verification
+- [x] T052 Run final formatting, lint, types, tests, build, security/documentation audits, deployment update where supported, commit, push, and exact remote-SHA verification
