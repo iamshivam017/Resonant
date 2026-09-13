@@ -77,6 +77,17 @@ RESONANT turns hardware already in a user's pocket into a transparent, low-cost 
 
 ## Functional requirements
 
+### Phase 4 delivered slice
+
+- Compare a new valid real microphone summary only with the exact active Machine ×
+  Operating-State baseline selected by the operator.
+- Show current value, baseline median/range, signed and absolute difference, and observed
+  range position for RMS, peak, dominant frequency, and dominant bin.
+- Persist the result locally with exact baseline ID/version provenance and no raw frames.
+- Label two-source baselines `LIMITED REFERENCE DATA` and every uncalibrated composite or
+  categorical interpretation `UNKNOWN / NEEDS CALIBRATION`.
+- Do not produce percentage similarity, severity, fault, diagnosis, or health language.
+
 ### P0 — demo blocking
 
 - Real microphone permission, capture, explicit active-recording indication, and stop/release behavior.

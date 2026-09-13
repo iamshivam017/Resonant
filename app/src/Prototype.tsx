@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { BaselineFlow } from "./features/baseline/components/baseline-flow";
 import { IndexedDbBaselineStorage } from "./features/baseline/indexeddb-storage";
 import { BaselineRepository } from "./features/baseline/repository";
+import type { Baseline, Machine, OperatingState } from "./features/baseline/types";
+import { ScanFlow } from "./features/scan/components/scan-flow";
+import { IndexedDbScanStorage } from "./features/scan/indexeddb-storage";
+import { ScanRepository } from "./features/scan/repository";
 import { createBrowserCaptureSession } from "./features/sensor/browser-session";
 import { SensorInstrument } from "./features/sensor/components/sensor-instrument";
 import { MobileScroll } from "./mobile";
@@ -18,7 +22,15 @@ export default function Prototype() {
         () => crypto.randomUUID(),
       ),
   );
-  const [mode, setMode] = useState<"baseline" | "sensor">("baseline");
+  const [scanRepository] = useState(
+    () => new ScanRepository(new IndexedDbScanStorage(), repository, () => crypto.randomUUID()),
+  );
+  const [mode, setMode] = useState<"baseline" | "sensor" | "scan">("baseline");
+  const [scanTarget, setScanTarget] = useState<{
+    machine: Machine;
+    operatingState: OperatingState;
+    baseline: Baseline;
+  }>();
 
   useEffect(() => {
     const stopCapture = () => void controller.stop();
@@ -33,7 +45,25 @@ export default function Prototype() {
           controller={controller}
           repository={repository}
           onOpenSensor={() => setMode("sensor")}
+          onRunComparison={(machine, operatingState, baseline) => {
+            setScanTarget({ machine, operatingState, baseline });
+            setMode("scan");
+          }}
         />
+      </div>
+    );
+  }
+  if (mode === "scan" && scanTarget) {
+    return (
+      <div className="app-screen app-shell">
+        <MobileScroll className="scan-workspace">
+          <ScanFlow
+            {...scanTarget}
+            controller={controller}
+            repository={scanRepository}
+            onExit={() => setMode("baseline")}
+          />
+        </MobileScroll>
       </div>
     );
   }

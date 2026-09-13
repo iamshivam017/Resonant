@@ -40,3 +40,6 @@
   exclusions are testable and contain no invented adequacy threshold.
 - Responsive-device wording passed: preview device names are viewport presets only;
   supported behavior is assessed from browser/API evidence without handset-brand coupling.
+- Phase 4 bounded-extension review passed: exact-reference matching, native-unit deviation
+  evidence, additive scan persistence, and composite-score deferral are explicit and
+  testable without invented normalization or severity thresholds.

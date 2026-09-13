@@ -225,3 +225,50 @@ activation reflects my observed setup rather than an invented automatic threshol
 - **SC-013**: Reloading the application restores valid saved machine, state, capture-summary, and baseline-version records without restoring raw frames or audio.
 - **SC-014**: Recalibration produces a greater version number for the same Machine × Operating-State pair and preserves the superseded version.
 - **SC-015**: Review of all Phase 3 production paths finds zero cross-state aggregation, zero raw-audio persistence, and zero machine-health or anomaly classification.
+
+## Phase 4 Extension: Transparent Baseline Deviation Evidence
+
+### User Story 8 - Compare a Current Measurement with its Active Reference (Priority: P1)
+
+As an operator, I want to capture a current real measurement for a selected machine and
+operating state so that I can compare it only with that pair's active baseline.
+
+**Acceptance Scenarios**:
+
+1. **Given** a selected active baseline, **When** the operator captures a valid current measurement, **Then** the measurement is compared with that exact baseline version.
+2. **Given** no active baseline or a Machine × Operating-State mismatch, **When** comparison is requested, **Then** comparison is blocked with explicit `NO MATCHING REFERENCE` guidance.
+3. **Given** silent, clipped, degraded, stale, interrupted, non-advancing, or structurally insufficient input, **When** capture ends, **Then** no comparison result is created.
+
+### User Story 9 - Inspect Explainable Deviation Evidence (Priority: P1)
+
+As an operator, I want to inspect each measured feature against its recorded reference so
+that I understand the evidence without receiving an unsupported health or severity claim.
+
+**Acceptance Scenarios**:
+
+1. **Given** a valid current measurement, **When** results appear, **Then** RMS, peak amplitude, dominant frequency, and dominant bin each show the baseline median, observed range, current value, signed difference, absolute difference, and whether the current value is inside, below, or above the observed range.
+2. **Given** a result, **When** it is saved and restored, **Then** it retains the exact machine, state, active-baseline identity/version, feature summary, deviations, capture context, quality state, and timestamp without raw audio or frame arrays.
+3. **Given** no physical repeatability/calibration evidence, **When** the result is shown, **Then** composite similarity, weighting, severity, and mechanical interpretation are explicitly unavailable rather than fabricated.
+4. **Given** a baseline with only two captures, **When** evidence quality is shown, **Then** it states `LIMITED REFERENCE DATA`, encourages more captures, and makes no adequacy claim.
+
+### Phase 4 Functional Requirements
+
+- **FR-036**: Comparison MUST use the active baseline for the exact selected Machine × Operating-State pair and MUST retain the baseline identifier and version used.
+- **FR-037**: A comparison MUST be blocked when no active matching baseline exists, the baseline is superseded, the state mismatches, required observations are absent, or input quality fails.
+- **FR-038**: For RMS, peak amplitude, dominant frequency, and dominant bin, the product MUST compute baseline median, observed minimum/maximum, current value, signed difference (`current - median`), absolute difference, and deterministic range position (`below`, `inside`, or `above`).
+- **FR-039**: Phase 4 MUST NOT combine incompatible feature units, apply feature weights, divide by observed range, or emit a composite 0–100 similarity until physical repeatability evidence supports a documented normalization method.
+- **FR-040**: Dominant frequency and dominant bin MUST both remain visible for audit, but MUST NOT be treated as independent weighted evidence for a composite result.
+- **FR-041**: Every persisted scan result MUST contain machine ID, operating-state ID, baseline ID/version, timestamp, feature summary, feature deviations, accepted quality state, and capture context, and MUST exclude raw audio and raw time/frequency-domain frames.
+- **FR-042**: Comparison calculations MUST reject non-finite or missing required values and MUST never return `NaN`, `Infinity`, or a fabricated fallback.
+- **FR-043**: A two-capture baseline MUST be labeled `LIMITED REFERENCE DATA`; additional capture counts MUST be reported without claiming scientific adequacy. Stronger evidence-quality categories remain `UNKNOWN / NEEDS CALIBRATION`.
+- **FR-044**: Result language MUST be limited to observed-range evidence and calibration disclosures; it MUST NOT claim health, fault, failure probability, diagnosis, severity, or remaining life.
+- **FR-045**: Scan persistence MUST be an additive IndexedDB migration that preserves Phase 3 machines, states, captures, and baseline versions.
+
+### Phase 4 Success Criteria
+
+- **SC-016**: Deterministic review of an identical current feature summary produces zero signed/absolute difference and `inside` for all four features.
+- **SC-017**: Deterministic review of progressively displaced values produces correspondingly larger absolute feature differences without `NaN`, `Infinity`, or a composite score.
+- **SC-018**: Mismatched, missing, superseded, and invalid-quality references produce no persisted comparison result.
+- **SC-019**: Reloading restores a valid result with exact baseline-version attribution and no raw audio/frame data.
+- **SC-020**: The result surface exposes all four feature comparisons, source baseline capture count, manual-review context, and explicit `UNKNOWN / NEEDS CALIBRATION` composite/threshold status.
+- **SC-021**: Physical same-state → changed-state → returned-state evidence is recorded separately or remains `MANUAL DEVICE VERIFICATION REQUIRED`; automated fixtures are never reported as physical proof.

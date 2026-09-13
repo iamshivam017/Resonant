@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import { aggregateBaseline } from "../../src/features/baseline/aggregation";
 import { BaselineFlow } from "../../src/features/baseline/components/baseline-flow";
 import {
   BaselineRepository,
@@ -62,6 +63,28 @@ function controllerFixture() {
 }
 
 describe("known-normal baseline flow", () => {
+  it("does not offer comparison when no active reference exists", async () => {
+    const fixture = controllerFixture();
+    render(
+      <MobileRuntime>
+        <BaselineFlow
+          controller={fixture.controller}
+          repository={
+            new BaselineRepository(
+              new InMemoryBaselineStorage(),
+              () => 1,
+              () => "unused",
+            )
+          }
+          onRunComparison={vi.fn()}
+        />
+      </MobileRuntime>,
+    );
+
+    await screen.findByRole("heading", { name: "Identify the machine" });
+    expect(screen.queryByRole("button", { name: /^Compare / })).not.toBeInTheDocument();
+  });
+
   it("requires operator confirmations and creates a traceable baseline from multiple captures", async () => {
     const fixture = controllerFixture();
     let nextId = 0;
@@ -124,4 +147,53 @@ describe("known-normal baseline flow", () => {
     expect(screen.getByText("Version 1")).toBeInTheDocument();
     await waitFor(async () => expect((await repository.loadAll()).baselines).toHaveLength(1));
   }, 10_000);
+
+  it("opens a current comparison from an exact stored baseline pair", async () => {
+    const fixture = controllerFixture();
+    const repository = new BaselineRepository(
+      new InMemoryBaselineStorage(),
+      () => 1_000,
+      () => "baseline-1",
+    );
+    const machine = await repository.saveMachine({
+      id: "machine-1",
+      name: "Exhaust fan",
+      category: "Fan",
+      createdAt: 1,
+    });
+    const state = await repository.saveOperatingState({
+      id: "state-1",
+      machineId: machine.id,
+      name: "Normal speed",
+      createdAt: 2,
+    });
+    const captures = [100, 200].map((capturedAt, index) => ({
+      id: `capture-${index + 1}`,
+      machineId: machine.id,
+      operatingStateId: state.id,
+      capturedAt,
+      durationMs: 50,
+      observationCount: 2,
+      features: { rms: 0.2, peak: 0.4, dominantFrequencyHz: 240, dominantBin: 10 },
+      context: { audioSampleRate: 48_000, analysisWindowSize: 2_048 },
+    }));
+    for (const capture of captures) await repository.saveCapture(capture);
+    const baseline = await repository.activateBaseline(aggregateBaseline(captures), 10, 11);
+    const onRunComparison = vi.fn();
+
+    render(
+      <MobileRuntime>
+        <BaselineFlow
+          controller={fixture.controller}
+          repository={repository}
+          onRunComparison={onRunComparison}
+        />
+      </MobileRuntime>,
+    );
+
+    fireEvent.click(
+      await screen.findByRole("button", { name: "Compare Exhaust fan · Normal speed" }),
+    );
+    expect(onRunComparison).toHaveBeenCalledWith(machine, state, baseline);
+  });
 });

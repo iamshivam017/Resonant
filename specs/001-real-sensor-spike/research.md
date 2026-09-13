@@ -137,3 +137,19 @@ IndexedDB provides transactional version updates without adding a server or depe
 **Alternatives considered**: Memory-only state fails reload persistence; localStorage lacks
 transactional multi-record updates; remote persistence expands authentication, privacy, and
 deployment scope without supporting the Phase 3 proof.
+
+## Phase 4 Decision 10: Defer composite similarity and preserve native-unit evidence
+
+**Decision**: Compute transparent median-centered signed/absolute differences and observed-
+range position independently for RMS, peak, dominant frequency, and dominant bin. Persist
+and display those values, but emit no normalized distance, weights, severity, or 0–100 score.
+
+**Rationale**: Phase 3 has no physical repeatability dataset. Observed ranges from as few as
+two captures do not establish a stable scale, variance estimate, near-zero floor, or
+cross-feature weighting. Range division would turn an uncalibrated denominator into apparent
+precision. Native-unit evidence is deterministic and judge-auditable without that claim.
+
+**Alternatives considered**: Equal weighting is neutral only after each feature has a
+defensible comparable scale; none exists yet. Z-scores/MAD are unsupported with the minimum
+sample. Range-normalized distance fails on identical captures and can exaggerate tiny ranges.
+Dominant frequency and bin describe the same FFT peak and would duplicate spectral evidence.

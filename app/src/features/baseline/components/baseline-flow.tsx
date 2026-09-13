@@ -30,6 +30,7 @@ interface BaselineFlowProps {
   makeId?: () => string;
   now?: () => number;
   onOpenSensor?: () => void;
+  onRunComparison?: (machine: Machine, state: OperatingState, baseline: Baseline) => void;
 }
 
 interface WorkflowState {
@@ -49,6 +50,7 @@ interface WorkflowState {
   setBaseline: (value: Baseline) => void;
   beginRecalibration: (machine: Machine, state: OperatingState) => void;
   onOpenSensor?: () => void;
+  onRunComparison?: (machine: Machine, state: OperatingState, baseline: Baseline) => void;
 }
 
 const WorkflowContext = createContext<WorkflowState | null>(null);
@@ -162,16 +164,27 @@ function MachineSetup({ flow }: { flow: FlowControls }) {
                     {state.name} · Version {baseline.version}
                   </span>
                 </div>
-                <button
-                  type="button"
-                  aria-label={`Recalibrate ${storedMachine.name} · ${state.name}`}
-                  onClick={() => {
-                    workflow.beginRecalibration(storedMachine, state);
-                    flow.push(confirmScreen);
-                  }}
-                >
-                  Recalibrate
-                </button>
+                <div className="stored-baseline-actions">
+                  {workflow.onRunComparison ? (
+                    <button
+                      type="button"
+                      aria-label={`Compare ${storedMachine.name} · ${state.name}`}
+                      onClick={() => workflow.onRunComparison?.(storedMachine, state, baseline)}
+                    >
+                      Compare
+                    </button>
+                  ) : null}
+                  <button
+                    type="button"
+                    aria-label={`Recalibrate ${storedMachine.name} · ${state.name}`}
+                    onClick={() => {
+                      workflow.beginRecalibration(storedMachine, state);
+                      flow.push(confirmScreen);
+                    }}
+                  >
+                    Recalibrate
+                  </button>
+                </div>
               </article>
             );
           })}
@@ -598,6 +611,7 @@ export function BaselineFlow({
   makeId = () => crypto.randomUUID(),
   now = () => Date.now(),
   onOpenSensor,
+  onRunComparison,
 }: BaselineFlowProps) {
   const [machine, setMachine] = useState<Machine>();
   const [operatingState, setOperatingState] = useState<OperatingState>();
@@ -628,6 +642,7 @@ export function BaselineFlow({
         setBaseline(undefined);
       },
       onOpenSensor,
+      onRunComparison,
     }),
     [
       controller,
@@ -640,6 +655,7 @@ export function BaselineFlow({
       captures,
       baseline,
       onOpenSensor,
+      onRunComparison,
     ],
   );
   return (

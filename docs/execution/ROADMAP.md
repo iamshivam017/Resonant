@@ -52,24 +52,23 @@ accepts the remaining risk. P0 work preempts P1/P2 work.
 - **Tests:** Domain, aggregation, collector, repository, component, and browser checks plus a separate physical worksheet.
 - **Acceptance/exit:** Workflow and persistence checks pass; physical repeatability is recorded or explicitly remains manual; no scoring or raw-audio persistence exists.
 
-## Phase 4 — Reserved follow-up calibration work
+## Phase 4 — Transparent scan deviation evidence
 
-- **Objective:** Use physical repeatability evidence to decide whether stronger capture-count, duration, or consistency requirements are justified.
-- **Tasks:** Execute controlled experiments and update calibrated rules only when supported.
-- **Files/modules:** `src/features/machines/`, `src/features/baselines/`, `src/lib/baseline/`, schemas/tests/docs.
-- **Dependencies:** Completed Phase 3 workflow and real repeatability observations.
-- **Tests:** State-machine, robust statistics, zero-scale, insufficient/inconsistent samples, mismatch tests.
-- **Acceptance/exit:** Only compatible, adequate real measurements activate a baseline; sample/quality rules have recorded evidence.
+- **Objective:** Compare a new real observation with one exact active known-normal baseline without inventing normalization or condition scoring.
+- **Tasks:** Exact reference guard, valid live capture, four native-unit deviations, additive local scan persistence, explicit evidence/calibration language.
+- **Files/modules:** `app/src/features/scan/`, IndexedDB schema v2, UI/tests/docs, existing Spec Kit artifacts.
+- **Dependencies:** Completed Phase 3 workflow and active Machine × Operating-State baseline.
+- **Tests:** Hand-checkable identical/progressive/zero-range calculations, mismatch/quality failures, persistence/reload/raw-frame exclusion, component and browser flow.
+- **Acceptance/exit:** Every result retains exact provenance and transparent per-feature evidence; composite similarity remains unavailable; physical repeatability stays explicit.
 
-## Phase 5 — Scan and deviation engine
+## Phase 5 — Calibration and candidate similarity research
 
-- **Objective:** Compare a new real observation with one compatible known-normal baseline transparently.
-- **Tasks:** Implement compatibility guard, robust normalized distance, empirical calibration, uncertainty,
-  evidence ranking, and fail-closed status language.
-- **Files/modules:** `src/features/scans/`, `src/lib/scoring/`, condition docs/tests.
-- **Dependencies:** Active baseline and held-out/benchmark calibration evidence.
-- **Tests:** Hand-checkable calculations, monotonic/property tests, calibration separation, mismatch/quality failures.
-- **Acceptance/exit:** No arbitrary threshold or health claim; each valid result exposes distance, context, evidence, and uncertainty.
+- **Objective:** Use physical repeatability evidence to decide whether stronger baseline rules and any normalized similarity representation are defensible.
+- **Tasks:** Execute controlled experiments; evaluate capture count/duration/consistency, robust scale, weighting, uncertainty, and mappings only when supported.
+- **Files/modules:** Existing baseline/scan modules, future scoring research modules, physical worksheets, tests, and owning docs.
+- **Dependencies:** Completed Phase 4 evidence path plus held-out physical and/or benchmark calibration evidence.
+- **Tests:** Repeatability, calibration separation, zero-scale behavior, robustness, mismatch/quality failures, and hand-checkable candidate calculations.
+- **Acceptance/exit:** Any adopted rule has recorded evidence and versioning; otherwise it remains `UNKNOWN / NEEDS CALIBRATION` with no composite or categorical result.
 
 ## Phase 6 — Core P0 product flows
 

@@ -89,6 +89,13 @@ version supersession, browser IndexedDB counts, and recalibration entry. Fixture
 browser results prove mechanics only; physical repeatability remains
 **MANUAL DEVICE VERIFICATION REQUIRED**.
 
+Phase 4 adds deterministic identical/progressive/zero-range deviation fixtures, exact
+baseline-version and Machine × Operating-State guards, non-finite and invalid-quality
+rejection, allowlisted scan persistence, additive schema-v2 creation, raw-frame exclusion,
+component evidence rendering, and a browser commission → reload → compare → persist path.
+Automated browser audio remains a deterministic API fixture; it is not physical
+repeatability evidence.
+
 Responsive E2E runs commissioning and live sensing at 320, 360, 390, 412, and 480
 CSS-pixel widths and asserts no horizontal overflow. Named Pixel/iPhone development
 presets are not compatibility fixtures. Real compatibility is recorded separately by

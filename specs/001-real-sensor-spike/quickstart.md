@@ -183,3 +183,22 @@ baseline or condition-scoring implementation.
 
 Automated fixtures validate contracts only. They MUST NOT be copied into this table or
 reported as physical repeatability evidence.
+
+## Phase 4 Comparison Verification
+
+1. Select a stored machine and operating state with an active baseline.
+2. Confirm the displayed baseline identifier/version and capture count.
+3. Run the existing sensor-quality check and capture one current real measurement.
+4. Verify all four features show reference median/range, current value, signed/absolute
+   difference, and range position.
+5. Verify no composite score, health, severity, diagnosis, or fault label appears.
+6. Reload and verify exact baseline-version attribution and no raw frames.
+
+| Trial | Actual machine/state | Baseline used | Feature evidence | Observation |
+|---|---|---|---|---|
+| Same state | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | Do not prefill expected score |
+| Different operating state | MANUAL DEVICE VERIFICATION REQUIRED | Comparison blocked in normal flow | MANUAL DEVICE VERIFICATION REQUIRED | Do not label fault |
+| Return to original state | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | Compare direction only after observation |
+
+Normalization, composite weighting, similarity thresholds, and evidence sufficiency above
+the literal two-capture minimum remain **UNKNOWN / NEEDS CALIBRATION**.

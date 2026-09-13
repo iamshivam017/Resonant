@@ -65,17 +65,17 @@ test("commissions, persists, and offers non-destructive recalibration", async ({
   await expect(page.getByText("Version 1")).toBeVisible();
   expect(
     await page.evaluate(async () => {
-      const request = indexedDB.open("resonant-local-evidence", 1);
+      const request = indexedDB.open("resonant-local-evidence", 2);
       const database = await new Promise<IDBDatabase>((resolve, reject) => {
         request.onsuccess = () => resolve(request.result);
         request.onerror = () => reject(request.error);
       });
       const tx = database.transaction(
-        ["machines", "operatingStates", "captures", "baselines"],
+        ["machines", "operatingStates", "captures", "baselines", "scans"],
         "readonly",
       );
       const counts = await Promise.all(
-        ["machines", "operatingStates", "captures", "baselines"].map(
+        ["machines", "operatingStates", "captures", "baselines", "scans"].map(
           (store) =>
             new Promise<number>((resolve, reject) => {
               const count = tx.objectStore(store).count();
@@ -86,10 +86,75 @@ test("commissions, persists, and offers non-destructive recalibration", async ({
       );
       return counts;
     }),
-  ).toEqual([1, 1, 2, 1]);
+  ).toEqual([1, 1, 2, 1, 0]);
   await page.reload();
   await expect(page.getByText("Stored baselines")).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Recalibrate Exhaust fan · Normal speed" }),
   ).toBeVisible();
+  await page.getByRole("button", { name: "Compare Exhaust fan · Normal speed" }).click();
+  await expect(page.getByText("Exhaust fan · Normal speed")).toBeVisible();
+  await page.getByRole("button", { name: "Start sensing" }).click();
+  await expect(page.getByRole("button", { name: "Begin current measurement" })).toBeEnabled();
+  await page.getByRole("button", { name: "Begin current measurement" }).click();
+  await page.waitForTimeout(80);
+  await page.getByRole("button", { name: "Finish and compare" }).click();
+  await expect(page.getByRole("heading", { name: "Observed deviation evidence" })).toBeVisible();
+  await expect(page.getByText("LIMITED REFERENCE DATA")).toBeVisible();
+  await expect(page.getByText("UNKNOWN / NEEDS CALIBRATION")).toBeVisible();
+  await expect(page.getByText("Not calculated")).toBeVisible();
+  await expect(page.getByText(/health score|fault detected|severity/i)).toHaveCount(0);
+  expect(
+    await page.evaluate(async () => {
+      const request = indexedDB.open("resonant-local-evidence", 2);
+      const database = await new Promise<IDBDatabase>((resolve, reject) => {
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+      const transaction = database.transaction("scans", "readonly");
+      const records = await new Promise<unknown[]>((resolve, reject) => {
+        const getAll = transaction.objectStore("scans").getAll();
+        getAll.onsuccess = () => resolve(getAll.result);
+        getAll.onerror = () => reject(getAll.error);
+      });
+      return { count: records.length, serialized: JSON.stringify(records) };
+    }),
+  ).toMatchObject({ count: 1 });
+  expect(
+    await page.evaluate(async () => {
+      const request = indexedDB.open("resonant-local-evidence", 2);
+      const database = await new Promise<IDBDatabase>((resolve) => {
+        request.onsuccess = () => resolve(request.result);
+      });
+      const transaction = database.transaction("scans", "readonly");
+      return await new Promise<string>((resolve) => {
+        const getAll = transaction.objectStore("scans").getAll();
+        getAll.onsuccess = () => resolve(JSON.stringify(getAll.result));
+      });
+    }),
+  ).not.toMatch(/timeDomain|frequencyDomain/);
+
+  await page.getByRole("button", { name: "Measure again" }).click();
+  await page.getByRole("button", { name: "Start sensing" }).click();
+  await expect(page.getByRole("button", { name: "Begin current measurement" })).toBeEnabled();
+  await page.getByRole("button", { name: "Begin current measurement" }).click();
+  await page.waitForTimeout(80);
+  await page.evaluate(async () => {
+    const request = indexedDB.open("resonant-local-evidence", 2);
+    const database = await new Promise<IDBDatabase>((resolve) => {
+      request.onsuccess = () => resolve(request.result);
+    });
+    const transaction = database.transaction("baselines", "readwrite");
+    const store = transaction.objectStore("baselines");
+    const active = await new Promise<Record<string, unknown>>((resolve) => {
+      const getAll = store.getAll();
+      getAll.onsuccess = () => resolve(getAll.result[0]);
+    });
+    store.put({ ...active, status: "superseded" });
+    await new Promise<void>((resolve) => {
+      transaction.oncomplete = () => resolve();
+    });
+  });
+  await page.getByRole("button", { name: "Finish and compare" }).click();
+  await expect(page.getByRole("alert")).toHaveText("NO MATCHING REFERENCE");
 });

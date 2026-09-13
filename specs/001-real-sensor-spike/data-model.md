@@ -123,3 +123,29 @@ feature. A version is unique within one Machine × Operating-State pair.
 Two source captures are the minimum literal multiple. This validation rule is structural,
 not a scientific adequacy claim. Automatic repeatability and consistency thresholds remain
 `UNKNOWN / NEEDS CALIBRATION`.
+
+## Phase 4 Persistent Entity
+
+### `ScanResult`
+
+| Field | Type | Rule |
+|---|---|---|
+| `id` | string | Non-empty immutable identity |
+| `machineId` | string | Must resolve to the selected machine |
+| `operatingStateId` | string | Must resolve under `machineId` |
+| `baselineId` | string | Active baseline used when the scan was created |
+| `baselineVersion` | positive integer | Must equal the referenced baseline version |
+| `capturedAt` | number | Finite timestamp |
+| `quality` | `valid` | Invalid-quality scans are never persisted |
+| `features` | four finite scalar values | RMS, peak, dominant frequency, dominant bin |
+| `deviations` | four `FeatureDeviation` records | Exact transparent comparison evidence |
+| `captureContext` | structured scalar context | Observed sample rate/window/track metadata only |
+| `compositeSimilarity` | `null` | Unavailable until normalization is calibrated |
+| `calibrationStatus` | `unknown-needs-calibration` | Explicit unresolved composite/threshold state |
+
+Each `FeatureDeviation` retains `baselineMedian`, `baselineMin`, `baselineMax`, `current`,
+`signedDifference`, `absoluteDifference`, and `rangePosition` (`below`, `inside`, or
+`above`). Missing/non-finite values invalidate the result. Native units remain separate.
+
+IndexedDB schema version 2 adds only the `scans` store. Existing schema version 1 records
+remain unchanged. Raw audio and time/frequency-domain arrays remain prohibited.

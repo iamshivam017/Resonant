@@ -32,7 +32,7 @@ Machine
 └── Operating State
     ├── Baseline Session (versioned)
     │   └── Accepted Baseline Measurements
-    └── Future Scans compared only with the active compatible baseline
+    └── Scan evidence compared only with the active compatible baseline
 ```
 
 ## Commissioning workflow
@@ -99,8 +99,21 @@ A change in machine operating state, physical configuration, placement protocol,
 
 Persist feature vectors, quality summaries, metadata, and baseline statistics locally. Do not persist raw audio by default. If export is added, make it explicit, user-initiated, provenance-labeled, and privacy-reviewed.
 
-Implemented persistence uses IndexedDB schema version 1. Recalibration appends a new
-version and retains the former active record as `superseded`.
+Implemented persistence uses additive IndexedDB schema version 2. The original machine,
+state, capture, and baseline stores remain unchanged; version 2 adds `scans`. Recalibration
+appends a new version and retains the former active record as `superseded`.
+
+## Phase 4 comparison use
+
+A current scan resolves one exact active Machine × Operating-State baseline and records
+that baseline's immutable ID and version. A missing, mismatched, superseded, invalid-quality,
+or non-finite input blocks comparison. Historic scan records may continue to reference a
+baseline version that was active when they were created.
+
+The stored scan contains current four-feature summaries, capture context, and transparent
+native-unit deviations only. It contains no raw audio or signal arrays. A two-capture
+reference is labeled `LIMITED REFERENCE DATA`; larger counts are shown without claiming
+adequacy. Scientific baseline sufficiency remains `UNKNOWN / NEEDS CALIBRATION`.
 
 ## Acceptance criteria
 

@@ -91,3 +91,15 @@ telemetry source. Physical acceptance uses a real microphone only.
   returns median plus observed minimum/maximum, and preserves source summaries.
 - Activation requires explicit known-normal and manual-consistency confirmations.
 - Recalibration appends a new version and supersedes prior active versions without deletion.
+
+## Phase 4 Scan Comparison Contract
+
+- Scan collection subscribes to the same capture-session controller and applies the same
+  deterministic acceptance/rejection boundary as baseline capture.
+- Comparison requires an exact active Machine × Operating-State baseline and records its
+  immutable identifier and version.
+- Each feature emits native-unit signed/absolute differences and observed-range position.
+- Missing, non-finite, mismatched, superseded, or invalid-quality evidence produces no result.
+- Composite similarity is `null`; normalization, weights, and severity remain `UNKNOWN /
+  NEEDS CALIBRATION` until physical evidence supports them.
+- Persisted results contain summaries/context only and never raw audio or signal frames.

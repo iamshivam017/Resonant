@@ -121,6 +121,20 @@ before final submission.
 - Shared-device access control and user-facing delete/export remain
   **UNKNOWN / NEEDS VERIFICATION** before broader release.
 
+## Phase 4 local comparison review
+
+- IndexedDB schema version 2 is additive and introduces only `scans`; existing Phase 3
+  stores and records are preserved.
+- Scan writes reconstruct an allowlisted record after finite-number, quality, exact
+  machine/state, baseline ID/version, and active-reference validation.
+- Raw audio, time-domain arrays, and frequency-domain arrays are excluded from scan records.
+- Comparison and rendering are local-only and add no network call, credential, telemetry,
+  external service, or executable user-content path.
+- Persisted records fail closed when required baseline provenance is unavailable.
+
+The Phase 4 changed-tree review is recorded in
+`docs/security/review-2026-09-13-phase4/report.md`; it found no reportable issue.
+
 A private Sites version 2 deployment succeeded at
 <https://resonant.shivam-sot010060.chatgpt.site>. It was built from GitHub revision
 `06c51e56595abac5919623aba44b60189785a010` and Sites source revision

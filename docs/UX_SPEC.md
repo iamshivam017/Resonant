@@ -1,5 +1,15 @@
 # RESONANT UX Specification
 
+## Phase 4 evidence result
+
+An active stored baseline exposes a compact `Compare` action. The comparison screen keeps
+the scientific-instrument language, cyan evidence accents, amber measurement actions,
+compact technical readouts, and visible local-processing status. Results lead with exact
+machine/state and baseline-version context, then four native-unit evidence cards. Each card
+shows current, reference median/range, signed/absolute difference, and observed range
+position. `LIMITED REFERENCE DATA`, `Not calculated`, and `UNKNOWN / NEEDS CALIBRATION`
+remain prominent. No viewport preset or phone brand implies compatibility.
+
 ## Experience goal
 
 RESONANT must feel like a portable engineering instrument: precise, calm, transparent,

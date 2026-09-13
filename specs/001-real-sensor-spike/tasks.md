@@ -235,3 +235,25 @@ T025 error mapping tests || T026 lifecycle failure tests || T027 UI error tests
 - [x] T066 Run Spec Kit convergence and complete formatting, lint, typecheck, tests, build,
   runtime/browser verification, security/diff/secret/junk review, commit, push, remote-SHA
   verification, and supported private deployment update
+
+## Phase 11: Phase 4 Transparent Deviation Evidence
+
+- [x] T068 [P] Add failing pure comparison tests for identical, inside-range, below/above,
+  progressive difference, zero-range, invalid numeric, mismatch, superseded baseline,
+  deterministic repeatability, no NaN/Infinity, and exact version attribution
+- [x] T069 Implement scan/deviation contracts and native-unit comparison logic under
+  app/src/features/scan/ to satisfy T068 without composite normalization or weighting
+- [x] T070 [P] Add failing repository/migration tests for additive scan persistence,
+  relationship validation, reload, invalid-quality rejection, and raw-frame exclusion
+- [x] T071 Upgrade IndexedDB additively to schema version 2 and extend the baseline repository
+  with validated ScanResult persistence to satisfy T070
+- [x] T072 [P] Add failing component tests for exact-reference selection, no-reference block,
+  real-capture rejection, four-feature evidence, limited-reference disclosure, and no score
+- [x] T073 Implement the state-compatible current-scan and evidence-result UI using the
+  existing capture-session controller and scientific-instrument visual language
+- [x] T074 [P] Add browser coverage for scan persistence/version attribution, fail-closed
+  mismatch/quality states, arbitrary mobile widths, and absence of health/composite claims
+- [x] T075 Update condition-scoring, baseline, architecture, PRD, test, security, roadmap,
+  current-phase, decisions, contract, and physical comparison documentation
+- [x] T076 Run Spec Kit convergence and the final applicable validation/security/deployment
+  workflow; keep physical experiments explicit when unavailable; commit, push, and verify SHAs

@@ -185,3 +185,29 @@ remote explanation, benchmark evaluation, and decorative landing-page expansion.
   from production. Browser runtime verification exercises the production UI and storage.
 - Physical fan repeatability remains a separate worksheet result and is never replaced by
   automated fixtures.
+
+## Phase 4 Transparent Deviation Extension
+
+Phase 4 adds a `scan` feature boundary that subscribes to the existing capture-session
+controller; it does not create another microphone, analyser, FFT, or feature path. A
+current accepted summary is compared only with the exact active Machine ×
+Operating-State baseline selected from the Phase 3 repository.
+
+The pure comparison function returns, for each of RMS, peak amplitude, dominant
+frequency, and dominant bin: baseline median, observed min/max, current value, signed
+difference (`current - median`), absolute difference, and `below | inside | above` range
+position. These quantities retain their native units and are not normalized or combined.
+There is no evidence-backed scale floor, weighting scheme, or calibration distribution,
+so composite similarity is deliberately `null` and labeled `UNKNOWN / NEEDS CALIBRATION`.
+Dominant bin is displayed as spectral audit context rather than double-counted.
+
+IndexedDB advances additively from schema version 1 to version 2 by creating a `scans`
+store while preserving all Phase 3 stores. Stored scan records retain scalar feature
+summaries, deviations, capture context, accepted quality, baseline identity/version, and
+timestamp only. Repository reads validate relationships and finite values.
+
+The result surface follows the existing scientific-instrument design and keeps raw
+reference evidence visible. A two-capture source is explicitly `LIMITED REFERENCE DATA`;
+larger counts remain uncalibrated rather than receiving an invented adequacy category.
+Broad regression, physical trials, and deployment validation remain the final Phase 4
+gate; focused deterministic tests still precede comparison and persistence behavior.

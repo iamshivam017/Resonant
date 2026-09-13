@@ -122,3 +122,20 @@ or validation belong here. Proposals remain proposals in their owning document u
 
 - **UNKNOWN / NEEDS VERIFICATION:** Target device/browser results, calibrated quality
   thresholds, baseline sample adequacy, and final benchmark subset.
+
+## ADR-0011: Implement native-unit deviation evidence before composite similarity
+
+- **Date:** 2026-09-13
+- **Status:** Accepted for Phase 4
+- **Context:** Phase 3 produced transparent baselines, but no physical repeatability dataset
+  exists to support normalization, weights, or interpretation thresholds.
+- **Decision:** Compare RMS, peak, dominant frequency, and dominant bin independently using
+  current value, reference median/min/max, signed/absolute difference, and range position.
+  Persist exact active-baseline provenance locally in additive IndexedDB schema version 2.
+  Keep `compositeSimilarity` null and calibration explicitly unknown.
+- **Rationale:** Native-unit evidence is deterministic and auditable without presenting an
+  unsupported cross-unit number as scientific meaning.
+- **Alternatives:** Equal weighting, observed-range division, MAD/z-score normalization,
+  and categorical severity were rejected until physical evidence supports their parameters.
+- **Consequences:** Phase 4 provides a usable evidence result but no condition score,
+  anomaly label, fault claim, or health judgment. Calibration remains future work.

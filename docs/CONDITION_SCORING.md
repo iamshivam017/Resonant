@@ -4,6 +4,21 @@
 
 Define a transparent proposal for comparing a valid scan with its compatible Known-Normal Reference. The output is baseline-relative evidence. It is never percentage machine health, fault diagnosis, remaining life, or a universal threshold.
 
+## Phase 4 implemented boundary
+
+Phase 4 implements comparison evidence, not condition scoring. For RMS, peak amplitude,
+dominant frequency, and dominant bin it reports the active baseline median and observed
+minimum/maximum, the current value, signed difference (`current - median`), absolute
+difference, and whether the current value is below, inside, or above the observed range.
+These native-unit observations are never combined.
+
+`compositeSimilarity` is deliberately `null`, and the interface displays `Not calculated`
+plus `UNKNOWN / NEEDS CALIBRATION`. No weights, MAD scale, range division, cross-unit
+normalization, severity label, health claim, or threshold is implemented. Dominant
+frequency and dominant bin remain visible as two descriptions of the same spectral
+observation and are not double-counted. The formulas below remain research proposals for
+a later evidence-backed calibration phase only.
+
 ## Inputs and preconditions
 
 Scoring receives:

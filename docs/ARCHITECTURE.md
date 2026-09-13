@@ -58,7 +58,8 @@ flowchart LR
 - `app/src/lib/dsp/`: deterministic pure feature calculations and types; no React dependency.
 - Future `app/src/workers/`: CPU-bound aggregation only if the spike proves worker need.
 - Phase 3 implements machine/state and versioned baseline modules under
-  `app/src/features/baseline/`; scan/history modules remain future work.
+  `app/src/features/baseline/`; Phase 4 implements transparent scan evidence under
+  `app/src/features/scan/`; history remains future work.
 
 ### Implemented Phase 3 boundary
 
@@ -68,6 +69,19 @@ sensor session and are discarded after capture-summary derivation. IndexedDB sch
 version 1 contains `machines`, `operatingStates`, `captures`, and `baselines` stores.
 Repository reads and writes validate fields and Machine × Operating-State ownership.
 Activation atomically appends a version and supersedes prior active versions.
+
+### Implemented Phase 4 boundary
+
+`app/src/features/scan/` reuses the existing capture-session controller and Phase 3
+collector rules. It produces one current feature summary, compares it with the exact active
+baseline in native units, validates relationship and numeric integrity, and stores an
+allowlisted `ScanResult`. IndexedDB schema version 2 adds `scans` while preserving all four
+Phase 3 stores. Raw audio and time/frequency-domain arrays do not cross the persistence
+boundary.
+
+The UI renders the four feature deviations and explicit calibration disclosures. There is
+no normalization service, weighting layer, composite score, anomaly classifier, remote
+request, or second DSP path.
 - A future explanation boundary must be server-only and accept structured evidence only; it is not part of the Vite sensor client.
 
 ### Benchmark pipeline

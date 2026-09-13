@@ -1,24 +1,13 @@
 import type { BaselineStorage } from "./repository";
 import type { Baseline, BaselineCapture, BaselineData, Machine, OperatingState } from "./types";
-
-const DATABASE_NAME = "resonant-local-evidence";
-const DATABASE_VERSION = 1;
-const stores = ["machines", "operatingStates", "captures", "baselines"] as const;
-
-function requestValue<T>(request: IDBRequest<T>): Promise<T> {
-  return new Promise((resolve, reject) => {
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(new Error("Local evidence storage request failed"));
-  });
-}
-
-function transactionDone(transaction: IDBTransaction): Promise<void> {
-  return new Promise((resolve, reject) => {
-    transaction.oncomplete = () => resolve();
-    transaction.onerror = () => reject(new Error("Local evidence storage transaction failed"));
-    transaction.onabort = () => reject(new Error("Local evidence storage transaction was aborted"));
-  });
-}
+import {
+  BASELINE_EVIDENCE_STORES,
+  LOCAL_EVIDENCE_DATABASE_NAME,
+  LOCAL_EVIDENCE_SCHEMA_VERSION,
+  requestValue,
+  transactionDone,
+  upgradeLocalEvidenceSchema,
+} from "../storage/indexeddb-schema";
 
 export class IndexedDbBaselineStorage implements BaselineStorage {
   private database?: Promise<IDBDatabase>;
@@ -28,16 +17,15 @@ export class IndexedDbBaselineStorage implements BaselineStorage {
     this.database ??= new Promise<IDBDatabase>((resolve, reject) => {
       let request: IDBOpenDBRequest;
       try {
-        request = this.getFactory().open(DATABASE_NAME, DATABASE_VERSION);
+        request = this.getFactory().open(
+          LOCAL_EVIDENCE_DATABASE_NAME,
+          LOCAL_EVIDENCE_SCHEMA_VERSION,
+        );
       } catch {
         reject(new Error("Local evidence storage is unavailable in this browser"));
         return;
       }
-      request.onupgradeneeded = () => {
-        for (const store of stores)
-          if (!request.result.objectStoreNames.contains(store))
-            request.result.createObjectStore(store, { keyPath: "id" });
-      };
+      request.onupgradeneeded = () => upgradeLocalEvidenceSchema(request.result);
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(new Error("Local evidence storage could not be opened"));
       request.onblocked = () =>
@@ -48,7 +36,7 @@ export class IndexedDbBaselineStorage implements BaselineStorage {
 
   async readAll(): Promise<BaselineData> {
     const database = await this.open();
-    const transaction = database.transaction(stores, "readonly");
+    const transaction = database.transaction(BASELINE_EVIDENCE_STORES, "readonly");
     const done = transactionDone(transaction);
     const [machines, operatingStates, captures, baselines] = await Promise.all([
       requestValue(transaction.objectStore("machines").getAll() as IDBRequest<Machine[]>),
