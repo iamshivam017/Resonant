@@ -31,4 +31,23 @@ describe("classifyFrameQuality", () => {
 
     expect(quality).toBe("degraded");
   });
+
+  it("identifies an exact-zero finite frame as silent rather than usable", () => {
+    expect(
+      classifyFrameQuality(
+        new Float32Array([0, -0, 0, 0]),
+        new Float32Array([-100, -100]),
+        100,
+        110,
+      ),
+    ).toBe("silent");
+  });
+
+  it.each([
+    new Float32Array([0, 1, 0]),
+    new Float32Array([0, -1, 0]),
+    new Float32Array([0, 1.1, 0]),
+  ])("identifies digital full-scale samples as clipping evidence", (samples) => {
+    expect(classifyFrameQuality(samples, new Float32Array([-80, -20]), 100, 110)).toBe("clipping");
+  });
 });

@@ -15,8 +15,25 @@ export function classifyFrameQuality(
 ): FrameQuality {
   if (observedAt - capturedAt > FRAME_STALE_AFTER_MS) return "stale";
   if (!timeDomain.length || frequencyDomain.length < 2) return "insufficient";
-  if (!Array.from(timeDomain).every(Number.isFinite)) return "insufficient";
-  if (!Array.from(frequencyDomain).some(Number.isFinite)) return "insufficient";
+
+  let isSilent = true;
+  let hasFullScaleSample = false;
+  for (const sample of timeDomain) {
+    if (!Number.isFinite(sample)) return "insufficient";
+    if (sample !== 0) isSilent = false;
+    if (Math.abs(sample) >= 1) hasFullScaleSample = true;
+  }
+
+  let hasFiniteSpectrumValue = false;
+  for (const sample of frequencyDomain) {
+    if (Number.isFinite(sample)) {
+      hasFiniteSpectrumValue = true;
+      break;
+    }
+  }
+  if (!hasFiniteSpectrumValue) return "insufficient";
+  if (isSilent) return "silent";
+  if (hasFullScaleSample) return "clipping";
   if (context.signalProcessingActive) return "degraded";
   return "valid";
 }

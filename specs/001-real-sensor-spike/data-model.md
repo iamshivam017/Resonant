@@ -25,6 +25,8 @@ Capability never claims permission is granted before a request resolves.
 | `trackSettings` | Effective device/browser settings | Copied only from observed track settings; missing values stay unknown |
 | `audioSampleRate` | Effective analysis sample rate | Finite positive observed value |
 | `analysisWindowSize` | Current transform size | Supported positive power of two |
+| `captureDurationMs` | Elapsed active capture time at the current frame | Non-negative difference between observed monotonic timestamps |
+| `observedUpdateCadenceHz` | Observed analysis callbacks per second | Positive finite value derived only from two advancing frame timestamps; otherwise unknown |
 | `error` | Typed failure and recovery guidance | Present only for terminal/degraded failure states |
 
 ### Session states
@@ -33,7 +35,7 @@ Capability never claims permission is granted before a request resolves.
 
 From a non-terminal state, the session may enter `denied`, `unsupported`,
 `interrupted`, or `failed`. An active session may report frame quality as `valid`,
-`degraded`, `insufficient`, or `stale` without inventing a terminal success. A usable
+`degraded`, `insufficient`, `silent`, `clipping`, or `stale` without inventing a terminal success. A usable
 frame is `degraded` when the browser reports that acoustic processing remains enabled;
 this is an observed capture condition, not a calibrated signal threshold.
 
@@ -47,7 +49,7 @@ feature observations and release every owned resource.
 | `capturedAt` | Monotonic observation time | Must advance for a frame to be fresh |
 | `timeDomain` | Current normalized digital samples | Finite values from the active stream |
 | `frequencyDomain` | Current spectrum-bin magnitudes | Finite values from the same analysis interval |
-| `quality` | `valid`, `degraded`, `insufficient`, or `stale` | Non-valid quality suppresses interpreted output |
+| `quality` | `valid`, `degraded`, `insufficient`, `silent`, `clipping`, or `stale` | Non-valid quality suppresses interpreted output |
 
 Frames are bounded, ephemeral, and never persisted or transmitted by this feature.
 
@@ -61,6 +63,11 @@ Frames are bounded, ephemeral, and never persisted or transmitted by this featur
 | `dominantFrequencyHz` | Center frequency of the strongest eligible bin | Derived from observed sample rate and transform size |
 | `binResolutionHz` | Frequency width represented by one bin | Observed sample rate divided by transform size |
 | `freshness` | Whether values belong to the current active stream | Must be current before display as live evidence |
+
+`silent` means every sample in a non-empty finite time-domain frame is exactly zero.
+`clipping` means at least one sample reaches positive or negative digital full scale.
+Neither state is a calibrated assessment of low signal, SNR, environmental stability, or
+machine condition.
 
 The dominant bin is evidence of an observed spectrum peak, not proof of a mechanical
 fundamental, fault frequency, diagnosis, or health percentage.

@@ -17,7 +17,7 @@ signing and distribution scope; prerecorded uploads cannot prove live sensing.
 ## Decision 2: Use the browser analyser for the spike
 
 **Decision**: Connect the live stream to a non-audible analysis graph and use its
-time-domain and frequency-domain frames for Canvas visualization and strongest-bin
+time-domain and frequency-domain frames for Canvas visualization and dominant-bin
 evidence.
 
 **Rationale**: `AnalyserNode` exposes current time and frequency data without modifying

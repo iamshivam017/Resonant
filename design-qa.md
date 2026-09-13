@@ -13,7 +13,7 @@
 
 ## Full-view comparison evidence
 
-The normalized side-by-side comparison preserves the selected scientific strip-chart hierarchy: graphite instrument surface, tracked RESONANT wordmark, explicit yellow active state, waveform then spectrum, strongest-bin emphasis, compact capture context, fine divider/grid treatment, and a full-width yellow stop action. The protected mobile runtime owns the status bar, rounded screen crop, and home indicator.
+The normalized side-by-side comparison preserves the selected scientific strip-chart hierarchy: graphite instrument surface, tracked RESONANT wordmark, explicit yellow active state, waveform then spectrum, dominant-spectral-peak emphasis, compact capture context, fine divider/grid treatment, and a full-width yellow stop action. The protected mobile runtime owns the status bar, rounded screen crop, and home indicator.
 
 ## Required fidelity surfaces
 
@@ -21,7 +21,7 @@ The normalized side-by-side comparison preserves the selected scientific strip-c
 - Spacing and layout rhythm: section order, plot proportions, rules, two-column measurement band, margins, tap target, and vertical rhythm match the normalized source without horizontal overflow.
 - Colors and visual tokens: graphite, near-white, steel-gray rules, electric-blue traces, yellow active/action state, and orange-red error rule map directly to documented tokens and preserve contrast.
 - Image quality and assets: the target contains no app-owned raster imagery. Functional plots remain Canvas renderers; interface icons come from Radix. No placeholder imagery or custom SVG artwork is used.
-- Copy and content: lifecycle, privacy, uncalibrated amplitude, strongest-bin, sample-rate, transform-size, and bin-resolution labels are truthful. The concept-preview disclaimer is intentionally absent from the running product.
+- Copy and content: lifecycle, privacy, uncalibrated amplitude, dominant-spectral-peak, sample-rate, transform-size, and bin-resolution labels are truthful. The concept-preview disclaimer is intentionally absent from the running product.
 - Accessibility and behavior: semantic headings, live lifecycle text, alert announcements, Canvas labels/captions, visible focus, 48-pixel primary control, reduced motion, and non-color state copy are present.
 
 ## Focused region comparison

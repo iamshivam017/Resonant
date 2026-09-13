@@ -32,7 +32,7 @@ accepts the remaining risk. P0 work preempts P1/P2 work.
 
 - **Objective:** Answer whether the target phone/browser can capture and visualize useful live acoustic evidence.
 - **Tasks:** Select one design direction; scaffold selected web stack; implement explicit permission,
-  lifecycle/cleanup, waveform, spectrum, strongest-bin/RMS/peak context, and typed failures through TDD;
+  lifecycle/cleanup, waveform, spectrum, dominant-peak/RMS/peak context, and typed failures through TDD;
   deploy HTTPS; perform physical trials.
 - **Files/modules:** `src/app/`, `src/features/sensor/`, `src/lib/dsp/`, `tests/`, package/build configs,
   `specs/001-real-sensor-spike/`.

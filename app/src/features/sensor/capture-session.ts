@@ -44,10 +44,13 @@ export interface CaptureSessionController {
 function observeTrackSettings(settings: MediaTrackSettings): ObservedTrackSettings {
   const booleanSetting = (value: string | boolean | undefined) =>
     typeof value === "boolean" ? value : undefined;
+  const implementationSettings = settings as MediaTrackSettings & { latency?: unknown };
+  const latency = implementationSettings.latency;
   return {
     sampleRate: settings.sampleRate,
     sampleSize: settings.sampleSize,
     channelCount: settings.channelCount,
+    latency: typeof latency === "number" && Number.isFinite(latency) ? latency : undefined,
     autoGainControl: booleanSetting(settings.autoGainControl),
     echoCancellation: booleanSetting(settings.echoCancellation),
     noiseSuppression: booleanSetting(settings.noiseSuppression),
@@ -69,6 +72,7 @@ export function createCaptureSession(
   let startPromise: Promise<void> | undefined;
   let stopPromise: Promise<void> | undefined;
   let endedListener: (() => void) | undefined;
+  let previousCapturedAt: number | undefined;
 
   const emit = (next: CaptureSessionSnapshot) => {
     snapshot = next;
@@ -91,6 +95,14 @@ export function createCaptureSession(
     analyser.getFloatTimeDomainData(timeDomain);
     analyser.getFloatFrequencyData(frequencyDomain);
     const capturedAt = dependencies.now();
+    const startedAt = snapshot.startedAt;
+    const captureDurationMs =
+      startedAt === undefined ? undefined : Math.max(0, capturedAt - startedAt);
+    const frameIntervalMs =
+      previousCapturedAt === undefined ? undefined : capturedAt - previousCapturedAt;
+    const observedUpdateCadenceHz =
+      frameIntervalMs !== undefined && frameIntervalMs > 0 ? 1_000 / frameIntervalMs : undefined;
+    previousCapturedAt = capturedAt;
     const quality = classifyFrameQuality(
       timeDomain,
       frequencyDomain,
@@ -125,6 +137,8 @@ export function createCaptureSession(
         quality,
       },
       observation,
+      captureDurationMs,
+      observedUpdateCadenceHz,
     });
     animationFrame = dependencies.requestFrame(() => sample(sessionId));
   };
@@ -149,6 +163,7 @@ export function createCaptureSession(
     context = undefined;
     stream = undefined;
     track = undefined;
+    previousCapturedAt = undefined;
   };
 
   const start = () => {
@@ -161,7 +176,18 @@ export function createCaptureSession(
 
     startPromise = (async () => {
       const id = dependencies.makeId();
-      update({ id, state: "requesting-permission", error: undefined, frame: undefined });
+      update({
+        id,
+        state: "requesting-permission",
+        error: undefined,
+        frame: undefined,
+        observation: undefined,
+        trackSettings: undefined,
+        audioSampleRate: undefined,
+        analysisWindowSize: undefined,
+        captureDurationMs: undefined,
+        observedUpdateCadenceHz: undefined,
+      });
       const supported = dependencies.mediaDevices.getSupportedConstraints();
       const audio: MediaTrackConstraints = { channelCount: 1 };
       if (supported.echoCancellation) audio.echoCancellation = false;
@@ -220,6 +246,8 @@ export function createCaptureSession(
           stoppedAt: dependencies.now(),
           frame: undefined,
           observation: undefined,
+          captureDurationMs: undefined,
+          observedUpdateCadenceHz: undefined,
           error,
         });
       }

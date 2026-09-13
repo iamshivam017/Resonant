@@ -42,7 +42,7 @@ permission request and starts no capture.
 | `interrupted` | Live input ended unexpectedly | No | Retry |
 | `failed` | Capture or processing failed | No | Retry when safe |
 
-An `active` session with degraded or insufficient input displays measured capture
+An `active` session with degraded, insufficient, silent, or clipping input displays measured capture
 context plus the specific quality state, but it MUST NOT display a dominant frequency
 as reliable. `degraded` means a usable frame was observed while the browser reported
 acoustic processing remained active; it does not imply a calibrated quality threshold.
@@ -50,10 +50,17 @@ acoustic processing remained active; it does not imply a calibrated quality thre
 ## Live frame contract
 
 A render frame may include time-domain samples, spectrum magnitudes, RMS, peak,
-dominant-bin center frequency, bin resolution, observed sample rate, and transform
-size. Dominant-bin selection MUST receive its eligible range as explicit configuration;
+dominant-bin center frequency, bin resolution, observed track settings, analysis sample
+rate, transform size, elapsed capture duration, and observed update cadence. Timing values
+MUST come from advancing monotonic frame timestamps; unavailable timing remains unknown.
+Dominant-bin selection MUST receive its eligible range as explicit configuration;
 the spike excludes DC with `firstEligibleBin: 1`. The surface MUST label digital
-amplitude as uncalibrated and dominant frequency as an observed spectrum peak.
+amplitude as uncalibrated and use `Dominant Spectral Peak` as the primary frequency label.
+
+An exact-zero non-empty time frame produces `silent`; a sample whose absolute value is at
+least one produces `clipping`. Both suppress reliable dominant-peak output. Low signal,
+SNR, instability, and acceptable-performance classification remain `UNKNOWN / NEEDS
+CALIBRATION` and MUST NOT be inferred from a placeholder threshold.
 
 No frame may include a baseline similarity, anomaly, condition status, diagnosis, or
 machine-health percentage in this feature.

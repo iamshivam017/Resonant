@@ -71,6 +71,28 @@ and insufficient-signal paths and confirm that none presents live measurements a
 3. **Given** an active stream is interrupted, **When** new valid input stops arriving, **Then** live results become unavailable or degraded rather than freezing as credible current data.
 4. **Given** captured input is insufficient for a useful frequency observation, **When** features are evaluated, **Then** the product labels the observation as insufficient instead of inventing or overstating a result.
 
+---
+
+### User Story 4 - Trust Signal Quality and Timing (Priority: P2)
+
+As a technical tester, I want deterministic signal-quality and timing observations so
+that I can distinguish usable live evidence from exact silence, digital clipping, or an
+unmeasured performance assumption.
+
+**Why this priority**: The sensor/DSP proof is credible only when obviously unusable
+frames fail closed and timing values describe the observed session rather than a target.
+
+**Independent Test**: Feed hand-checkable silent, full-scale, and ordinary finite frames
+through the quality boundary, then observe a live session long enough to produce two
+frame timestamps and confirm the displayed quality, duration, and cadence values.
+
+**Acceptance Scenarios**:
+
+1. **Given** an active frame whose finite time-domain samples are all exactly zero, **When** quality is evaluated, **Then** the frame is identified as no usable input and no dominant spectral peak is presented.
+2. **Given** an active frame containing a sample at digital full scale, **When** quality is evaluated, **Then** clipping is identified with safe repositioning guidance and no dominant spectral peak is presented as reliable.
+3. **Given** two or more live frames with advancing monotonic timestamps, **When** the tester inspects the readout, **Then** elapsed capture duration and observed analysis cadence are derived from those timestamps and shown with units.
+4. **Given** a quality characteristic that requires empirical thresholds, **When** the tester reads the evidence record, **Then** the characteristic is marked `MANUAL DEVICE VERIFICATION REQUIRED` or `UNKNOWN / NEEDS CALIBRATION` rather than classified from an invented limit.
+
 ### Edge Cases
 
 - Permission is dismissed without an explicit allow or deny decision.
@@ -82,6 +104,9 @@ and insufficient-signal paths and confirm that none presents live measurements a
 - Input is silent, clipped, extremely noisy, or too brief to support a stable feature.
 - The device reports capture settings that differ from the requested settings.
 - A stale visualization or feature value remains after capture ends or fails.
+- A non-empty frame contains only exact digital zeros.
+- One or more samples reach positive or negative digital full scale.
+- Two sampled frames receive the same or non-advancing monotonic timestamp.
 
 ## Requirements *(mandatory)*
 
@@ -101,6 +126,13 @@ and insufficient-signal paths and confirm that none presents live measurements a
 - **FR-012**: The product MUST NOT persist or transmit raw microphone input as part of this spike.
 - **FR-013**: The product MUST provide a documented physical-device verification procedure that records device, browser, permission outcome, observed behavior, and limitations without recording invented results.
 - **FR-014**: The feature MUST remain bounded to microphone feasibility; machine inventory, commissioning, anomaly scoring, history, IMU fusion, remote explanation, and benchmark evaluation are outside this slice.
+- **FR-015**: The product MUST identify a non-empty finite frame containing only exact digital zeros as no usable input and suppress interpreted spectral output.
+- **FR-016**: The product MUST identify samples at digital full scale as clipping evidence, show specific repositioning guidance, and suppress the dominant spectral peak as reliable evidence.
+- **FR-017**: During active capture, the product MUST expose elapsed capture duration derived from the session's observed monotonic timestamps.
+- **FR-018**: After two advancing live frame timestamps exist, the product MUST expose the observed analysis cadence with units and MUST NOT present it as an acceptable-performance judgment.
+- **FR-019**: The primary user-facing frequency label MUST be `Dominant Spectral Peak`; FFT/bin terminology MAY appear as secondary technical context.
+- **FR-020**: Low-signal, signal-to-noise, instability, acceptable-performance, and machine-condition thresholds MUST remain `UNKNOWN / NEEDS CALIBRATION` or `MANUAL DEVICE VERIFICATION REQUIRED` until physical evidence supports them.
+- **FR-021**: The physical verification procedure MUST include a device/browser compatibility matrix and ambient, repeated same-state fan, and changed-state fan worksheets without prefilled measurements.
 
 ### Key Entities
 
@@ -120,6 +152,9 @@ and insufficient-signal paths and confirm that none presents live measurements a
 - **SC-005**: Review of the production sensing path finds zero prerecorded, random, generated, or cached values used as live telemetry.
 - **SC-006**: In every exercised denial, unsupported, interruption, and insufficient-input case, the product makes no successful measurement or machine-condition claim.
 - **SC-007**: A new contributor can reproduce the physical verification procedure from project documentation and record an evidence-based pass, fail, or `UNKNOWN / NEEDS VERIFICATION` result without undocumented setup knowledge.
+- **SC-008**: Every exact-silent and digital-full-scale deterministic fixture produces its corresponding explicit quality state and no reliable dominant spectral peak.
+- **SC-009**: In an active session with at least two advancing frame timestamps, capture duration and observed cadence are displayed from those timestamps with explicit units.
+- **SC-010**: The compatibility matrix and all four ambient/fan trials contain only observed results or explicit manual-verification markers.
 
 ## Assumptions
 

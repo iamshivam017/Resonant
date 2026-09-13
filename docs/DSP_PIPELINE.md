@@ -72,23 +72,23 @@ The first spike must determine whether `AnalyserNode` is adequate for repeatable
 
 Window length, overlap, measurement duration, band boundaries, and aggregation intervals are **UNKNOWN / NEEDS VERIFICATION** on the target phone and fan. They must be selected from measured resolution, latency, CPU, and repeatability—not aesthetics.
 
-## Candidate acoustic features
+## Phase 2 acoustic features
 
 | Feature | Why it may help | Selection status |
 |---|---|---|
-| Time RMS | Overall signal energy change | P0 spike; device-relative, not calibrated SPL |
-| Peak absolute amplitude | Clipping/impulse context | P0 quality evidence |
-| Crest factor | Change in impulsiveness relative to RMS | P0 candidate after low-signal guard |
-| Dominant spectral bins | Visible tonal/state shifts | P0 spike; report bin resolution |
-| Spectral centroid | Distribution shift toward higher/lower frequencies | P0 candidate |
-| Spectral bandwidth | Spread around centroid | P0 candidate |
-| Spectral rolloff | Upper distribution movement | P1 after percentile choice is documented |
-| Band-energy ratios | Coarse shape robust to absolute level changes | P0/P1 after bands derive from actual resolution/context |
-| Spectral flux | Change between adjacent spectra | P1; sensitive to timing and state transitions |
-| Harmonic ratios | Rotating-machine periodic structure | P1 only when RPM/fundamental evidence exists |
-| MFCCs | Compact spectral-envelope representation | Benchmark experiment only until interpretability/value is shown |
+| Time RMS | Overall digital signal energy observation | Selected; device-relative, not calibrated SPL |
+| Peak absolute amplitude | Digital full-scale clipping evidence | Selected |
+| Dominant spectral peak/bin | Visible tonal shift observation | Selected; report bin index and resolution |
+| Spectral centroid | Distribution shift toward higher/lower frequencies | Deferred until physical repeatability evidence exists |
+| Spectral bandwidth | Spread around centroid | Deferred until physical repeatability evidence exists |
+| Spectral flux | Change between adjacent spectra | Deferred until physical repeatability evidence exists |
+| Band-energy features | Coarse spectral-shape observation | Deferred until physical repeatability evidence exists |
+| All other derived features | Additional signal summaries | Deferred until physical repeatability evidence justifies selection |
 
-Do not include a feature unless ablation/repeatability evidence shows value. RMS here is normalized digital amplitude, not physical sound pressure without microphone calibration.
+Do not include another feature unless physical repeatability evidence shows value. RMS and
+peak are normalized digital amplitudes, not physical sound pressure without microphone
+calibration. The dominant spectral peak is the strongest eligible analyser bin, not a
+machine fundamental or fault frequency.
 
 ## Candidate motion features
 
@@ -108,19 +108,26 @@ Motion readings require recorded coordinate convention, requested and observed i
 - Permission result and mapped DOM exception.
 - Track starts and remains live.
 - Non-empty finite sample buffers.
-- Digital clipping evidence from samples approaching full-scale; the exact consecutive-sample policy must be tested.
-- Measured duration and interruption.
+- Exact no-input evidence when every time-domain sample is exactly zero.
+- Digital full-scale clipping evidence when any time-domain sample has absolute amplitude
+  greater than or equal to `1.0`.
+- Capture duration from the session's monotonic timestamps.
+- Observed update cadence from the positive interval between consecutive captured frames.
 - Audio context state and actual sample rate.
 
 ### Checks requiring calibration
 
-- Minimum usable signal relative to device noise floor.
+- Non-zero but low signal relative to the device noise floor.
+- Signal-to-noise ratio.
 - Excessive environmental noise or transient interference.
 - Placement movement.
-- Sampling/jitter stability for motion.
+- Update-cadence stability and acceptable performance.
 - Minimum measurement duration and acceptable repeatability.
+- Any machine-condition interpretation.
 
-Until calibrated, these checks report observations and **do not silently gate or score**. When a required check fails, the output is `Measurement quality insufficient — reposition device and retry.` with a specific reason and no condition score.
+These threshold-dependent behaviors remain **UNKNOWN / NEEDS CALIBRATION**. Physical
+compatibility and repeatability remain **MANUAL DEVICE VERIFICATION REQUIRED**. Phase 2
+does not silently gate, score, or infer condition from these unresolved observations.
 
 ## Online/offline parity
 

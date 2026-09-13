@@ -83,6 +83,25 @@ or validation belong here. Proposals remain proposals in their owning document u
 - **Alternatives:** Overwriting the protected runtime would violate its verification lock; building a separate Next.js UI would duplicate the selected implementation and make design QA inapplicable.
 - **Consequences:** The spike uses Vite rather than Next.js and commands run from `app/`. The included worker is hosting infrastructure only and receives no sensor data. The integrated MVP framework will be reconsidered after the spike based on deployment/provider needs rather than assumed now.
 
+## ADR-0009: Bound Phase 2 quality evidence to deterministic observations
+
+- **Date:** 2026-09-13
+- **Status:** Accepted
+- **Context:** Phase 2 needs actionable capture feedback without inventing device- or
+  machine-dependent thresholds before physical calibration.
+- **Decision:** Preserve the `AnalyserNode` plus Canvas architecture. Treat a frame as
+  silent only when every time-domain sample is exactly zero and as clipping when any sample
+  reaches digital full scale (`abs(sample) >= 1.0`). Report monotonic capture duration and
+  positive-interval observed cadence without rating them. Limit features to RMS, peak
+  amplitude, and the dominant eligible spectral peak/bin.
+- **Rationale:** These observations are deterministic from the captured frame and session
+  clock; low-signal, SNR, stability, performance, and machine-condition decisions require
+  evidence that does not yet exist.
+- **Consequences:** Threshold-dependent behavior is labeled `UNKNOWN / NEEDS CALIBRATION`;
+  phone/browser and ambient/fan repeatability are `MANUAL DEVICE VERIFICATION REQUIRED`.
+  Centroid, bandwidth, flux, band-energy, and other derived features remain deferred.
+
 ## Open decisions
 
-- **UNKNOWN / NEEDS VERIFICATION:** Deployment provider, target device/browser matrix, calibrated quality thresholds, baseline sample adequacy, and final benchmark subset.
+- **UNKNOWN / NEEDS VERIFICATION:** Target device/browser results, calibrated quality
+  thresholds, baseline sample adequacy, and final benchmark subset.

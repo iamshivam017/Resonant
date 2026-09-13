@@ -44,7 +44,10 @@ unless the production change is reverted and the failure is observed.
 - Browser error categories map to distinct safe states.
 - Stop/unmount/interruption releases every owned resource and invalidates old frames.
 - RMS, peak, bin resolution, and dominant-bin calculations pass known mathematical fixtures.
-- Non-finite, empty, silent/insufficient, and stale frames do not produce valid evidence.
+- Non-finite, empty, exact-zero silent, digital full-scale clipping, and stale frames do
+  not produce valid frequency evidence.
+- Monotonic capture duration and positive-interval update cadence are derived without an
+  invented acceptability threshold; non-advancing timestamps produce no cadence value.
 - Component text and controls match ready/requesting/active/stopped/error states.
 - Responsive surface retains accessible actions and text summaries.
 - Production build contains no fake telemetry path or secret value.
@@ -54,13 +57,18 @@ unless the production change is reverted and the failure is observed.
 - Permission outcome on each declared device/browser.
 - Actual track and audio-context settings.
 - Quiet → louder → quiet waveform response.
-- Spectrum and strongest-bin change for two physically produced sounds.
+- Spectrum and dominant-spectral-peak change for two physically produced sounds.
 - Stable/repeatable direction across documented trials.
 - Stop and navigation release the microphone.
 - At least one real failure/recovery path.
 - HTTPS deployment path, not only desktop localhost.
 
 Physical results remain `UNKNOWN / NEEDS VERIFICATION` until observed.
+
+The repository's Chromium run uses controlled browser fixtures for deterministic lifecycle
+coverage. It is not physical-device evidence. A separate interactive desktop browser run
+may establish that the real runtime reaches capture and renders observed microphone values,
+but it does not establish target phone/browser compatibility or repeatability.
 
 ## Baseline and scoring tests
 
@@ -127,9 +135,8 @@ verified pre-existing failures. Never reinterpret an unavailable physical test a
 
 ## TODO
 
-- Bind commands and CI jobs after the package/tooling scaffold exists.
-- Define device matrix and calibrated tolerances from measured runs.
-- Add feature-specific traceability from requirements to tests in Spec Kit tasks.
+- Define calibrated tolerances only from measured device trials.
+- Add CI only when repository policy and useful remote execution are available.
 
 ## UNKNOWN / NEEDS VERIFICATION
 

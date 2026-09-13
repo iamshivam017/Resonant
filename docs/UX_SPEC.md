@@ -52,7 +52,7 @@ baseline compatibility pass.
 4. Requesting and initializing states show progress without invented values.
 5. Active capture makes microphone use unmistakable and exposes stop control.
 6. Waveform and spectrum occupy the primary visual field; measured context and the
-   strongest observed bin support interpretation.
+   dominant spectral peak and secondary FFT-bin detail support interpretation.
 7. Insufficient input suppresses overstated frequency evidence and suggests recovery.
 8. Stop, navigation, interruption, or error clears live evidence and releases capture.
 
@@ -149,7 +149,7 @@ CSS viewport and compared with the selected source. The final combined compariso
 adapter strictly for layout QA and is not presented as physical sensor evidence.
 
 The implementation intentionally derives displayed sampling context from the active
-browser graph, suppresses spectrum/strongest-bin output for insufficient frames, and
+browser graph, suppresses spectrum/dominant-peak output for insufficient frames, and
 omits the source image's concept-preview disclaimer. The plot hierarchy, quality rail,
 yellow capture state, blue trace, measurement band, and error treatment match the
 selected direction without adding calibrated quality thresholds.

@@ -8,8 +8,8 @@
 
 Build the smallest trustworthy microphone-first vertical slice inside the selected
 Product Design Scientific Strip Chart mobile runtime: explicit permission,
-live real-audio lifecycle, waveform, spectrum, dominant-bin evidence, actual capture
-settings, and honest degraded/failure states. Implement it as a single responsive web
+live real-audio lifecycle, waveform, spectrum, dominant spectral-peak evidence, actual
+capture settings, deterministic silent/clipping states, and observed timing. Implement it as a single responsive web
 application with browser-only sensing and processing. Keep raw audio ephemeral and
 local. Automated tests verify deterministic state and DSP behavior; a documented
 physical-device run is the only evidence that real sensor acceptance criteria pass.
@@ -28,7 +28,7 @@ physical-device run is the only evidence that real sensor acceptance criteria pa
 
 **Project Type**: Self-contained React/Vite mobile web application under `app/`, using the protected Product Design runtime
 
-**Performance Goals**: Smooth live visualization with a target of at least 30 visual updates per second on the declared demo device; feature summaries update without blocking permission, stop, or error controls
+**Performance Goals**: Measure the observed analysis cadence and responsiveness on the declared demo device without treating an uncalibrated target as a pass/fail threshold
 
 **Constraints**: Real input only in production/demo paths; explicit user gesture; no raw-audio persistence or transmission; no client secrets; stop all tracks and processing loops on exit; no machine-health or anomaly claim
 
@@ -103,6 +103,26 @@ app/
 app-owned `Prototype` and renderers. Pure DSP helpers accept typed arrays plus explicit
 sample rate and analysis settings. Canvas owns high-rate drawing; React receives only
 state and low-rate summaries. Defer workers until measured evidence justifies them.
+
+## Phase 2 Quality and Timing Extension
+
+- Keep the browser `AnalyserNode` and Canvas hot path. No worker or custom FFT is justified
+  before physical repeatability evidence exists.
+- Classify a non-empty finite time-domain frame as `silent` only when every sample is
+  exactly zero. This is a deterministic observation, not a calibrated low-signal limit.
+- Classify a frame as `clipping` when at least one time-domain sample reaches digital full
+  scale (`abs(sample) >= 1`). Do not infer analogue microphone clipping below full scale.
+- Derive elapsed duration from the active session start and current monotonic frame time.
+  Derive observed cadence only from two advancing frame timestamps; a missing or
+  non-advancing interval stays unknown.
+- Display track sample rate and channel count only when reported by the active track.
+  Keep the audio-context sample rate and FFT size as separate analysis context.
+- Keep RMS, peak amplitude, and dominant spectral peak as the only selected features.
+  Centroid, bandwidth, flux, band energy, SNR, low-signal, and instability classification
+  remain deferred pending physical evidence.
+- The application does not configure a separate FFT window or overlap in this extension;
+  those controls remain browser-owned and `UNKNOWN / NEEDS CALIBRATION` for a later
+  reproducible DSP phase.
 
 ## Complexity Tracking
 

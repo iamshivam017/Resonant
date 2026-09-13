@@ -44,7 +44,7 @@ npm run dev
 2. Confirm the initial surface says the microphone is off and requests no permission.
 3. Start sensing and grant permission.
 4. Confirm the active indicator, waveform, spectrum, observed sample rate, transform
-   size, bin resolution, RMS/peak context, and strongest-bin output appear.
+   size, bin resolution, RMS/peak context, and `Dominant Spectral Peak` output appear.
 5. Stop sensing and confirm the browser's microphone-use indicator turns off and live
    values are cleared or labeled stale.
 
@@ -69,6 +69,59 @@ Leave any unobserved item as `UNKNOWN / NEEDS VERIFICATION`.
 | Stop releases microphone | UNKNOWN / NEEDS VERIFICATION |
 | Exercised failure state and recovery | UNKNOWN / NEEDS VERIFICATION |
 | Observed limitations | UNKNOWN / NEEDS VERIFICATION |
+
+## Device and browser compatibility matrix
+
+Record only an observed run. Automated fixtures do not establish microphone compatibility.
+
+| Device / browser | Microphone | Waveform | Spectrum | Quality/timing | Overall result |
+|---|---|---|---|---|---|
+| Desktop Chromium (automated fixtures only) | MANUAL DEVICE VERIFICATION REQUIRED | Automated rendering PASS; real input unverified | Automated rendering PASS; real input unverified | Deterministic tests only | MANUAL DEVICE VERIFICATION REQUIRED |
+| Desktop browser with real microphone | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED |
+| Android Chrome | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED |
+| iOS Safari | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED |
+
+## Ambient and fan experiment worksheet
+
+Use the same safe fan, phone, browser, placement protocol, and approximate measurement
+duration for Tests B and C. Test D changes only the fan's normal operating speed. Never
+obstruct blades, damage equipment, or label the change as a fault.
+
+### Run context
+
+| Field | Recorded value |
+|---|---|
+| Date/time | MANUAL DEVICE VERIFICATION REQUIRED |
+| Git commit and deployment version | MANUAL DEVICE VERIFICATION REQUIRED |
+| Device / OS | MANUAL DEVICE VERIFICATION REQUIRED |
+| Browser / version | MANUAL DEVICE VERIFICATION REQUIRED |
+| Phone placement and distance | MANUAL DEVICE VERIFICATION REQUIRED |
+| Audio-context sample rate | MANUAL DEVICE VERIFICATION REQUIRED |
+| Reported track sample rate / channels | MANUAL DEVICE VERIFICATION REQUIRED |
+| FFT size / bin resolution | MANUAL DEVICE VERIFICATION REQUIRED |
+| Observed update cadence | MANUAL DEVICE VERIFICATION REQUIRED |
+
+### Measurements
+
+| Test | Physical state | RMS | Peak amplitude | Dominant spectral peak | Quality | Observation |
+|---|---|---|---|---|---|---|
+| A — Ambient | Ordinary room/background | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | Confirm pipeline activity only |
+| B — Fan speed 1 | Safe fixed operating speed | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | No fault claim |
+| C — Same fan / same speed | Repeat of Test B | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | Compare direction and variability; identical values are not expected |
+| D — Operating state change | Same fan at another normal speed | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | Label only `OPERATING STATE CHANGE` |
+
+### Quality and performance observations
+
+| Evidence | Recorded value |
+|---|---|
+| Exact no-input/silent state exercised | MANUAL DEVICE VERIFICATION REQUIRED |
+| Digital full-scale clipping state exercised safely | MANUAL DEVICE VERIFICATION REQUIRED |
+| Low-signal threshold | UNKNOWN / NEEDS CALIBRATION |
+| Signal-to-noise threshold | UNKNOWN / NEEDS CALIBRATION |
+| Instability threshold | UNKNOWN / NEEDS CALIBRATION |
+| Acceptable cadence/responsiveness threshold | UNKNOWN / NEEDS CALIBRATION |
+| Stop releases microphone indicator | MANUAL DEVICE VERIFICATION REQUIRED |
+| Memory growth / long-task observations | MANUAL DEVICE VERIFICATION REQUIRED |
 
 ## Failure-path checks
 

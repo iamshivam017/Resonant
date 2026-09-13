@@ -1,7 +1,7 @@
 import { DotFilledIcon, PlayIcon, StopIcon } from "@radix-ui/react-icons";
 import { useEffect, useSyncExternalStore } from "react";
 import type { CaptureSessionController } from "../capture-session";
-import type { CaptureSessionState } from "../types";
+import type { CaptureSessionState, FrameQuality } from "../types";
 import { SpectrumCanvas } from "./spectrum-canvas";
 import { WaveformCanvas } from "./waveform-canvas";
 
@@ -20,6 +20,27 @@ function formatQuality(value?: string) {
 function formatDigitalAmplitude(value?: number) {
   return value === undefined ? "—" : `${value.toFixed(3)} digital`;
 }
+
+function formatDuration(value?: number) {
+  return value === undefined ? "— s" : `${(value / 1_000).toFixed(2)} s`;
+}
+
+function formatCadence(value?: number) {
+  return value === undefined ? "— Hz observed" : `${value.toFixed(1)} Hz observed`;
+}
+
+function formatChannels(value?: number) {
+  if (value === undefined) return "—";
+  return `${value.toLocaleString("en-US")} ${value === 1 ? "channel" : "channels"}`;
+}
+
+const qualityGuidance: Partial<Record<FrameQuality, string>> = {
+  silent: "No usable audio signal detected.",
+  clipping: "Signal is clipping. Move the phone farther from the machine.",
+  insufficient: "The current frame cannot support reliable frequency evidence.",
+  degraded: "Browser signal processing is active; frequency evidence is unavailable.",
+  stale: "Live input is stale; start a fresh measurement.",
+};
 
 const sessionPresentation: Record<CaptureSessionState, { label: string; detail: string }> = {
   idle: { label: "Checking microphone capability", detail: "No capture in progress" },
@@ -51,6 +72,9 @@ export function SensorInstrument({ controller }: SensorInstrumentProps) {
     snapshot.state,
   );
   const status = sessionPresentation[snapshot.state];
+  const currentQualityGuidance = snapshot.frame?.quality
+    ? qualityGuidance[snapshot.frame.quality]
+    : undefined;
 
   useEffect(() => {
     return () => {
@@ -93,6 +117,12 @@ export function SensorInstrument({ controller }: SensorInstrumentProps) {
         </aside>
       ) : null}
 
+      {active && currentQualityGuidance ? (
+        <p className="quality-guidance" role="status">
+          {currentQualityGuidance}
+        </p>
+      ) : null}
+
       <section className="plot-section" aria-labelledby="waveform-title">
         <div className="section-heading">
           <h2 id="waveform-title">Waveform</h2>
@@ -133,13 +163,37 @@ export function SensorInstrument({ controller }: SensorInstrumentProps) {
 
       <section className="measurement-band" aria-label="Capture measurements">
         <div className="primary-measurement">
-          <span>Strongest observed bin</span>
-          <strong>{formatFrequency(snapshot.observation?.dominantFrequencyHz ?? undefined)}</strong>
+          <span>Dominant spectral peak</span>
+          <output
+            className="primary-value"
+            aria-label={`Dominant spectral peak value: ${
+              hasValidFrame
+                ? formatFrequency(snapshot.observation?.dominantFrequencyHz ?? undefined)
+                : "unavailable"
+            }`}
+          >
+            {formatFrequency(
+              hasValidFrame ? (snapshot.observation?.dominantFrequencyHz ?? undefined) : undefined,
+            )}
+          </output>
+          <small>
+            {hasValidFrame && snapshot.observation?.dominantBin !== null
+              ? `FFT bin ${snapshot.observation?.dominantBin}`
+              : "FFT bin unavailable"}
+          </small>
         </div>
         <dl>
           <div>
-            <dt>Sample rate</dt>
+            <dt>Analysis sample rate</dt>
             <dd>{formatFrequency(snapshot.audioSampleRate)}</dd>
+          </div>
+          <div>
+            <dt>Track sample rate</dt>
+            <dd>{formatFrequency(snapshot.trackSettings?.sampleRate)}</dd>
+          </div>
+          <div>
+            <dt>Input channels</dt>
+            <dd>{formatChannels(snapshot.trackSettings?.channelCount)}</dd>
           </div>
           <div>
             <dt>Transform size</dt>
@@ -162,6 +216,14 @@ export function SensorInstrument({ controller }: SensorInstrumentProps) {
             <dd>
               {formatDigitalAmplitude(hasValidFrame ? snapshot.observation?.peak : undefined)}
             </dd>
+          </div>
+          <div>
+            <dt>Capture duration</dt>
+            <dd>{formatDuration(active ? snapshot.captureDurationMs : undefined)}</dd>
+          </div>
+          <div>
+            <dt>Analysis cadence</dt>
+            <dd>{formatCadence(active ? snapshot.observedUpdateCadenceHz : undefined)}</dd>
           </div>
         </dl>
       </section>

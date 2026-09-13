@@ -2,13 +2,14 @@
 
 ## Current active phase
 
-**Phase 1 — Real microphone spike awaiting physical HTTPS evidence**
+**Phase 2 — Real sensor acquisition and DSP vertical spike**
 
 ## Objective
 
-Prove the smallest trustworthy microphone-first sensing loop: explicit permission,
-real live capture, waveform and spectrum evidence, dominant-bin/RMS/peak observations,
-observed capture settings, honest quality states, and complete resource teardown.
+Complete the bounded extension of the existing microphone-first sensing loop with
+deterministic silent/clipping evidence, capture duration, observed update cadence, explicit
+quality guidance, and the selected RMS/peak/dominant-spectral-peak feature set. Preserve
+the `AnalyserNode` plus Canvas architecture until physical evidence identifies a blocker.
 
 ## Completed implementation evidence
 
@@ -23,6 +24,14 @@ observed capture settings, honest quality states, and complete resource teardown
   microphone and audio-processing resources.
 - Spec Kit convergence added and closed T039–T042 for degraded quality, explicit
   dominant-bin eligibility, lifecycle summaries, and RMS/peak display.
+- The same `001-real-sensor-spike` artifacts now specify exact-zero silent evidence,
+  digital full-scale clipping evidence, monotonic capture duration, interval-derived
+  update cadence, explicit user guidance, and the primary `Dominant Spectral Peak` label.
+- Deterministic unit/component coverage exercises the new quality and timing behavior.
+- An interactive local browser run reached real microphone capture and rendered live values.
+  The observed run reported a 48,000 Hz audio/track sample rate, 2 channels, transform size
+  2,048, and 23.438 Hz/bin. Capture stopped cleanly and live evidence cleared. This is one
+  desktop runtime observation, not a compatibility, repeatability, or performance guarantee.
 - Product Design comparison evidence is recorded in `docs/design/` and `design-qa.md`.
 - The final immutable working-tree security review is sealed at
   `docs/security/review-2026-09-13-final/report.md` with complete source-diff coverage
@@ -51,24 +60,45 @@ observed capture settings, honest quality states, and complete resource teardown
 | Check | Result | Evidence |
 |---|---|---|
 | Protected mobile runtime | PASS | 28 protected files verified |
+| Clean dependency install | PASS | Exact lockfile restored with `npm ci --ignore-scripts` |
 | Biome format/lint | PASS | 26 files checked, no fixes required |
 | TypeScript typecheck | PASS | `tsc --noEmit` exited successfully |
-| Unit/component tests | PASS | 44 tests across 8 files |
+| Unit/component tests | PASS | 53 tests across 8 files |
 | Browser E2E | PASS | 6 lifecycle, fail-closed, cleanup, and responsive checks |
 | Production build | PASS | Vite client plus static hosting worker output generated |
 | Hosting worker tests | PASS | 4 route/fallback/packaging checks |
 | Production dependency audit | PASS | npm reported 0 vulnerabilities |
+| Phase 2 security review | PASS | Complete changed-source review plus boundary/secret/junk checks found no reportable issue |
+| Interactive desktop microphone runtime | PASS | Explicit start reached active/local-only capture; real readouts populated; stop cleared evidence |
 | Real microphone on a physical phone | UNKNOWN / NEEDS VERIFICATION | No authorized physical-device run is available in this environment |
 | Physical update rate, long tasks, stop responsiveness | UNKNOWN / NEEDS VERIFICATION | Requires the declared demo phone and live capture |
 | External HTTPS deployment | PASS | Sites version 1 reports `succeeded` at the recorded private URL |
 | Unauthenticated HTTPS edge | PASS | Reachable; expected private-access sign-in gate returned `401` |
 | Authenticated application health and headers | UNKNOWN / NEEDS VERIFICATION | Requires an authorized ChatGPT browser session |
 
-## Remaining Phase 1 gates
+The browser automation layer available in this session was used for the interactive
+runtime check. The Build Web Apps Browser plugin was not installed, so repository
+Playwright supplied deterministic browser E2E coverage. Neither result replaces the
+physical device matrix.
+
+The security review covered every Phase 2 source/test change and followed the microphone
+permission, captured frame, observed track-setting, render, and teardown paths into their
+supporting code. Raw frames remain memory-only, no new network or persistence sink exists,
+all displayed values derive from the current capture snapshot, changed-file secret/junk
+checks passed, and the production-boundary tests and dependency audit remained green. No
+reportable security finding survived review. The Codex Security workbench could not create
+its durable scan because its Git subprocess rejected this checkout's Windows ownership and
+could not resolve `HEAD`; no workbench-generated report is claimed.
+
+## Remaining Phase 2 manual gates
 
 - T034: measure live performance and cleanup on the declared demo phone.
 - T036: deployment is complete; verify the authenticated application response and headers.
 - T037: execute every physical trial in the feature quickstart and record observed values.
+- Ambient/fan trials and every target phone/browser row remain
+  **MANUAL DEVICE VERIFICATION REQUIRED**.
+- Low-signal, SNR, instability, acceptable-performance, minimum-duration, repeatability,
+  and machine-condition thresholds remain **UNKNOWN / NEEDS CALIBRATION**.
 
 ## Explicitly deferred
 

@@ -61,9 +61,9 @@
 
 ## Phase 4: User Story 2 — Inspect Frequency-Domain Evidence (Priority: P2)
 
-**Goal**: Show a real spectrum, strongest observed bin, resolution, and capture context.
+**Goal**: Show a real spectrum, dominant spectral peak, resolution, and capture context.
 
-**Independent Test**: Measure two physically produced sounds with distinct tones and observe corresponding spectrum/strongest-bin changes.
+**Independent Test**: Measure two physically produced sounds with distinct tones and observe corresponding spectrum/dominant-peak changes.
 
 ### Tests for User Story 2
 
@@ -167,7 +167,7 @@ T025 error mapping tests || T026 lifecycle failure tests || T027 UI error tests
 
 ## Task Summary
 
-- **Total:** 42 tasks.
+- **Total:** 52 tasks.
 - **Setup/foundation:** 9 tasks.
 - **US1:** 8 tasks.
 - **US2:** 7 tasks.
@@ -184,3 +184,16 @@ T025 error mapping tests || T026 lifecycle failure tests || T027 UI error tests
 
 - [x] T041 Expose and test distinct user-visible lifecycle summaries for ready, requesting permission, initializing, active, stopping, stopped, denied, unsupported, interrupted, and failed states per FR-002 (partial)
 - [x] T042 Display and test uncalibrated RMS and peak observations for valid frames while suppressing them for non-valid frames per US2/AC3 and quickstart (partial)
+
+## Phase 9: Phase 2 Quality and Timing Extension
+
+- [x] T043 [P] [US4] Add failing exact-silent and digital-full-scale quality tests in app/tests/unit/frame-quality.test.ts
+- [x] T044 [P] [US4] Add failing observed duration, advancing-cadence, non-advancing timestamp, and reported track-setting tests in app/tests/unit/capture-session.test.ts
+- [x] T045 [P] [US4] Add failing component tests for `Dominant Spectral Peak`, silent/clipping recovery copy, timing units, and compact capture context in app/tests/component/sensor-instrument.test.tsx
+- [x] T046 [US4] Implement deterministic `silent` and `clipping` classification without calibrated thresholds in app/src/lib/dsp/frame-quality.ts and app/src/features/sensor/types.ts
+- [x] T047 [US4] Implement observed capture duration, update cadence, latency, sample-rate, and channel-context propagation in app/src/features/sensor/capture-session.ts
+- [x] T048 [US4] Implement explicit silent/clipping guidance, observed timing, capture context, and the `Dominant Spectral Peak` label in app/src/features/sensor/components/sensor-instrument.tsx
+- [x] T049 [P] Record the selected Phase 2 DSP/quality choices and deferrals in docs/DSP_PIPELINE.md, docs/TEST_STRATEGY.md, docs/execution/CURRENT_PHASE.md, and docs/execution/DECISIONS.md
+- [x] T050 [P] Add the evidence-only compatibility matrix and ambient/fan experiment worksheet to specs/001-real-sensor-spike/quickstart.md
+- [x] T051 Run the local browser/runtime verification against the production sensor path and record observed versus manual-required results in docs/execution/CURRENT_PHASE.md
+- [ ] T052 Run final formatting, lint, types, tests, build, security/documentation audits, deployment update where supported, commit, push, and exact remote-SHA verification

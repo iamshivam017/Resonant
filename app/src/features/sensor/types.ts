@@ -11,7 +11,7 @@ export type CaptureSessionState =
   | "interrupted"
   | "failed";
 
-export type FrameQuality = "valid" | "degraded" | "insufficient" | "stale";
+export type FrameQuality = "valid" | "degraded" | "insufficient" | "silent" | "clipping" | "stale";
 
 export type CaptureErrorCode =
   | "permission-denied"
@@ -72,6 +72,8 @@ export interface CaptureSessionSnapshot {
   trackSettings?: ObservedTrackSettings;
   audioSampleRate?: number;
   analysisWindowSize?: number;
+  captureDurationMs?: number;
+  observedUpdateCadenceHz?: number;
   error?: CaptureError;
   frame?: SignalFrame;
   observation?: FeatureObservation;

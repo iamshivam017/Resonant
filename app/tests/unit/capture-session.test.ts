@@ -206,4 +206,56 @@ describe("createCaptureSession", () => {
     expect(session.getSnapshot().id).toBe("session-2");
     expect(session.getSnapshot().frame).toBeUndefined();
   });
+
+  it("derives duration and cadence from advancing frame timestamps and records reported settings", async () => {
+    let now = 1_000;
+    const callbacks: FrameRequestCallback[] = [];
+    const track = createFakeTrack({
+      settings: { sampleRate: 44_100, channelCount: 2, latency: 0.012 },
+    });
+    const session = createCaptureSession({
+      mediaDevices: createFakeMediaDevices(createFakeStream(track)).value,
+      createAudioContext: () => createFakeAudioGraph().context,
+      now: () => now,
+      makeId: () => "timed-session",
+      requestFrame: (callback) => {
+        callbacks.push(callback);
+        return callbacks.length;
+      },
+      cancelFrame: () => undefined,
+    });
+
+    await session.start();
+    callbacks[0](now);
+    now = 1_040;
+    callbacks[1](now);
+
+    expect(session.getSnapshot()).toMatchObject({
+      trackSettings: { sampleRate: 44_100, channelCount: 2, latency: 0.012 },
+      captureDurationMs: 40,
+      observedUpdateCadenceHz: 25,
+    });
+  });
+
+  it("leaves cadence unknown when frame timestamps do not advance", async () => {
+    const callbacks: FrameRequestCallback[] = [];
+    const session = createCaptureSession({
+      mediaDevices: createFakeMediaDevices(createFakeStream()).value,
+      createAudioContext: () => createFakeAudioGraph().context,
+      now: () => 1_000,
+      makeId: () => "non-advancing-session",
+      requestFrame: (callback) => {
+        callbacks.push(callback);
+        return callbacks.length;
+      },
+      cancelFrame: () => undefined,
+    });
+
+    await session.start();
+    callbacks[0](1_000);
+    callbacks[1](1_000);
+
+    expect(session.getSnapshot()).toMatchObject({ captureDurationMs: 0 });
+    expect(session.getSnapshot().observedUpdateCadenceHz).toBeUndefined();
+  });
 });

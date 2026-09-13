@@ -78,7 +78,7 @@ describe("SensorInstrument", () => {
 
     expect(await screen.findByText("Microphone active")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Stop sensing" })).toBeInTheDocument();
-    expect(screen.getByText("48,000 Hz")).toBeInTheDocument();
+    expect(screen.getAllByText("48,000 Hz")).toHaveLength(2);
     expect(screen.getByTestId("waveform-canvas")).toBeInTheDocument();
   });
 
@@ -242,5 +242,92 @@ describe("SensorInstrument", () => {
     view.unmount();
 
     await waitFor(() => expect(track.readyState).toBe("ended"));
+  });
+
+  it("labels the primary frequency value as the dominant spectral peak and shows observed timing", () => {
+    const snapshot = {
+      id: "observed-readout",
+      state: "active" as const,
+      startedAt: 1_000,
+      trackSettings: { sampleRate: 44_100, channelCount: 2, latency: 0.012 },
+      audioSampleRate: 48_000,
+      analysisWindowSize: 2_048,
+      captureDurationMs: 2_500,
+      observedUpdateCadenceHz: 25,
+      frame: {
+        sessionId: "observed-readout",
+        capturedAt: 3_500,
+        timeDomain: new Float32Array([0.1, -0.1]),
+        frequencyDomain: new Float32Array([-80, -20]),
+        quality: "valid" as const,
+      },
+      observation: {
+        rms: 0.1,
+        peak: 0.1,
+        dominantBin: 1,
+        dominantFrequencyHz: 1_000,
+        binResolutionHz: 23.4375,
+        freshness: "valid" as const,
+      },
+    };
+    const controller: CaptureSessionController = {
+      getSnapshot: () => snapshot,
+      subscribe: (listener) => {
+        listener(snapshot);
+        return () => undefined;
+      },
+      start: async () => undefined,
+      stop: async () => undefined,
+    };
+
+    render(<SensorInstrument controller={controller} />);
+
+    expect(screen.getByText("Dominant spectral peak")).toBeVisible();
+    expect(screen.getByText("2.50 s")).toBeVisible();
+    expect(screen.getByText("25.0 Hz observed")).toBeVisible();
+    expect(screen.getByText("44,100 Hz")).toBeVisible();
+    expect(screen.getByText("2 channels")).toBeVisible();
+  });
+
+  it.each([
+    ["silent", "No usable audio signal detected."],
+    ["clipping", "Signal is clipping. Move the phone farther from the machine."],
+  ])("shows explicit %s quality guidance and suppresses the peak", (quality, message) => {
+    const snapshot = {
+      id: `quality-${quality}`,
+      state: "active" as const,
+      frame: {
+        sessionId: `quality-${quality}`,
+        capturedAt: 100,
+        timeDomain: new Float32Array([0, 0]),
+        frequencyDomain: new Float32Array([-80, -20]),
+        quality,
+      },
+      observation: {
+        rms: 0,
+        peak: quality === "clipping" ? 1 : 0,
+        dominantBin: null,
+        dominantFrequencyHz: null,
+        binResolutionHz: 10,
+        freshness: quality,
+      },
+    };
+    const controller = {
+      getSnapshot: () => snapshot,
+      subscribe: (listener: (value: typeof snapshot) => void) => {
+        listener(snapshot);
+        return () => undefined;
+      },
+      start: async () => undefined,
+      stop: async () => undefined,
+    } as unknown as CaptureSessionController;
+
+    render(<SensorInstrument controller={controller} />);
+
+    expect(screen.getByText(message)).toBeVisible();
+    expect(screen.getByLabelText("Dominant spectral peak value: unavailable")).toHaveTextContent(
+      "— Hz",
+    );
+    expect(screen.queryByTestId("spectrum-canvas")).not.toBeInTheDocument();
   });
 });
