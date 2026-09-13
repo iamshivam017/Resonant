@@ -197,3 +197,41 @@ T025 error mapping tests || T026 lifecycle failure tests || T027 UI error tests
 - [x] T050 [P] Add the evidence-only compatibility matrix and ambient/fan experiment worksheet to specs/001-real-sensor-spike/quickstart.md
 - [x] T051 Run the local browser/runtime verification against the production sensor path and record observed versus manual-required results in docs/execution/CURRENT_PHASE.md
 - [x] T052 Run final formatting, lint, types, tests, build, security/documentation audits, deployment update where supported, commit, push, and exact remote-SHA verification
+
+## Phase 10: Phase 3 Machine and Known-Normal Baseline Extension
+
+- [x] T053 [P] Add failing baseline entity/validation tests for machines, operating states,
+  strict ownership, required fields, and serialization in app/tests/unit/baseline-model.test.ts
+- [x] T054 [P] Add failing aggregation tests for two-or-more capture summaries, median and
+  observed min/max, source retention, dominant-peak movement, and mixed-state rejection in
+  app/tests/unit/baseline-aggregation.test.ts
+- [x] T055 [P] Add failing collector tests for accepted real observations and rejection of
+  silence, clipping, degraded/insufficient/stale frames, non-advancing timing, interruption,
+  and insufficient duration in app/tests/unit/baseline-collector.test.ts
+- [x] T056 [P] Add failing IndexedDB repository tests for validated persistence, reload,
+  machine/state separation, versioned recalibration, and non-destructive supersession in
+  app/tests/unit/baseline-repository.test.ts
+- [x] T057 Implement baseline contracts and validation in app/src/features/baseline/types.ts
+  and app/src/features/baseline/validation.ts to satisfy T053
+- [x] T058 Implement transparent scalar medians and observed ranges with retained source
+  summaries in app/src/features/baseline/aggregation.ts to satisfy T054
+- [x] T059 Implement the snapshot-subscribing capture collector in
+  app/src/features/baseline/capture-collector.ts to satisfy T055 without another sensor path
+- [x] T060 Implement IndexedDB schema version 1 and atomic versioned recalibration in
+  app/src/features/baseline/repository.ts to satisfy T056
+- [x] T061 Add failing component tests for machine setup, operating state, known-normal
+  confirmation, sensor check, capture rejection, extra captures, manual review, and created
+  baseline in app/tests/component/baseline-flow.test.tsx
+- [x] T062 Implement the required FlowStack screens and accessible industrial-instrument
+  controls in app/src/features/baseline/components/baseline-flow.tsx and app/src/Prototype.tsx
+  to satisfy T061
+- [x] T063 Add Phase 3 E2E coverage for commissioning, persistence, rejection copy, state
+  separation, and recalibration in app/tests/e2e/baseline-flow.spec.ts
+- [x] T064 Update the physical repeatability worksheet and device matrix without fabricated
+  observations in specs/001-real-sensor-spike/quickstart.md
+- [x] T065 Update verified architecture, baseline, UX, security, testing, roadmap, current
+  phase, and decision documentation for the implemented Phase 3 behavior
+- [x] T067 [P] Make preview-device semantics explicitly viewport-only, add arbitrary mobile-width browser coverage, and make the compatibility matrix brand-agnostic
+- [x] T066 Run Spec Kit convergence and complete formatting, lint, typecheck, tests, build,
+  runtime/browser verification, security/diff/secret/junk review, commit, push, remote-SHA
+  verification, and supported private deployment update

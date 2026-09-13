@@ -69,6 +69,15 @@ baseline compatibility pass.
 Exact sample counts and quality thresholds remain `UNKNOWN / NEEDS VERIFICATION` until
 repeatability experiments justify them.
 
+### Phase 3 implemented screens
+
+`FlowStack` now presents Machine Setup → Operating State → Known-Normal Confirmation →
+Sensor Check → Capture → Manual Review → Created. Text entry uses the protected runtime's
+keyboard-aware controls. Review shows every source and median/min/max for RMS, peak,
+dominant spectral peak, and dominant bin. The interface states that two captures are only
+the literal minimum, encourages more, and requires manual consistency confirmation.
+Stored active baselines expose non-destructive recalibration.
+
 ## Critical flow: later scan
 
 1. Select the same machine, operating state, placement protocol, and compatible pipeline.
@@ -106,6 +115,10 @@ repeatability experiments justify them.
 
 ## Responsive behavior
 
+- Pixel/iPhone names in the development preview select only viewport, safe-area, keyboard,
+  and chrome presets. They are not product compatibility claims or a supported-device list.
+- App-owned UI must respond to arbitrary viewport dimensions and must not branch on handset
+  brand. Compatibility is assessed separately from observed browser/API behavior.
 - Design the sensing flow mobile-first at a narrow portrait viewport with touch targets
   at least 44 by 44 CSS pixels.
 - Keep start/stop and recording status visible without covering plots.
@@ -156,7 +169,7 @@ selected direction without adding calibrated quality thresholds.
 
 ## TODO
 
-- Test the first implementation at 390 × 844, landscape phone, and desktop widths.
+- Extend the automated 320–480 CSS-pixel portrait coverage to landscape and desktop widths.
 - Run accessibility and physical-use checks while the microphone is active.
 
 ## UNKNOWN / NEEDS VERIFICATION

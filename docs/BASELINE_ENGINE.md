@@ -10,6 +10,23 @@ A baseline is evidence that a specific machine, in a named operating state, meas
 
 ## Hierarchy
 
+## Phase 3 implemented boundary
+
+Phase 3 uses a structural minimum of two accepted captures. Two is only the smallest
+literal multiple, not evidence of scientific adequacy; the operator may add more.
+Stronger count, seconds-based duration, and automatic consistency rules remain
+**UNKNOWN / NEEDS CALIBRATION**.
+
+Each capture requires at least two advancing valid observations and positive observed
+duration. Exact silence, digital full-scale clipping, degraded/insufficient/stale input,
+non-advancing timing, and interruption reject it. Stored capture summaries contain
+median RMS, peak, dominant frequency, dominant bin, duration, observation count, and
+capture context—never raw frames or audio.
+
+The baseline uses median plus observed minimum/maximum for all four features and retains
+every source summary. Dominant-peak/bin movement stays visible for explicit manual review;
+no automatic consistency tolerance is inferred.
+
 ```text
 Machine
 └── Operating State
@@ -30,7 +47,7 @@ Machine
 8. Activate the reference only when the configured evidence criteria pass.
 9. Store the baseline summary, accepted measurement references, configuration, and pipeline version.
 
-The illustrative five captures in the product brief are a UX example, not a statistically proven universal minimum. The minimum count and duration remain **UNKNOWN / NEEDS VERIFICATION** until repeatability experiments on the target device establish a defensible rule.
+The illustrative five captures in the product brief are a UX example, not a statistically proven universal minimum. Two is only the structural minimum needed to implement multiple captures; any stronger minimum and a duration requirement remain **UNKNOWN / NEEDS CALIBRATION** until repeatability experiments establish defensible rules.
 
 ## Compatibility key
 
@@ -49,7 +66,7 @@ Placement protocol and device identity may be hard compatibility keys or promine
 For each selected feature \(j\), store:
 
 - robust center \(m_j = \operatorname{median}(x_{1j}, \ldots, x_{nj})\);
-- robust scale based on median absolute deviation (MAD) or an explicitly documented fallback;
+- a future robust scale based on median absolute deviation (MAD) or an explicitly documented fallback, deferred until repeatability evidence justifies scoring;
 - observed minimum/maximum for diagnostic display, not as automatic universal bounds;
 - capture-level feature values for audit and leave-one-out calibration;
 - correlation/covariance only when sample count is sufficient for a stable estimate.
@@ -81,6 +98,9 @@ A change in machine operating state, physical configuration, placement protocol,
 ## Storage policy
 
 Persist feature vectors, quality summaries, metadata, and baseline statistics locally. Do not persist raw audio by default. If export is added, make it explicit, user-initiated, provenance-labeled, and privacy-reviewed.
+
+Implemented persistence uses IndexedDB schema version 1. Recalibration appends a new
+version and retains the former active record as `superseded`.
 
 ## Acceptance criteria
 

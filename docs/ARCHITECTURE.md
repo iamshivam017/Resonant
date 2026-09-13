@@ -57,7 +57,17 @@ flowchart LR
 - `app/src/features/sensor/`: capability detection, microphone lifecycle, permission/error mapping, live frame access, and instrument components.
 - `app/src/lib/dsp/`: deterministic pure feature calculations and types; no React dependency.
 - Future `app/src/workers/`: CPU-bound aggregation only if the spike proves worker need.
-- Future storage and machine/baseline/scan/history modules follow stable domain interfaces after the spike.
+- Phase 3 implements machine/state and versioned baseline modules under
+  `app/src/features/baseline/`; scan/history modules remain future work.
+
+### Implemented Phase 3 boundary
+
+The baseline collector subscribes to the existing capture-session snapshot stream. It
+does not create another microphone, analyser, or feature path. Raw frames remain in the
+sensor session and are discarded after capture-summary derivation. IndexedDB schema
+version 1 contains `machines`, `operatingStates`, `captures`, and `baselines` stores.
+Repository reads and writes validate fields and Machine × Operating-State ownership.
+Activation atomically appends a version and supersedes prior active versions.
 - A future explanation boundary must be server-only and accept structured evidence only; it is not part of the Vite sensor client.
 
 ### Benchmark pipeline
@@ -182,6 +192,11 @@ Useful for benchmark work but would upload raw sensor data and make the live dem
 - Empirically defensible quality/calibration thresholds.
 
 None blocks creating the browser spike; they block claiming that the spike is reliable across devices.
+
+Preview labels such as Pixel or iPhone configure development viewport/chrome presets only.
+App-owned layout is viewport-responsive and contains no handset-brand compatibility branch.
+Real compatibility evidence is recorded separately by OS, browser/version, secure-context
+status, and observed MediaDevices, Web Audio, Canvas, and IndexedDB behavior.
 
 ## Sources
 

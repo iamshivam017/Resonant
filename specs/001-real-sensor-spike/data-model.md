@@ -94,3 +94,32 @@ fundamental, fault frequency, diagnosis, or health percentage.
 
 Verification runs are evidence records. No benchmark or reliability conclusion is
 created until the relevant run actually occurs.
+
+## Phase 3 Persistent Entities
+
+### Machine
+
+`id`, `name`, `category`, optional `manufacturer`, optional `model`, optional `notes`, and
+`createdAt`. Name and category are non-empty after trimming. Identifiers are locally unique.
+
+### Operating State
+
+`id`, `machineId`, `name`, optional `notes`, and `createdAt`. The referenced machine must
+exist. State identity is never shared across machines.
+
+### Baseline Capture
+
+Contains `id`, `machineId`, `operatingStateId`, `capturedAt`, `durationMs`, observed capture
+context, `observationCount`, and median RMS, peak, dominant frequency, and dominant bin.
+It contains no raw audio, time-domain array, or frequency-domain array.
+
+### Baseline
+
+Contains `id`, `machineId`, `operatingStateId`, `version`, lifecycle status (`active` or
+`superseded`), creation time, explicit known-normal confirmation time, explicit manual-review
+confirmation time, source capture summaries, and median/minimum/maximum for each selected
+feature. A version is unique within one Machine × Operating-State pair.
+
+Two source captures are the minimum literal multiple. This validation rule is structural,
+not a scientific adequacy claim. Automatic repeatability and consistency thresholds remain
+`UNKNOWN / NEEDS CALIBRATION`.

@@ -35,3 +35,8 @@
 - Phase 2 bounded-extension review passed all criteria on 2026-09-13; deterministic
   quality/timing requirements contain no calibrated or machine-condition assumptions.
 - Physical device/browser compatibility remains an evidence-gathering outcome, not an unresolved product requirement.
+- Phase 3 extension review passed: machine/state separation, capture rejection, local-only
+  persistence, manual consistency review, versioned recalibration, and explicit scoring
+  exclusions are testable and contain no invented adequacy threshold.
+- Responsive-device wording passed: preview device names are viewport presets only;
+  supported behavior is assessed from browser/API evidence without handset-brand coupling.

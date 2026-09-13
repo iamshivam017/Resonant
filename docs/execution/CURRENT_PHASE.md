@@ -2,16 +2,41 @@
 
 ## Current active phase
 
-**Phase 2 — Real sensor acquisition and DSP vertical spike**
+**Phase 3 — Machine setup and operating-state-specific known-normal baseline**
 
 ## Objective
 
-Complete the bounded extension of the existing microphone-first sensing loop with
-deterministic silent/clipping evidence, capture duration, observed update cadence, explicit
-quality guidance, and the selected RMS/peak/dominant-spectral-peak feature set. Preserve
-the `AnalyserNode` plus Canvas architecture until physical evidence identifies a blocker.
+Commission a locally persisted, operator-confirmed baseline for one Machine ×
+Operating-State pair using only the existing real microphone observations and the selected
+RMS, peak, dominant-frequency, and dominant-bin features. Preserve source traceability,
+manual consistency review, and versioned recalibration without adding scoring.
 
 ## Completed implementation evidence
+
+- Machine, operating-state, capture-summary, and baseline-version contracts are implemented
+  with validation on persistence reads and writes.
+- The seven-screen commissioning flow uses the protected `FlowStack` and keyboard-aware inputs.
+- A capture collector subscribes to the existing sensor session; it creates no competing
+  microphone or DSP subsystem.
+- Two captures are enforced only as the literal structural minimum. Additional captures
+  remain possible and the UI makes no scientific-sufficiency claim.
+- Exact silence, digital full-scale clipping, degraded/insufficient/stale input,
+  non-advancing timing, interruption, or fewer than two advancing observations reject a
+  capture with explicit guidance.
+- Capture and baseline summaries use medians plus observed min/max for RMS, peak, dominant
+  frequency, and dominant bin. Every source summary remains visible for manual review.
+- IndexedDB schema version 1 persists feature summaries and context only; raw audio and raw
+  time/frequency frames are excluded.
+- Activation requires known-normal and manual consistency confirmations. Recalibration
+  creates the next version and atomically supersedes the previous active record.
+- Browser E2E completed the fixture-driven workflow, verified IndexedDB record counts
+  `[1 machine, 1 state, 2 captures, 1 baseline]`, reloaded, and exposed recalibration.
+- Live browser layout inspection verified the 390 px machine-setup surface and corrected
+  a zero-gutter selector defect. A real microphone request reached the permission prompt,
+  but permission did not resolve in this run; no new sensor observation is claimed.
+- Browser E2E now exercises commissioning and sensing without horizontal overflow at
+  arbitrary 320, 360, 390, 412, and 480 CSS-pixel widths. Pixel/iPhone preview labels are
+  viewport presets only; compatibility remains a separate brand-agnostic browser/API matrix.
 
 - The selected Scientific Strip Chart Product Design direction is implemented in the
   protected mobile React/Vite runtime under `app/`.
@@ -42,7 +67,7 @@ the `AnalyserNode` plus Canvas architecture until physical evidence identifies a
   `docs/security/review-2026-09-13-deployment-config/report.md`, with complete scoped
   coverage and zero reportable findings.
 
-## Deployment evidence
+## Last verified deployment evidence (pre-Phase-3 commit)
 
 | Field | Verified value |
 |---|---|
@@ -61,36 +86,37 @@ the `AnalyserNode` plus Canvas architecture until physical evidence identifies a
 |---|---|---|
 | Protected mobile runtime | PASS | 28 protected files verified |
 | Clean dependency install | PASS | Exact lockfile restored with `npm ci --ignore-scripts` |
-| Biome format/lint | PASS | 26 files checked, no fixes required |
+| Biome format/lint | PASS | 39 files checked; zero errors and warnings |
 | TypeScript typecheck | PASS | `tsc --noEmit` exited successfully |
-| Unit/component tests | PASS | 53 tests across 8 files |
-| Browser E2E | PASS | 6 lifecycle, fail-closed, cleanup, and responsive checks |
+| Unit/component tests | PASS | 73 tests across 13 files |
+| Browser E2E | PASS | 7 commissioning, persistence, lifecycle, fail-closed, cleanup, and arbitrary-width checks |
 | Production build | PASS | Vite client plus static hosting worker output generated |
 | Hosting worker tests | PASS | 4 route/fallback/packaging checks |
 | Production dependency audit | PASS | npm reported 0 vulnerabilities |
-| Phase 2 security review | PASS | Complete changed-source review plus boundary/secret/junk checks found no reportable issue |
-| Interactive desktop microphone runtime | PASS | Explicit start reached active/local-only capture; real readouts populated; stop cleared evidence |
+| Phase 3 security review | PASS | Parent-agent diff/threat/secret/junk review found no reportable issue; npm reported 0 production vulnerabilities |
+| Interactive desktop microphone runtime | PARTIAL | Earlier Phase 2 run reached active local capture; Phase 3 browser run reached the permission prompt but permission did not resolve, so no new physical observation is claimed |
 | Real microphone on a physical phone | UNKNOWN / NEEDS VERIFICATION | No authorized physical-device run is available in this environment |
 | Physical update rate, long tasks, stop responsiveness | UNKNOWN / NEEDS VERIFICATION | Requires the declared demo phone and live capture |
-| External HTTPS deployment | PASS | Sites version 2 reports `succeeded` at the recorded private URL |
+| External HTTPS deployment | PENDING | The exact Phase 3 commit must exist and be pushed before a matching private version can be saved and verified |
 | Unauthenticated HTTPS edge | PASS | Reachable; expected private-access sign-in gate returned `401` |
 | Authenticated application health and headers | UNKNOWN / NEEDS VERIFICATION | Requires an authorized ChatGPT browser session |
 
-The browser automation layer available in this session was used for the interactive
-runtime check. The Build Web Apps Browser plugin was not installed, so repository
-Playwright supplied deterministic browser E2E coverage. Neither result replaces the
-physical device matrix.
+The browser automation layer supplied interactive inspection while repository Playwright
+provided deterministic browser E2E coverage. Named phone controls in the preview are UI
+presets only. Neither form of automation replaces the brand-agnostic physical
+OS/browser/API compatibility matrix.
 
-The security review covered every Phase 2 source/test change and followed the microphone
-permission, captured frame, observed track-setting, render, and teardown paths into their
-supporting code. Raw frames remain memory-only, no new network or persistence sink exists,
-all displayed values derive from the current capture snapshot, changed-file secret/junk
-checks passed, and the production-boundary tests and dependency audit remained green. No
-reportable security finding survived review. The Codex Security workbench could not create
-its durable scan because its Git subprocess rejected this checkout's Windows ownership and
-could not resolve `HEAD`; no workbench-generated report is claimed.
+The Phase 3 review traced operator input, sensor observations, IndexedDB relationships,
+activation, versioning, rendering, and teardown. Raw frames remain memory-only; the only new
+persistence sink contains validated metadata and feature summaries. No network, secret,
+scoring, or fabricated-data path was added. Changed-tree secret/junk checks,
+production-boundary tests, dependency audit, and the threat review remained green. The
+Codex Security workbench could not create its durable scan because its Git subprocess
+rejected this checkout's Windows ownership and could not resolve `HEAD`; no
+workbench-generated report is claimed. The parent-agent evidence is recorded in
+`docs/security/review-2026-09-13-phase3/`.
 
-## Remaining Phase 2 manual gates
+## Remaining inherited physical/manual gates
 
 - T034: measure live performance and cleanup on the declared demo phone.
 - T036: deployment is complete; verify the authenticated application response and headers.
@@ -102,6 +128,17 @@ could not resolve `HEAD`; no workbench-generated report is claimed.
 
 ## Explicitly deferred
 
-Baseline/scoring, persistence/history, IMU, benchmark execution, Featherless, Sentry,
-authentication, machine inventory, remote explanation, and broader product features
-remain outside this feasibility spike.
+Baseline similarity/scoring, anomaly detection, scans/trends, IMU, benchmark execution,
+Featherless, Sentry, authentication, remote explanation, and broader product features
+remain outside Phase 3.
+
+## Phase 3 calibration and manual gates
+
+- Physical same-fan/same-speed capture repeatability: **MANUAL DEVICE VERIFICATION REQUIRED**.
+- Physical commissioning/persistence across Android-compatible, iOS WebKit, and other
+  browser/API profiles: **MANUAL DEVICE VERIFICATION REQUIRED**. Phone brand is not a
+  compatibility criterion.
+- Stronger capture-count requirement: **UNKNOWN / NEEDS CALIBRATION**.
+- Seconds-based minimum capture duration: **UNKNOWN / NEEDS CALIBRATION**.
+- Automatic dominant-peak/spread consistency threshold: **UNKNOWN / NEEDS CALIBRATION**.
+- Scientific baseline adequacy and machine-condition interpretation: **UNKNOWN / NEEDS CALIBRATION**.

@@ -103,5 +103,22 @@ or validation belong here. Proposals remain proposals in their owning document u
 
 ## Open decisions
 
+## ADR-0010: Use manual-reviewed, versioned local baseline summaries
+
+- **Date:** 2026-09-13
+- **Status:** Accepted for Phase 3
+- **Context:** A persistent known-normal workflow is needed before physical evidence
+  supports statistical adequacy or automatic consistency thresholds.
+- **Decision:** Scope each baseline to one Machine × Operating-State pair; require at
+  least two accepted captures; summarize RMS, peak, dominant frequency, and dominant bin
+  with median plus observed min/max; retain sources; require explicit known-normal and
+  manual-consistency confirmations; persist in IndexedDB; supersede on recalibration.
+- **Rationale:** This is transparent and testable without claiming two captures are
+  scientifically sufficient.
+- **Alternatives:** Fixed five-capture rules, automatic tolerances, mean/stddev, and
+  remote persistence were rejected as unsupported or out of scope.
+- **Consequences:** Stronger count, duration, and repeatability rules remain
+  `UNKNOWN / NEEDS CALIBRATION`; physical evidence remains separate.
+
 - **UNKNOWN / NEEDS VERIFICATION:** Target device/browser results, calibrated quality
   thresholds, baseline sample adequacy, and final benchmark subset.

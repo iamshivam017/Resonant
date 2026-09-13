@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-13
 
-**Status**: Draft
+**Status**: Phase 3 extension approved
 
 **Input**: User description: "Prove that RESONANT can capture real microphone input on the target smartphone/browser, visibly react to the signal, show its frequency content, and expose useful frequency-domain measurements without fake telemetry."
 
@@ -132,7 +132,7 @@ frame timestamps and confirm the displayed quality, duration, and cadence values
 - **FR-018**: After two advancing live frame timestamps exist, the product MUST expose the observed analysis cadence with units and MUST NOT present it as an acceptable-performance judgment.
 - **FR-019**: The primary user-facing frequency label MUST be `Dominant Spectral Peak`; FFT/bin terminology MAY appear as secondary technical context.
 - **FR-020**: Low-signal, signal-to-noise, instability, acceptable-performance, and machine-condition thresholds MUST remain `UNKNOWN / NEEDS CALIBRATION` or `MANUAL DEVICE VERIFICATION REQUIRED` until physical evidence supports them.
-- **FR-021**: The physical verification procedure MUST include a device/browser compatibility matrix and ambient, repeated same-state fan, and changed-state fan worksheets without prefilled measurements.
+- **FR-021**: The physical verification procedure MUST include a brand-agnostic OS/browser/API compatibility matrix and ambient, repeated same-state fan, and changed-state fan worksheets without prefilled measurements. Named preview devices are viewport presets only and MUST NOT be treated as supported-device claims.
 
 ### Key Entities
 
@@ -163,3 +163,65 @@ frame timestamps and confirm the displayed quality, duration, and cadence values
 - A physical sound source with an observable change is available for manual verification; a machine is preferred, while another physical source may validate the signal path without becoming benchmark evidence.
 - Raw microphone input remains ephemeral and local during this spike.
 - This feature demonstrates capture and interpretable signal evidence; it does not establish machine health, anomaly-detection accuracy, or production sensor compatibility.
+
+## Phase 3 Extension: Known-Normal Baseline Commissioning
+
+### User Story 5 - Commission a Machine and Operating State (Priority: P1)
+
+As an operator, I want to identify one machine and one of its normal operating states
+before measuring so that every baseline remains scoped to the physical context it represents.
+
+**Acceptance Scenarios**:
+
+1. **Given** no saved machine, **When** the operator enters a name, category, and optional descriptive details, **Then** the machine is stored locally with a unique identity and creation time.
+2. **Given** a saved machine, **When** the operator names an operating state, **Then** the state is stored under that machine and cannot be used as another machine's state.
+3. **Given** a selected machine and state, **When** commissioning begins, **Then** the operator must explicitly confirm that the machine is currently operating in the known-normal condition and acknowledge that this is not a certified health assessment.
+
+### User Story 6 - Collect Traceable Baseline Captures (Priority: P1)
+
+As an operator, I want to collect multiple real microphone captures with visible quality
+evidence so that unusable input cannot silently enter a baseline.
+
+**Acceptance Scenarios**:
+
+1. **Given** confirmed known-normal context, **When** the sensor check succeeds, **Then** the operator can start and stop a baseline capture while viewing only current real sensor evidence.
+2. **Given** a capture containing exact silence, digital full-scale clipping, interruption, non-advancing timing, or no valid observations, **When** it ends, **Then** it is rejected with explicit guidance and is excluded from baseline aggregation.
+3. **Given** two accepted captures, **When** review opens, **Then** their individual RMS, peak, dominant-frequency, dominant-bin, duration, and capture-context summaries remain visible and additional captures remain possible.
+4. **Given** only two accepted captures, **When** the interface explains readiness, **Then** it describes two only as the minimum literal multiple and makes no scientific-sufficiency claim.
+
+### User Story 7 - Review and Activate a Versioned Baseline (Priority: P1)
+
+As an operator, I want transparent summaries and an explicit consistency review so that
+activation reflects my observed setup rather than an invented automatic threshold.
+
+**Acceptance Scenarios**:
+
+1. **Given** accepted captures, **When** review is shown, **Then** the product displays median and observed minimum/maximum for RMS, peak, dominant frequency, and dominant bin alongside every source-capture summary.
+2. **Given** dominant peaks differ between captures, **When** review is shown, **Then** the movement is surfaced for manual review and is not hidden by the median.
+3. **Given** at least two accepted captures, **When** the operator explicitly confirms manual consistency review, **Then** a versioned active baseline may be stored for that exact machine and state.
+4. **Given** an existing baseline, **When** recalibration completes, **Then** a new version is created and the prior version is retained as superseded rather than overwritten.
+
+### Phase 3 Functional Requirements
+
+- **FR-022**: The product MUST persist Machine, Operating State, Baseline Capture, and versioned Baseline records locally.
+- **FR-023**: Every operating state and baseline MUST belong to exactly one machine; captures and baselines MUST NOT cross Machine × Operating-State boundaries.
+- **FR-024**: Baseline commissioning MUST require explicit operator confirmation of the known-normal operating condition and disclose that the confirmation is not a certified health assessment.
+- **FR-025**: A baseline MUST contain at least two accepted captures, while allowing additional captures and making no claim that two captures are scientifically sufficient.
+- **FR-026**: Baseline captures MUST use real live microphone observations and MUST reject exact silence, digital full-scale clipping, interruption, non-advancing timing, or absence of valid observations.
+- **FR-027**: Calibrated minimum-duration, repeatability, and automatic consistency thresholds MUST remain `UNKNOWN / NEEDS CALIBRATION`; unresolved physical checks MUST remain `MANUAL DEVICE VERIFICATION REQUIRED`.
+- **FR-028**: Accepted captures MUST retain summaries for RMS, peak amplitude, dominant frequency, dominant bin, duration, and observed capture context, without retaining raw audio or raw signal frames.
+- **FR-029**: Baseline aggregation MUST expose median and observed minimum/maximum for each selected feature and MUST retain every source-capture summary.
+- **FR-030**: Dominant-frequency and dominant-bin movement across captures MUST be visible for manual review and MUST NOT be converted into an unsupported automatic pass/fail classification.
+- **FR-031**: Baseline activation MUST require explicit manual consistency review.
+- **FR-032**: Recalibration MUST create a new baseline version and retain the prior version as superseded; it MUST NOT destructively overwrite history.
+- **FR-033**: Stored data MUST exclude raw microphone audio and raw time-domain or frequency-domain frames.
+- **FR-034**: Phase 3 MUST NOT produce baseline similarity, deviation, anomaly, diagnosis, condition score, health score, or trend output.
+- **FR-035**: App-owned UI MUST remain usable without horizontal overflow across arbitrary mobile viewport sizes and MUST NOT branch compatibility behavior on handset brand; real compatibility MUST be determined from observed browser/API behavior.
+
+### Phase 3 Success Criteria
+
+- **SC-011**: An operator can create a machine, add a state, confirm known-normal operation, complete the sensor check, collect at least two accepted captures, review source and aggregate evidence, and activate a baseline without leaving the local workflow.
+- **SC-012**: Every deterministic invalid-capture fixture is rejected and absent from aggregate source identifiers.
+- **SC-013**: Reloading the application restores valid saved machine, state, capture-summary, and baseline-version records without restoring raw frames or audio.
+- **SC-014**: Recalibration produces a greater version number for the same Machine × Operating-State pair and preserves the superseded version.
+- **SC-015**: Review of all Phase 3 production paths finds zero cross-state aggregation, zero raw-audio persistence, and zero machine-health or anomaly classification.

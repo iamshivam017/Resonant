@@ -44,6 +44,10 @@ async function installActiveCapture(page: import("@playwright/test").Page) {
   });
 }
 
+async function openLiveSensor(page: import("@playwright/test").Page) {
+  await page.getByRole("button", { name: "Open live sensor" }).click();
+}
+
 test("does not request microphone access before the explicit start action", async ({ page }) => {
   await page.addInitScript(() => {
     let calls = 0;
@@ -61,6 +65,7 @@ test("does not request microphone access before the explicit start action", asyn
   });
   await page.goto("/");
   await expect(page).toHaveTitle("RESONANT — Live Acoustic Input");
+  await openLiveSensor(page);
   await expect(page.getByRole("button", { name: "Start sensing" })).toBeVisible();
   expect(await page.evaluate(() => Reflect.get(window, "__microphoneRequestCount"))).toBe(0);
 });
@@ -81,6 +86,7 @@ test("denial fails closed with actionable recovery and retry", async ({ page }) 
     });
   });
   await page.goto("/");
+  await openLiveSensor(page);
   await page.getByRole("button", { name: "Start sensing" }).click();
   await expect(page.getByRole("alert")).toContainText("Microphone access was not granted");
   await expect(page.getByRole("button", { name: "Try again" })).toBeVisible();
@@ -95,6 +101,7 @@ test("unsupported capture fails closed without live evidence", async ({ page }) 
     Object.defineProperty(navigator, "mediaDevices", { configurable: true, value: undefined });
   });
   await page.goto("/");
+  await openLiveSensor(page);
   await page.getByRole("button", { name: "Start sensing" }).click();
   await expect(page.getByRole("alert")).toContainText("Live microphone capture is unavailable");
   await expect(page.getByTestId("waveform-canvas")).toHaveCount(0);
@@ -103,6 +110,7 @@ test("unsupported capture fails closed without live evidence", async ({ page }) 
 test("active stop releases the track and audio context", async ({ page }) => {
   await installActiveCapture(page);
   await page.goto("/");
+  await openLiveSensor(page);
   await page.getByRole("button", { name: "Start sensing" }).click();
   await expect(page.getByText("Microphone active")).toBeVisible();
   await expect(page.getByTestId("spectrum-canvas")).toBeVisible();
@@ -126,6 +134,7 @@ test("page lifecycle termination releases active capture", async ({ page }) => {
   });
   await installActiveCapture(page);
   await page.goto("/");
+  await openLiveSensor(page);
   await page.getByRole("button", { name: "Start sensing" }).click();
   await expect(page.getByText("Microphone active")).toBeVisible();
 
@@ -134,12 +143,22 @@ test("page lifecycle termination releases active capture", async ({ page }) => {
   await expect.poll(() => trackStopped).toBe(true);
 });
 
-test("the 390-pixel instrument remains inside its mobile viewport", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
-  const instrument = page.getByRole("main");
-  await expect(instrument).toBeVisible();
-  expect(await instrument.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(
-    true,
-  );
+test("the instrument remains responsive across arbitrary mobile viewport widths", async ({
+  page,
+}) => {
+  for (const width of [320, 360, 390, 412, 480]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto("/");
+    const baselineScreen = page.locator(".baseline-screen");
+    await expect(baselineScreen).toBeVisible();
+    expect(
+      await baselineScreen.evaluate((element) => element.scrollWidth <= element.clientWidth),
+    ).toBe(true);
+    await openLiveSensor(page);
+    const instrument = page.getByRole("main");
+    await expect(instrument).toBeVisible();
+    expect(await instrument.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(
+      true,
+    );
+  }
 });

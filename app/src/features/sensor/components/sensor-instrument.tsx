@@ -7,6 +7,7 @@ import { WaveformCanvas } from "./waveform-canvas";
 
 export interface SensorInstrumentProps {
   controller: CaptureSessionController;
+  stopOnUnmount?: boolean;
 }
 
 function formatFrequency(value?: number) {
@@ -59,7 +60,7 @@ const sessionPresentation: Record<CaptureSessionState, { label: string; detail: 
   failed: { label: "Capture failed", detail: "No measurement available" },
 };
 
-export function SensorInstrument({ controller }: SensorInstrumentProps) {
+export function SensorInstrument({ controller, stopOnUnmount = true }: SensorInstrumentProps) {
   const snapshot = useSyncExternalStore(
     controller.subscribe,
     controller.getSnapshot,
@@ -78,9 +79,9 @@ export function SensorInstrument({ controller }: SensorInstrumentProps) {
 
   useEffect(() => {
     return () => {
-      void controller.stop();
+      if (stopOnUnmount) void controller.stop();
     };
-  }, [controller]);
+  }, [controller, stopOnUnmount]);
 
   const toggleCapture = () => {
     if (active) {

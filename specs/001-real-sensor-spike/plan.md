@@ -139,3 +139,49 @@ No constitution violations require justification.
 
 Implementation MUST stop short of baseline calibration, scoring, persistence, IMU,
 remote explanation, benchmark evaluation, and decorative landing-page expansion.
+
+## Phase 3 Known-Normal Baseline Extension
+
+### Architecture
+
+- Preserve the existing `AnalyserNode` plus Canvas live path and subscribe a baseline
+  collector to its low-rate snapshots; do not introduce another capture subsystem.
+- Add focused baseline domain modules under `app/src/features/baseline/` for contracts,
+  validation, deterministic aggregation, capture collection, and IndexedDB persistence.
+- Compose Machine Setup, Operating State, Known-Normal Confirmation, Sensor Check,
+  Capture, Review, and Created screens through the protected runtime's `FlowStack`.
+- Persist only validated metadata, capture summaries, capture context, aggregate summaries,
+  and baseline lifecycle records. Raw frames and audio remain ephemeral.
+
+### Capture validity and aggregation
+
+- Two accepted captures are the smallest literal multiple, not evidence of scientific
+  sufficiency. The collection stays open for additional captures.
+- A capture requires at least two advancing observations and positive observed duration.
+  Any observed exact-silent, clipping, non-advancing, or terminal interruption state
+  rejects the capture. A calibrated seconds-based minimum remains unknown.
+- Each accepted capture stores median feature values over its valid observations plus its
+  duration and observed browser/audio context. The baseline stores the median and observed
+  minimum/maximum across capture summaries for RMS, peak, dominant frequency, and dominant
+  bin, along with every source capture identifier and summary.
+- No automatic consistency threshold is selected. The review displays the full dominant
+  peak/bin range and requires an explicit operator consistency confirmation before activation.
+
+### Persistence and lifecycle
+
+- Use browser IndexedDB schema version 1 with stores for `machines`, `operatingStates`,
+  `baselineCaptures`, and `baselines`.
+- Validate records on both read and write; invalid or unavailable local storage blocks
+  durable baseline completion with explicit recovery copy.
+- Baseline identity is scoped to machine plus operating state. Recalibration appends the
+  next version and marks prior active versions superseded in one transaction.
+- No dependency, network API, authentication, or environment variable is added.
+
+### Verification
+
+- Unit tests cover validation, state separation, capture rejection, medians/ranges,
+  serialization, persistence, and recalibration.
+- Component/E2E tests cover the complete commissioning flow using fixtures clearly isolated
+  from production. Browser runtime verification exercises the production UI and storage.
+- Physical fan repeatability remains a separate worksheet result and is never replaced by
+  automated fixtures.

@@ -83,6 +83,18 @@ but it does not establish target phone/browser compatibility or repeatability.
 
 ## Persistence and migration tests
 
+Phase 3 coverage includes entity normalization, ownership validation, invalid-capture
+rejection, scalar median/range aggregation, source traceability, repository reload,
+version supersession, browser IndexedDB counts, and recalibration entry. Fixture-driven
+browser results prove mechanics only; physical repeatability remains
+**MANUAL DEVICE VERIFICATION REQUIRED**.
+
+Responsive E2E runs commissioning and live sensing at 320, 360, 390, 412, and 480
+CSS-pixel widths and asserts no horizontal overflow. Named Pixel/iPhone development
+presets are not compatibility fixtures. Real compatibility is recorded separately by
+OS/browser/version, secure context, and observed MediaDevices/Web Audio/Canvas/IndexedDB
+behavior.
+
 - Schema validation on every read/write boundary.
 - Upgrade from each supported schema version with preserved records.
 - Interrupted transaction/quota/storage eviction handling.

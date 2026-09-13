@@ -76,3 +76,18 @@ new frames are rejected for the old session identifier.
 Deterministic test doubles MAY exercise commands and state transitions in automated
 tests. They MUST be named as fixtures and MUST NOT be reachable as a production or demo
 telemetry source. Physical acceptance uses a real microphone only.
+
+## Phase 3 Baseline Collector Contract
+
+- Collection attaches to the existing capture-session subscription and never creates a
+  second microphone or DSP path.
+- Start begins an operator-controlled capture window; finish commits only a summary after
+  at least two advancing valid observations and positive observed duration.
+- Silent, clipping, insufficient, stale, degraded, non-advancing, interrupted, or failed
+  evidence rejects the window and explains that it was not added.
+- Accepted summaries retain machine/state identity, observed duration and context, feature
+  medians, and observation count. Raw frames are discarded when the window ends.
+- Aggregation rejects mixed machine/state input, requires at least two accepted captures,
+  returns median plus observed minimum/maximum, and preserves source summaries.
+- Activation requires explicit known-normal and manual-consistency confirmations.
+- Recalibration appends a new version and supersedes prior active versions without deletion.

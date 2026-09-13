@@ -111,3 +111,29 @@ adds unnecessary risk.
 - **Persistence/API/authentication**: none in this feature.
 - **Verification boundary**: automated contract checks plus required physical-device run.
 - **Physical support matrix**: remains an output to measure and record, not a planning ambiguity.
+
+## Phase 3 Decision 8: Use transparent robust summaries without an automatic threshold
+
+**Decision**: Represent each capture and baseline with scalar medians plus observed minima
+and maxima for RMS, peak amplitude, dominant frequency, and dominant bin. Preserve every
+source capture summary and require manual consistency review.
+
+**Rationale**: A median limits the influence of one extreme observation while min/max makes
+the observed spread and dominant-peak movement visible. No current physical repeatability
+evidence supports an automatic acceptance threshold or a stronger minimum capture count.
+
+**Alternatives considered**: Mean and standard deviation are more sensitive to extreme
+values and are not reliable with the minimum two captures. MAD remains a candidate after
+larger physical repeatability runs. Fixed percentage tolerances would fabricate calibration.
+
+## Phase 3 Decision 9: Persist summaries in IndexedDB
+
+**Decision**: Store validated machine, state, capture-summary, and versioned baseline
+records in browser-local IndexedDB. Do not store raw audio or raw DSP frames.
+
+**Rationale**: The workflow must survive reload while retaining privacy and offline behavior.
+IndexedDB provides transactional version updates without adding a server or dependency.
+
+**Alternatives considered**: Memory-only state fails reload persistence; localStorage lacks
+transactional multi-record updates; remote persistence expands authentication, privacy, and
+deployment scope without supporting the Phase 3 proof.

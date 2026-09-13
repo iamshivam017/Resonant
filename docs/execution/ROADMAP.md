@@ -26,7 +26,7 @@ accepts the remaining risk. P0 work preempts P1/P2 work.
 - **Dependencies:** Phase 0; current official/browser/dataset documentation.
 - **Tests:** Citation and zero-fabrication review, placeholder/Markdown/link check, cross-document terminology review.
 - **Acceptance/exit:** P0/P1/P2 explicit; all architecture claims sourced or marked unknown; first spike fully specified/planned.
-- **Status:** In progress; visual direction selection and document validation remain.
+- **Status:** Complete; the selected visual direction and implementation foundation are recorded.
 
 ## Phase 2 — Real microphone sensor spike
 
@@ -41,23 +41,23 @@ accepts the remaining risk. P0 work preempts P1/P2 work.
 - **Acceptance/exit:** Every criterion in spike spec has observed evidence; no fake telemetry; failures are honest;
   device result is pass/fail rather than assumed.
 
-## Phase 3 — Reproducible DSP and quality pipeline
+## Phase 3 — Machine setup and known-normal baseline engine
 
-- **Objective:** Turn captured frames into stable, versioned, quality-controlled feature observations.
-- **Tasks:** Measure analyser repeatability; decide analyser versus worklet/worker; add DC/window/frame aggregation,
-  selected features, quality observations, configuration/versioning, and browser/Python parity fixtures.
-- **Files/modules:** `src/lib/dsp/`, optional `src/workers/`, `benchmark/`, DSP docs/tests.
-- **Dependencies:** Successful Phase 2 capture evidence and actual device settings.
-- **Tests:** Mathematical golden fixtures, property/metamorphic tests, repeatability/performance runs, parity checks.
-- **Acceptance/exit:** Feature definitions/units are reproducible; invalid frames reject; hot path meets measured demo-device budget.
+- **Objective:** Commission a locally persisted, operator-confirmed baseline for one machine and operating state without scoring.
+- **Tasks:** Machine/state setup, operator confirmation, sensor check, repeated real captures,
+  deterministic rejection, transparent aggregation, manual review, IndexedDB persistence,
+  and versioned recalibration.
+- **Files/modules:** `app/src/features/baseline/`, `app/src/Prototype.tsx`, tests, Spec Kit artifacts, and owning docs.
+- **Dependencies:** Existing Phase 2 analyser/Canvas capture and selected features.
+- **Tests:** Domain, aggregation, collector, repository, component, and browser checks plus a separate physical worksheet.
+- **Acceptance/exit:** Workflow and persistence checks pass; physical repeatability is recorded or explicitly remains manual; no scoring or raw-audio persistence exists.
 
-## Phase 4 — Machine and known-normal baseline engine
+## Phase 4 — Reserved follow-up calibration work
 
-- **Objective:** Commission a trustworthy baseline for one machine and operating state.
-- **Tasks:** Add minimal machine/state entities; placement protocol; repeated capture; quality rejection;
-  robust median/scale aggregation; consistency/adequacy checks; activation/supersession lifecycle.
+- **Objective:** Use physical repeatability evidence to decide whether stronger capture-count, duration, or consistency requirements are justified.
+- **Tasks:** Execute controlled experiments and update calibrated rules only when supported.
 - **Files/modules:** `src/features/machines/`, `src/features/baselines/`, `src/lib/baseline/`, schemas/tests/docs.
-- **Dependencies:** Versioned Phase 3 features and calibrated evidence requirements.
+- **Dependencies:** Completed Phase 3 workflow and real repeatability observations.
 - **Tests:** State-machine, robust statistics, zero-scale, insufficient/inconsistent samples, mismatch tests.
 - **Acceptance/exit:** Only compatible, adequate real measurements activate a baseline; sample/quality rules have recorded evidence.
 

@@ -9,12 +9,12 @@ deviation, evidence, and uncertainty—not percentage machine health or universa
 
 ## Current status
 
-The repository is in the Phase 2 physical-evidence gate. The existing Spec Kit feature and
-its browser implementation are present on `bootstrap/repository-foundation`. Local
-automated checks and the production build pass. The exact tested application has a
-successful private HTTPS deployment; authenticated application-response and physical-
-device acceptance remain `UNKNOWN / NEEDS VERIFICATION`. The implemented slice is
-deliberately narrow:
+The repository is in the Phase 3 commissioning and physical-evidence gate. The existing
+Spec Kit feature and its browser implementation are present on
+`bootstrap/repository-foundation`. Phase 3 adds local Machine × Operating-State setup,
+traceable multi-capture summaries, manual consistency review, and versioned baselines.
+Physical-device acceptance remains `MANUAL DEVICE VERIFICATION REQUIRED`. The implemented
+sensor slice remains deliberately narrow:
 
 ```text
 real phone microphone
@@ -112,7 +112,7 @@ validation or external action passed without direct evidence.
 - Target device/browser microphone compatibility is `UNKNOWN / NEEDS VERIFICATION`.
 - Low-signal, SNR, cadence stability, acceptable performance, minimum duration,
   repeatability, and machine-condition thresholds are `UNKNOWN / NEEDS CALIBRATION`.
-- No physical sensor acceptance run, calibrated baseline, condition score, benchmark
+- No physical Phase 3 repeatability run, calibrated adequacy threshold, condition score, benchmark
   result, Featherless integration, or Sentry runtime exists yet.
 - The HTTPS deployment is private; authenticated application reachability and response
   headers have not been observed from an authorized browser session.

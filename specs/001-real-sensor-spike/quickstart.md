@@ -73,13 +73,18 @@ Leave any unobserved item as `UNKNOWN / NEEDS VERIFICATION`.
 ## Device and browser compatibility matrix
 
 Record only an observed run. Automated fixtures do not establish microphone compatibility.
+The preview's named Pixel/iPhone controls are viewport/chrome presets only; they are not a
+supported-device list. Record the actual OS, browser/version, secure context, and observed
+MediaDevices/Web Audio/IndexedDB behavior. Determine compatibility from those capabilities,
+not the handset brand.
 
-| Device / browser | Microphone | Waveform | Spectrum | Quality/timing | Overall result |
+| OS / browser / API profile | Microphone | Waveform | Spectrum | Local persistence | Overall result |
 |---|---|---|---|---|---|
-| Desktop Chromium (automated fixtures only) | MANUAL DEVICE VERIFICATION REQUIRED | Automated rendering PASS; real input unverified | Automated rendering PASS; real input unverified | Deterministic tests only | MANUAL DEVICE VERIFICATION REQUIRED |
-| Desktop in-app Chromium, version unavailable, localhost | PASS — explicit permission/start produced a live track | PASS — real frame rendered | PASS — real spectrum rendered | PASS — observed settings, duration, and cadence rendered without acceptance rating | LOCAL RUNTIME PASS — not physical-phone or deployed-HTTPS evidence |
-| Android Chrome | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED |
-| iOS Safari | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED |
+| Desktop Chromium; automated fixture APIs | MANUAL DEVICE VERIFICATION REQUIRED | Automated rendering PASS; real input unverified | Automated rendering PASS; real input unverified | Automated IndexedDB PASS | MANUAL DEVICE VERIFICATION REQUIRED |
+| Desktop in-app Chromium; version unavailable; localhost; real MediaDevices/Web Audio | PASS — explicit permission/start produced a live track | PASS — real frame rendered | PASS — real spectrum rendered | MANUAL DEVICE VERIFICATION REQUIRED | LOCAL RUNTIME PASS — not physical-phone or deployed-HTTPS evidence |
+| Android-compatible browser with secure-context MediaDevices, Web Audio, Canvas, and IndexedDB | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED |
+| iOS WebKit browser with secure-context MediaDevices, Web Audio, Canvas, and IndexedDB | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED |
+| Other mobile OS/browser with the required APIs | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED | MANUAL DEVICE VERIFICATION REQUIRED |
 
 ## Ambient and fan experiment worksheet
 
@@ -140,3 +145,41 @@ The spike passes only when the automated checks, production build, and every req
 physical acceptance observation have current evidence. Otherwise record `FAIL` or
 `UNKNOWN / NEEDS VERIFICATION`, diagnose the specific gap, and do not expand into
 baseline or condition-scoring implementation.
+
+## Phase 3 Known-Normal Baseline Verification
+
+1. Create one machine and one named normal operating state.
+2. Confirm the machine is currently in that state and acknowledge that this is an
+   operator statement, not a certified health assessment.
+3. Keep the phone in one documented position and run the sensor check.
+4. Collect at least two operator-ended captures; add further captures when practical.
+5. Confirm rejected captures do not enter the source list.
+6. Review every source RMS, peak, dominant frequency/bin, duration, and capture context.
+7. Compare the visible dominant-peak/bin range manually. Do not infer a pass from an
+   uncalibrated tolerance.
+8. Confirm manual consistency review and create the baseline.
+9. Reload and verify the same machine/state/version returns without raw signal data.
+10. Recalibrate and verify a new version appears while the prior version remains superseded.
+
+### Physical repeatability evidence
+
+| Field | Recorded value |
+|---|---|
+| Git commit / deployment | MANUAL DEVICE VERIFICATION REQUIRED |
+| Machine / operating state | MANUAL DEVICE VERIFICATION REQUIRED |
+| Device / OS / browser | MANUAL DEVICE VERIFICATION REQUIRED |
+| Placement and distance | MANUAL DEVICE VERIFICATION REQUIRED |
+| Accepted capture count | MANUAL DEVICE VERIFICATION REQUIRED |
+| Rejected capture count and reasons | MANUAL DEVICE VERIFICATION REQUIRED |
+| Capture durations | MANUAL DEVICE VERIFICATION REQUIRED |
+| Source RMS values | MANUAL DEVICE VERIFICATION REQUIRED |
+| Source peak values | MANUAL DEVICE VERIFICATION REQUIRED |
+| Source dominant frequencies / bins | MANUAL DEVICE VERIFICATION REQUIRED |
+| Observed min/max movement | MANUAL DEVICE VERIFICATION REQUIRED |
+| Operator manual consistency decision | MANUAL DEVICE VERIFICATION REQUIRED |
+| Stronger minimum capture requirement | UNKNOWN / NEEDS CALIBRATION |
+| Minimum duration threshold | UNKNOWN / NEEDS CALIBRATION |
+| Automatic repeatability/consistency threshold | UNKNOWN / NEEDS CALIBRATION |
+
+Automated fixtures validate contracts only. They MUST NOT be copied into this table or
+reported as physical repeatability evidence.

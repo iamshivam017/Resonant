@@ -109,6 +109,18 @@ before final submission.
 
 ## Deployment verification status
 
+## Phase 3 local persistence review
+
+- IndexedDB stores machine/state metadata, feature summaries, observed context, and
+  versioned baseline records only.
+- Raw audio and time/frequency-domain arrays do not enter the storage adapter.
+- Read/write validation rejects malformed records and cross-machine/state relationships.
+- Recalibration is append-and-supersede; prior evidence is not deleted.
+- Phase 3 adds no network call, secret, environment variable, authentication, scoring,
+  or telemetry integration.
+- Shared-device access control and user-facing delete/export remain
+  **UNKNOWN / NEEDS VERIFICATION** before broader release.
+
 A private Sites version 2 deployment succeeded at
 <https://resonant.shivam-sot010060.chatgpt.site>. It was built from GitHub revision
 `06c51e56595abac5919623aba44b60189785a010` and Sites source revision
